@@ -1,7 +1,7 @@
 // import { $router } from '../lib/router.js';
 
-import Component from '../core/Component';
-import Header from './shared/Header/Header';
+import Component from '../../core/Component';
+import Header from '../shared/Header/Header';
 
 export default class Category extends Component {
   template() {
