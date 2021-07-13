@@ -17,7 +17,7 @@ export default class Header extends Component {
 
     switch (headerType) {
       case 'main':
-        template = `<div class="header main"><div>${title}</div></div>`;
+        template = `<div class="header main"><div id="category">카테고리</div><div>${title}</div><div id="menu">메뉴</div></div>`;
         break;
 
       case 'menu-white':
@@ -25,7 +25,7 @@ export default class Header extends Component {
         break;
 
       case 'menu-off-white':
-        template = `<div class="header menu-off-white"><div>${title}</div></div>`;
+        template = `<div class="header menu-off-white"><div id="close">닫기</div><div>${title}</div></div>`;
         break;
 
       case 'menu-invisible':

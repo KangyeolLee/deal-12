@@ -1,5 +1,6 @@
 // import { $router } from '../lib/router.js';
 
+import Category from '../Category';
 import Component from '../../core/Component';
 import CategoryListItem, {
   CategoryListItemProps,
@@ -22,15 +23,23 @@ const list: CategoryListItemProps[] = [];
 });
 
 export default class Home extends Component {
+  setup() {
+    this.$state = {
+      isMenuOpened: false,
+      isCategoryOpened: false,
+      isUserOpened: false,
+    };
+  }
   template() {
     return `
     <header></header>
-    <div id="item-list" />
+    <div id="item-list"></div>
+    <div id="menu-modal"></div>
+    <div id="category-modal"></div>
     `;
   }
   mounted() {
     const $header = this.$target.querySelector('header');
-    console.log($header);
     new Header($header as Element, {
       title: '역삼동',
       headerType: 'main',
@@ -42,5 +51,25 @@ export default class Home extends Component {
       $itemList?.append($item);
       new CategoryListItem($item as Element, item);
     });
+
+    const $categoryBtn = this.$target.querySelector('#category');
+    $categoryBtn?.addEventListener('click', () => {
+      const $categoryModal =
+        this.$target.querySelector('#category-modal') ||
+        document.createElement('div');
+      $categoryModal.className = 'modal';
+      new Category($categoryModal as Element);
+    });
+
+    // const $menuBtn = this.$target.querySelector('#menu');
+    // $menuBtn?.addEventListener('click', () => {
+    //   // this.setState({ isMenuOpened: true });
+    //   const $menuModal =
+    //     this.$target.querySelector('#menu-modal') ||
+    //     document.createElement('div');
+    //   $menuModal.className = 'menu-modal';
+    //   new Category($menuModal as Element);
+    //   // new Category($menu as Element);
+    // });
   }
 }
