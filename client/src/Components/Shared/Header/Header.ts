@@ -17,15 +17,15 @@ export default class Header extends Component {
 
     switch (headerType) {
       case 'main':
-        template = `<div class="header link-medium main"><div>${title}</div></div>`;
+        template = `<div class="header main"><div>${title}</div></div>`;
         break;
 
       case 'menu-white':
-        template = `<div class="header text-medium menu-white"><div>${title}</div></div>`;
+        template = `<div class="header menu-white"><div>${title}</div></div>`;
         break;
 
       case 'menu-off-white':
-        template = `<div class="header text-medium menu-off-white"><div>${title}</div></div>`;
+        template = `<div class="header menu-off-white"><div>${title}</div></div>`;
         break;
 
       case 'menu-invisible':

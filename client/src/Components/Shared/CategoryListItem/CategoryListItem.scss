@@ -1,0 +1,47 @@
+@import '../../../scss/theme';
+
+.item-box {
+  width: 100%;
+  padding: 1.6rem;
+  box-sizing: border-box;
+  display: flex;
+  .img {
+    border: 0.1rem solid $grey3;
+    border-radius: 1rem;
+    min-width: 10.6rem;
+    height: 10.6rem;
+  }
+  .info {
+    width: 100%;
+    height: 10.6rem;
+    margin-left: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    &__title {
+      @include link-medium;
+    }
+    &__location {
+      @include text-small;
+      color: $grey1;
+      margin-top: 0.4rem;
+    }
+    &__price {
+      @include link-small;
+      margin-top: 0.4rem;
+    }
+    &__counts {
+      display: flex;
+      justify-content: flex-end;
+      &--count:last-child {
+        margin-left: 1.7rem;
+      }
+    }
+  }
+}
+
+.line {
+  height: 0.1rem;
+  width: 100%;
+  background-color: $grey3;
+}

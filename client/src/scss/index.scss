@@ -12,46 +12,14 @@ body {
   align-items: center;
   justify-content: center;
   color: $title-active;
+  background-color: $title-active;
   #app {
+    position: relative;
+    box-sizing: border-box;
+    padding-top: 5.6rem;
     height: 65rem;
     width: 32rem;
-    border: 0.1rem solid black;
+    background-color: $white;
+    overflow-x: hidden;
   }
-}
-
-// typography
-.text-large {
-  font-weight: 400;
-  font-size: 1.8rem;
-  line-height: 2.4rem;
-}
-.text-medium {
-  font-weight: 400;
-  font-size: 1.6rem;
-  line-height: 2.2rem;
-}
-.text-small {
-  font-weight: 400;
-  font-size: 1.4rem;
-  line-height: 2rem;
-}
-.text-x-small {
-  font-weight: 400;
-  font-size: 1.2rem;
-  line-height: 1.6rem;
-}
-.link-medium {
-  font-weight: 500;
-  font-size: 1.6rem;
-  line-height: 2.2rem;
-}
-.link-small {
-  font-weight: 500;
-  font-size: 1.4rem;
-  line-height: 2rem;
-}
-.link-x-small {
-  font-weight: 500;
-  font-size: 1.2rem;
-  line-height: 1.6rem;
 }
