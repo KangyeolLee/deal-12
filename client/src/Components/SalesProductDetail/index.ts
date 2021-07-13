@@ -2,6 +2,7 @@ import './styles';
 import Component from '../../core/Component';
 import Header from '../shared/Header';
 import ProductBar from './../Shared/ProductBar/index';
+import InfoSaler from './../Shared/InfoSaler/index';
 
 export default class SalesProductDetail extends Component {
   setup() {
@@ -12,11 +13,16 @@ export default class SalesProductDetail extends Component {
       content:
         '어린시절 추억의 향수를 불러 일으키는 롤러 스케이트입니다. 빈티지 특성상 사용감 있지만 전체적으로 깨끗한 상태입니다. 촬영용 소품이나, 거실에 장식용으로 추천해 드립니다. 단품 입고 되었습니다. 새 제품으로 보존된 제품으로 전용박스까지 보내드립니다. 사이즈는 235 입니다.',
       price: '169,000원',
+      users: {
+        info: '판매자정보',
+        name: 'username',
+        location: '역삼동',
+      },
     };
   }
 
   template() {
-    const { title, image, content } = this.$state;
+    const { title, image, content, users } = this.$state;
 
     return `
       <header></header>
@@ -33,11 +39,7 @@ export default class SalesProductDetail extends Component {
             <p class="more-info"> 채팅 0 · 관심 0 · 조회 1 </p>
           </div>
           <div class="user-specification">
-            <p class="sub-title">판매자 정보</p>
-            <div class="user-area">
-              <p class="username">Username</p>
-              <p class="location">역삼동</p>
-            </div>
+            ${InfoSaler(users)}
           </div>
         </div>
         <div class="product-bar"></div>
