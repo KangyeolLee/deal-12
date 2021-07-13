@@ -1,0 +1,23 @@
+@import '../../../scss/theme';
+
+.header {
+  width: 100%;
+  height: 5.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.main {
+  background-color: $primary;
+  color: $white;
+  border-radius: 0px 0px 16px 16px;
+}
+.menu-white {
+  background-color: $white;
+}
+.menu-off-white {
+  background-color: $off-white;
+}
+.menu-invisible {
+  background-color: none;
+}

@@ -1,6 +1,7 @@
 import Category from './Components/Category';
 import Home from './Components/Home';
 import { initRouter } from './lib/router';
+import './scss/index.scss';
 
 const $app = document.querySelector('#app');
 const routes = [
