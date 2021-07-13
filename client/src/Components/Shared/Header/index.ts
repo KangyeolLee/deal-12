@@ -1,6 +1,7 @@
 // import { $router } from '../lib/router.js';
 
 import Component from '../../../core/Component';
+import IconButton from '../IconButton';
 import './styles.scss';
 
 type HeaderType = 'main' | 'menu-white' | 'menu-off-white' | 'menu-invisible';
@@ -14,10 +15,24 @@ export default class Header extends Component {
     const { headerType, title }: HeaderProps = this.$props;
 
     let template = '';
+    let firstBtn = '';
+    let secondBtn = '';
+    let thirdBtn = '';
 
     switch (headerType) {
       case 'main':
-        template = `<div class="header main"><div id="category">카테고리</div><div>${title}</div><div id="menu">메뉴</div></div>`;
+        template = `
+        <div class="header main">
+            <div class="header__left-icon" id="category"></div>
+            <div class="location">
+              <div id="loc" style="width: 1.6rem; height: 1.6rem; overflow: hidden; margin-right: 0.4rem;"></div>
+              <div style="margin-top: 0.5rem;">${title}</div>
+            </div>
+            <div class="header__right-icon" style="display: flex;">
+                <div id="user" style="margin-right: 1.6rem"></div>
+                <div id="menu"></div>
+            </div>
+        </div>`;
         break;
 
       case 'menu-white':
@@ -36,5 +51,45 @@ export default class Header extends Component {
         break;
     }
     return template;
+  }
+
+  mounted() {
+    const { headerType }: HeaderProps = this.$props;
+
+    switch (headerType) {
+      case 'main':
+        const $category = this.$target.querySelector('#category');
+        new IconButton($category as Element, {
+          path: '../../../assets/category.svg',
+        });
+        const $user = this.$target.querySelector('#user');
+        new IconButton($user as Element, {
+          path: '../../../assets/user.svg',
+        });
+        const $menu = this.$target.querySelector('#menu');
+        new IconButton($menu as Element, {
+          path: '../../../assets/menu.svg',
+        });
+        const $loc = this.$target.querySelector('#loc');
+        new IconButton($loc as Element, {
+          path: '../../../assets/pinmap.svg',
+        });
+        break;
+
+      // case 'menu-white':
+      //   template = `<div class="header menu-white"><div>${title}</div></div>`;
+      //   break;
+
+      // case 'menu-off-white':
+      //   template = `<div class="header menu-off-white"><div id="close">닫기</div><div>${title}</div></div>`;
+      //   break;
+
+      // case 'menu-invisible':
+      //   template = `<div class="header menu-invisible" />`;
+      //   break;
+
+      default:
+        break;
+    }
   }
 }
