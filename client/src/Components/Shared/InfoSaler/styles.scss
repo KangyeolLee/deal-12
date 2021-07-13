@@ -1,0 +1,25 @@
+@import '../../../scss/theme';
+
+.user-specification {
+  background-color: $off-white;
+  padding: 1.6rem;
+  color: $title-active;
+  @include text-small;
+  display: flex;
+
+  .sub-title {
+    width: 50%;
+  }
+
+  .user-area {
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .location {
+      @include text-x-small;
+      color: $grey3;
+    }
+  }
+}
