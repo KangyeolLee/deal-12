@@ -23,19 +23,19 @@ const list: CategoryListItemProps[] = [];
 });
 
 export default class Home extends Component {
-  setup() {
-    this.$state = {
-      isMenuOpened: false,
-      isCategoryOpened: false,
-      isUserOpened: false,
-    };
-  }
+  // setup() {
+  //   this.$state = {
+  //     isMenuOpened: false,
+  //     isCategoryOpened: false,
+  //     isUserOpened: false,
+  //   };
+  // }
   template() {
     return `
     <header></header>
     <div id="item-list"></div>
     <div id="menu-modal"></div>
-    <div id="category-modal"></div>
+    <div id="category-modal" class="modal-close"></div>
     `;
   }
   mounted() {
@@ -52,13 +52,19 @@ export default class Home extends Component {
       new CategoryListItem($item as Element, item);
     });
 
+    const $categoryModal =
+      this.$target.querySelector('#category-modal') ||
+      document.createElement('div');
+    new Category($categoryModal as Element);
+
     const $categoryBtn = this.$target.querySelector('#category');
     $categoryBtn?.addEventListener('click', () => {
-      const $categoryModal =
-        this.$target.querySelector('#category-modal') ||
-        document.createElement('div');
-      $categoryModal.className = 'modal';
-      new Category($categoryModal as Element);
+      $categoryModal.className = 'modal-open';
+    });
+
+    const $backBtn = this.$target.querySelector('#left');
+    $backBtn?.addEventListener('click', () => {
+      $categoryModal.className = 'modal-close';
     });
 
     // const $menuBtn = this.$target.querySelector('#menu');

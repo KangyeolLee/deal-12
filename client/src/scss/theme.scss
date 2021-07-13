@@ -46,13 +46,3 @@ $red: #f45452;
   font-size: 1.2rem;
   line-height: 1.6rem;
 }
-
-// animation
-@keyframes slidein {
-  from {
-    margin-left: 100%;
-  }
-  to {
-    margin-left: 0%;
-  }
-}

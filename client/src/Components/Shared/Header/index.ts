@@ -26,7 +26,7 @@ export default class Header extends Component {
             <div class="header__left-icon" id="category"></div>
             <div class="location">
               <div id="loc" style="width: 1.6rem; height: 1.6rem; overflow: hidden; margin-right: 0.4rem;"></div>
-              <div style="margin-top: 0.5rem;">${title}</div>
+              <div class="header__title">${title}</div>
             </div>
             <div class="header__right-icon" style="display: flex;">
                 <div id="user" style="margin-right: 1.6rem"></div>
@@ -36,11 +36,18 @@ export default class Header extends Component {
         break;
 
       case 'menu-white':
-        template = `<div class="header menu-white"><div>${title}</div></div>`;
+        template = `
+        <div class="header menu-white">
+            <div class="header__title">${title}</div>
+        </div>`;
         break;
 
       case 'menu-off-white':
-        template = `<div class="header menu-off-white"><div id="close">닫기</div><div>${title}</div></div>`;
+        template = `
+        <div class="header menu-off-white">
+            <div class="header__left-icon" id="left"></div>
+            <div class="header__title">${title}</div>
+        </div>`;
         break;
 
       case 'menu-invisible':
@@ -77,15 +84,16 @@ export default class Header extends Component {
         break;
 
       // case 'menu-white':
-      //   template = `<div class="header menu-white"><div>${title}</div></div>`;
       //   break;
 
-      // case 'menu-off-white':
-      //   template = `<div class="header menu-off-white"><div id="close">닫기</div><div>${title}</div></div>`;
-      //   break;
+      case 'menu-off-white':
+        const $left = this.$target.querySelector('#left');
+        new IconButton($left as Element, {
+          path: '../../../assets/left.svg',
+        });
+        break;
 
       // case 'menu-invisible':
-      //   template = `<div class="header menu-invisible" />`;
       //   break;
 
       default:
