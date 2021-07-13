@@ -1,0 +1,40 @@
+{
+  "name": "deal-12",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/danmin20/deal-12.git",
+  "author": "Lee Jeong Min <danmin20@khu.ac.kr>",
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack serve --mode=production",
+    "start:dev": "webpack serve --mode=development",
+    "build": "webpack --mode=production",
+    "build:dev": "webpack --mode=development"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
+    "@babel/preset-typescript": "^7.14.5",
+    "@svgr/webpack": "^5.5.0",
+    "@typescript-eslint/eslint-plugin": "^4.28.2",
+    "@typescript-eslint/parser": "^4.28.2",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.2.6",
+    "eslint": "^7.30.0",
+    "eslint-config-prettier": "^8.3.0",
+    "html-loader": "^2.1.2",
+    "html-webpack-plugin": "^5.3.2",
+    "mini-css-extract-plugin": "^2.1.0",
+    "prettier": "^2.3.2",
+    "sass-loader": "^12.1.0",
+    "ts-loader": "^9.2.3",
+    "webpack": "^5.44.0",
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "node-sass": "^6.0.1",
+    "typescript": "^4.3.5"
+  },
+  "proxy": "http://localhost:3000"
+}
