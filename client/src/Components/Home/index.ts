@@ -97,6 +97,9 @@ export default class Home extends Component {
       $userModal.className = 'modal-open';
     });
 
+    const $locationBtn = this.$target.querySelector('.location');
+    $locationBtn?.addEventListener('click', () => $router.push('/location'));
+
     const $backBtns = this.$target.querySelectorAll('#left');
     $backBtns.forEach((btn) => {
       btn.addEventListener('click', () => {
