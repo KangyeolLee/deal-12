@@ -1,6 +1,7 @@
 @import '../../../scss/theme';
 
 .header {
+  z-index: 1000;
   position: absolute;
   left: 0;
   top: 0;
