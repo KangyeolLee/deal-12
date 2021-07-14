@@ -38,9 +38,7 @@ export default class SalesProductDetail extends Component {
             <p class="desc">${content}</p>
             <p class="more-info"> 채팅 0 · 관심 0 · 조회 1 </p>
           </div>
-          <div class="user-specification">
-            ${InfoSaler(users)}
-          </div>
+          <div class="user-specification"></div>
         </div>
         <div class="product-bar"></div>
       </div>
@@ -51,6 +49,9 @@ export default class SalesProductDetail extends Component {
     const { price } = this.$state;
     const $productDetail = this.$target.querySelector('.product-bar');
     const $header = this.$target.querySelector('header');
+    const $userSpecification = this.$target.querySelector(
+      '.user-specification'
+    );
 
     new Header($header as Element, {
       headerType: 'menu-invisible',
@@ -59,5 +60,7 @@ export default class SalesProductDetail extends Component {
     new ProductBar($productDetail as Element, {
       price,
     });
+
+    new InfoSaler($userSpecification as HTMLLIElement, this.$state.users);
   }
 }
