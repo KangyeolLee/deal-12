@@ -1,0 +1,46 @@
+@import '../../../scss/theme';
+
+.product-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.6rem;
+  border-top: 1px solid $grey3;
+  border-bottom: 1px solid $grey3;
+
+  .product-intro {
+    display: flex;
+    gap: 1rem;
+
+    .image-wrapper {
+      width: 4rem;
+      height: 4rem;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .product-intro__detail {
+      display: flex;
+      flex-direction: column;
+
+      .title {
+        @include text-small;
+        color: $title-active;
+      }
+
+      .price {
+        @include text-x-small;
+        color: $grey3;
+      }
+    }
+  }
+
+  .button {
+    padding: 1rem;
+    border: 1px solid $grey3;
+    border-radius: 8px;
+  }
+}
