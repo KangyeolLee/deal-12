@@ -1,0 +1,24 @@
+@import '../../../scss/theme';
+
+input.text-input {
+  border: 1px solid $grey3;
+  outline: none;
+  box-sizing: border-box;
+  border-radius: 0.8rem;
+
+  &.size-medium {
+    padding: 0.8rem;
+    width: 25.6rem;
+    height: 3.6rem;
+  }
+
+  &.size-large {
+    padding: 1.6rem 1rem;
+    width: 29rem;
+    height: 4rem;
+  }
+
+  &:focus {
+    border: 1px solid $primary;
+  }
+}
