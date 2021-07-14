@@ -1,5 +1,6 @@
 import Component from '../../../core/Component';
 import './styles';
+import IconButton from './../IconButton';
 
 export default class ProductBar extends Component {
   template() {
@@ -14,5 +15,13 @@ export default class ProductBar extends Component {
       </div>
       <div class="button">BUTTON</div>
     `;
+  }
+
+  mounted() {
+    const $imageWrapper = this.$target.querySelector('.image-wrapper');
+
+    new IconButton($imageWrapper as HTMLElement, {
+      path: '../../../assets/heart.svg',
+    });
   }
 }
