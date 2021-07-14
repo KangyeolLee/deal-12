@@ -42,7 +42,7 @@ export default class Category extends Component {
   template() {
     return `
     <header></header>
-    <div class="wrapper"></div>
+    <div class="category-wrapper"></div>
     `;
   }
   mounted() {
@@ -52,7 +52,7 @@ export default class Category extends Component {
       headerType: 'menu-off-white',
     });
 
-    const wrapper = this.$target.querySelector('.wrapper');
+    const wrapper = this.$target.querySelector('.category-wrapper');
     categories.forEach((category) => {
       const $button = document.createElement('div');
       new CategoryBtn($button as Element, {

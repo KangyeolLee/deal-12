@@ -1,0 +1,54 @@
+@import '../../../scss/theme';
+
+@mixin button {
+  cursor: pointer;
+  background-color: $primary;
+  :hover {
+    background-color: $primary3;
+  }
+  :disabled {
+    background-color: $primary2;
+  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.8rem;
+  color: $white;
+}
+
+.medium {
+  @include button;
+  @include link-small;
+  width: 13.6rem;
+  height: 3.6rem;
+}
+.large {
+  @include button;
+  @include link-medium;
+  width: 29rem;
+  height: 4.2rem;
+}
+.fab {
+  @include button;
+  width: 5.6rem;
+  height: 5.6rem;
+  border-radius: 50%;
+}
+
+.tap {
+  @include link-small;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 8.6rem;
+  height: 5rem;
+  color: $grey1;
+  border: 0px solid transparent;
+  border-bottom-width: 0.2rem;
+}
+.active {
+  color: $primary;
+  border: 0px solid $primary;
+  border-bottom-width: 0.2rem;
+}

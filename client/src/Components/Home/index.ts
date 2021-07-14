@@ -7,6 +7,7 @@ import CategoryListItem, {
 } from '../shared/CategoryListItem';
 import Header from '../shared/Header';
 import './styles.scss';
+import Menu from '../Menu';
 
 const list: CategoryListItemProps[] = [];
 [0, 0, 0, 0, 0, 0, 0, 0, 0].forEach(() => {
@@ -34,7 +35,7 @@ export default class Home extends Component {
     return `
     <header></header>
     <div id="item-list"></div>
-    <div id="menu-modal"></div>
+    <div id="menu-modal" class="modal-close"></div>
     <div id="category-modal" class="modal-close"></div>
     `;
   }
@@ -52,30 +53,34 @@ export default class Home extends Component {
       new CategoryListItem($item as Element, item);
     });
 
+    // modals
     const $categoryModal =
       this.$target.querySelector('#category-modal') ||
       document.createElement('div');
     new Category($categoryModal as Element);
 
+    const $menuModal =
+      this.$target.querySelector('#menu-modal') ||
+      document.createElement('div');
+    new Menu($menuModal as Element);
+
+    // buttons
     const $categoryBtn = this.$target.querySelector('#category');
     $categoryBtn?.addEventListener('click', () => {
       $categoryModal.className = 'modal-open';
     });
 
-    const $backBtn = this.$target.querySelector('#left');
-    $backBtn?.addEventListener('click', () => {
-      $categoryModal.className = 'modal-close';
+    const $menuBtn = this.$target.querySelector('#menu');
+    $menuBtn?.addEventListener('click', () => {
+      $menuModal.className = 'modal-open';
     });
 
-    // const $menuBtn = this.$target.querySelector('#menu');
-    // $menuBtn?.addEventListener('click', () => {
-    //   // this.setState({ isMenuOpened: true });
-    //   const $menuModal =
-    //     this.$target.querySelector('#menu-modal') ||
-    //     document.createElement('div');
-    //   $menuModal.className = 'menu-modal';
-    //   new Category($menuModal as Element);
-    //   // new Category($menu as Element);
-    // });
+    const $backBtns = this.$target.querySelectorAll('#left');
+    $backBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const modal = btn.parentNode?.parentNode?.parentNode as Element;
+        modal.className = 'modal-close';
+      });
+    });
   }
 }
