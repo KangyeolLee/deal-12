@@ -1,0 +1,28 @@
+@import '../../scss/theme';
+
+#location {
+  padding: 1.6rem;
+
+  .guide-message {
+    padding: 1rem;
+    @include text-small;
+    color: $grey3;
+    text-align: center;
+  }
+
+  .button-area {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .location-modal {
+    display: none;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(34, 34, 34, 0.3);
+  }
+}
