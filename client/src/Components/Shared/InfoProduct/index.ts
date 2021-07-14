@@ -9,7 +9,7 @@ interface PropsType {
 
 export default class InfoProduct extends Component {
   template() {
-    const { title, price, image } = this.$props;
+    const { title, price, image }: PropsType = this.$props;
 
     return `
       <div class="product-intro">
