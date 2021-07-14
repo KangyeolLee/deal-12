@@ -3,9 +3,14 @@ import Component from '../../core/Component';
 import Header from '../shared/Header';
 import ProductBar from './../Shared/ProductBar/index';
 import InfoSaler from './../Shared/InfoSaler/index';
+import Dropdown from './../Shared/Dropdown/index';
+import Status from './../Shared/Status/index';
 
 export default class SalesProductDetail extends Component {
   setup() {
+    // 추후 getProductById(id)와 같은 API를 통해 값을 가져오고
+    // 이를 this.$state 에 할당하는 것으로 변경
+
     this.$state = {
       title: '빈티지 롤러 스케이트',
       image:
@@ -31,7 +36,7 @@ export default class SalesProductDetail extends Component {
           <img src="${image}" alt="상품이미지" />
         </div>
         <div class="content">
-          <div class="dropdown">판매중</div>
+          <div class="status-button"></div>
           <div class="product-description">
             <h1 class="product-title">${title}</h1>
             <p class="category">기타 중고물품 · 3분 전</p>
@@ -41,6 +46,7 @@ export default class SalesProductDetail extends Component {
           <div class="user-specification"></div>
         </div>
         <div class="product-bar"></div>
+        <div class="dropdown-area"></div>
       </div>
     `;
   }
@@ -52,6 +58,7 @@ export default class SalesProductDetail extends Component {
     const $userSpecification = this.$target.querySelector(
       '.user-specification'
     );
+    const $status = this.$target.querySelector('.status-button');
 
     new Header($header as Element, {
       headerType: 'menu-invisible',
@@ -62,5 +69,8 @@ export default class SalesProductDetail extends Component {
     });
 
     new InfoSaler($userSpecification as HTMLLIElement, this.$state.users);
+    new Status($status as Element, {
+      text: '판매중',
+    });
   }
 }
