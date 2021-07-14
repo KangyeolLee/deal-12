@@ -56,6 +56,15 @@ export default class Home extends Component {
       new CategoryListItem($item as Element, item);
     });
 
+    // post new btn
+    const $postNewBtn = this.$target.querySelector('.post-new-btn');
+    new Button($postNewBtn as Element, {
+      buttonType: 'fab',
+      handleClick: () => {
+        $router.push('/post/new');
+      },
+    });
+
     // modals
     const $categoryModal =
       this.$target.querySelector('#category-modal') ||
@@ -83,13 +92,6 @@ export default class Home extends Component {
       $menuModal.className = 'modal-open';
     });
 
-    // post new btn
-    const $postNewBtn = this.$target.querySelector('.post-new-btn');
-    new Button($postNewBtn as Element, {
-      buttonType: 'fab',
-      handleClick: () => {
-        $router.push('/post/new');
-      },
     const $userBtn = this.$target.querySelector('#user');
     $userBtn?.addEventListener('click', () => {
       $userModal.className = 'modal-open';
