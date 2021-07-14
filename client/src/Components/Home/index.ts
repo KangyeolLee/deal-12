@@ -8,6 +8,7 @@ import Header from '../Shared/Header';
 import './styles.scss';
 import Menu from '../Menu';
 import Button from '../Shared/Button';
+import Auth from './../Auth/index';
 
 const list: CategoryListItemProps[] = [];
 [0, 0, 0, 0, 0, 0, 0, 0, 0].forEach(() => {
@@ -38,6 +39,7 @@ export default class Home extends Component {
     <div id="menu-modal" class="modal-close"></div>
     <div id="category-modal" class="modal-close"></div>
     <div class="post-new-btn"></div> 
+    <div id="user-modal" class="modal-close"></div>
     `;
   }
   mounted() {
@@ -65,6 +67,11 @@ export default class Home extends Component {
       document.createElement('div');
     new Menu($menuModal as Element);
 
+    const $userModal =
+      this.$target.querySelector('#user-modal') ||
+      document.createElement('div');
+    new Auth($userModal as Element);
+
     // buttons
     const $categoryBtn = this.$target.querySelector('#category');
     $categoryBtn?.addEventListener('click', () => {
@@ -83,6 +90,17 @@ export default class Home extends Component {
       handleClick: () => {
         $router.push('/post/new');
       },
+    const $userBtn = this.$target.querySelector('#user');
+    $userBtn?.addEventListener('click', () => {
+      $userModal.className = 'modal-open';
+    });
+
+    const $backBtns = this.$target.querySelectorAll('#left');
+    $backBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const modal = btn.parentNode?.parentNode?.parentNode as Element;
+        modal.className = 'modal-close';
+      });
     });
   }
 }

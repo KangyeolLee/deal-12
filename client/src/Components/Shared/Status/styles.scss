@@ -1,0 +1,19 @@
+@import '../../../scss/theme';
+
+.status-button {
+  position: relative;
+  padding: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  display: inline-flex;
+  gap: 1rem;
+  cursor: pointer;
+
+  @include text-small;
+
+  div {
+    width: 1.4rem;
+    height: 1.4rem;
+    overflow: hidden;
+  }
+}

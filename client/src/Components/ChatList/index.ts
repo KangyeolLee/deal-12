@@ -34,18 +34,19 @@ export default class Chatlist extends Component {
   template() {
     return `
       <header></header>
-      <div class="chat-lists">
-        ${this.$state.map((chat: ChatType) => ChatListItem(chat)).join('')}
-      </div>
+      <div class="chat-lists"></div>
     `;
   }
 
   mounted() {
     const $header = this.$target.querySelector('header');
+    const $chatList = this.$target.querySelector('.chat-lists');
 
     new Header($header as HTMLElement, {
       headerType: 'menu-off-white',
       title: '채팅하기',
     });
+
+    new ChatListItem($chatList as HTMLLIElement, this.$state);
   }
 }
