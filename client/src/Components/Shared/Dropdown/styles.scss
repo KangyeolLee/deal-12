@@ -1,0 +1,43 @@
+@import '../../../scss/theme';
+
+.dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 1rem);
+  border: 1px solid $grey3;
+  background-color: $off-white;
+  border-radius: 1rem;
+
+  .dropdown-item {
+    width: 16.5rem;
+    padding: 1.6rem;
+    @include text-small;
+    box-sizing: border-box;
+    cursor: pointer;
+
+    &.warning {
+      color: $red;
+    }
+
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+
+  li + li {
+    border-top: 1px solid $grey1;
+  }
+
+  &.left {
+    left: 0;
+  }
+
+  &.right {
+    right: 0;
+  }
+
+  &.center {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
