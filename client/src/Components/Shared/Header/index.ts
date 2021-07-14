@@ -51,7 +51,11 @@ export default class Header extends Component {
         break;
 
       case 'menu-invisible':
-        template = `<div class="header menu-invisible" />`;
+        template = `
+        <div class="header menu-invisible">
+            <div class="header__left-icon" id="left"></div>
+            <div class="header__right-icon" id="right"></div>
+        </div>`;
         break;
 
       default:
@@ -93,8 +97,19 @@ export default class Header extends Component {
         });
         break;
 
-      // case 'menu-invisible':
-      //   break;
+      case 'menu-invisible':
+        const $leftWhite = this.$target.querySelector('#left');
+        const $rightWhite = this.$target.querySelector('#right');
+
+        new IconButton($leftWhite as Element, {
+          path: '../../../assets/left-white.svg',
+        });
+
+        new IconButton($rightWhite as Element, {
+          path: '../../../assets/more-white.svg',
+        });
+
+        break;
 
       default:
         break;
