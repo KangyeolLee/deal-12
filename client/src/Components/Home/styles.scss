@@ -1,0 +1,29 @@
+@import '../../scss/theme';
+
+#item-list {
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.modal-open {
+  position: absolute;
+  box-sizing: border-box;
+  padding-top: 5.6rem;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: $white;
+  transition: 1s;
+}
+.modal-close {
+  position: absolute;
+  box-sizing: border-box;
+  padding-top: 5.6rem;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 100%;
+  background-color: $white;
+  transition: 1s;
+}
