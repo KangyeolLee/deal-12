@@ -142,3 +142,15 @@ a {
     color: inherit;
   }
 }
+
+input,
+button,
+textarea {
+  &:focus {
+    outline: none;
+  }
+}
+textarea {
+  border: none;
+  resize: none;
+}

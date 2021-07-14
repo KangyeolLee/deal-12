@@ -25,10 +25,9 @@ export default class ImgButton extends Component {
     new ImgBox($button as Element, {
       imgType: 'medium',
     });
+    const $imgBox = this.$target.querySelector('.imgbox-medium');
+
     if (btnType === 'add') {
-      const $imgBox = this.$target.querySelector('.imgbox-medium');
-      const count =
-        '<div><span class="img-num">' + imgNum || 0 + '</span>/10</div>';
       new IconButton($imgBox as Element, {
         name: 'image',
       });
@@ -37,6 +36,13 @@ export default class ImgButton extends Component {
         imgNum || 0
       }</span>/10</div>`;
       $imgBox?.append(cnt);
+    } else {
+      const $delBtn = document.createElement('div');
+      $delBtn.className = 'del-btn';
+      new IconButton($delBtn as Element, {
+        name: 'close-white',
+      });
+      $button?.append($delBtn);
     }
   }
 }

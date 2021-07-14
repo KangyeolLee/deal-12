@@ -76,7 +76,7 @@ export default class Header extends Component {
         });
         const $loc = this.$target.querySelector('#loc');
         new IconButton($loc as Element, {
-          name: 'pinmap',
+          name: 'pinmap-white',
         });
         break;
 
