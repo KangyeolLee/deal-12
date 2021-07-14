@@ -42,17 +42,17 @@ export default class Category extends Component {
   template() {
     return `
     <header></header>
-    <div class="wrapper"></div>
+    <div class="category-wrapper"></div>
     `;
   }
   mounted() {
     const $header = this.$target.querySelector('header');
     new Header($header as Element, {
-      title: '카테고리',
+      title: '메뉴',
       headerType: 'menu-off-white',
     });
 
-    const wrapper = this.$target.querySelector('.wrapper');
+    const wrapper = this.$target.querySelector('.category-wrapper');
     categories.forEach((category) => {
       const $button = document.createElement('div');
       new CategoryBtn($button as Element, {

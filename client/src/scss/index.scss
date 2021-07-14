@@ -20,7 +20,7 @@ body {
     height: 65rem;
     width: 32rem;
     background-color: $white;
-    overflow-x: hidden;
+    overflow: hidden;
 
     &::-webkit-scrollbar {
       display: none;

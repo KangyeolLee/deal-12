@@ -1,0 +1,15 @@
+@import '../../scss/theme';
+
+#tap-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: $off-white;
+}
+
+.menu-wrapper {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  box-shadow: inset 0px 1px 0px $grey3;
+}
