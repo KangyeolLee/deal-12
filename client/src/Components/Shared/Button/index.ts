@@ -1,5 +1,5 @@
 import Component from '../../../core/Component';
-import IconButton from '../IconButton';
+import IconButton from '../../Shared/IconButton';
 import './styles.scss';
 
 type ButtonType = 'medium' | 'large' | 'fab' | 'tap';
@@ -16,7 +16,7 @@ export default class Button extends Component {
 
     return `
     <div id="button" class="${buttonType} ${isClicked ? 'active' : ''}">
-        ${title}
+        ${title ? title : ''}
     </div>`;
   }
 

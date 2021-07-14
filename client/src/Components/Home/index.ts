@@ -1,5 +1,4 @@
-// import { $router } from '../lib/router.js';
-
+import { $router } from '../../lib/router';
 import Category from '../Category';
 import Component from '../../core/Component';
 import CategoryListItem, {
@@ -8,6 +7,7 @@ import CategoryListItem, {
 import Header from '../Shared/Header';
 import './styles.scss';
 import Menu from '../Menu';
+import Button from '../Shared/Button';
 
 const list: CategoryListItemProps[] = [];
 [0, 0, 0, 0, 0, 0, 0, 0, 0].forEach(() => {
@@ -36,7 +36,8 @@ export default class Home extends Component {
     <header></header>
     <div id="item-list"></div>
     <div id="menu-modal" class="modal-close"></div>
-    <div id="category-modal" class="modal-close"></div>   
+    <div id="category-modal" class="modal-close"></div>
+    <div class="post-new-btn"></div> 
     `;
   }
   mounted() {
@@ -73,6 +74,15 @@ export default class Home extends Component {
     const $menuBtn = this.$target.querySelector('#menu');
     $menuBtn?.addEventListener('click', () => {
       $menuModal.className = 'modal-open';
+    });
+
+    // post new btn
+    const $postNewBtn = this.$target.querySelector('.post-new-btn');
+    new Button($postNewBtn as Element, {
+      buttonType: 'fab',
+      handleClick: () => {
+        $router.push('/post/new');
+      },
     });
   }
 }
