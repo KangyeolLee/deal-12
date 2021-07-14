@@ -1,4 +1,5 @@
 import Component from '../../../core/Component';
+import './styles.scss';
 
 interface IconButtonProps {
   name: string;
@@ -8,6 +9,6 @@ export default class IconButton extends Component {
   template() {
     const { name }: IconButtonProps = this.$props;
 
-    return `<div style="background-image: url(../../../../assets/${name}.svg); width: 2.4rem; height: 2.4rem; cursor: pointer;"></div>`;
+    return `<div class="icon-btn" style="background-image: url(../../../../assets/${name}.svg)"></div>`;
   }
 }

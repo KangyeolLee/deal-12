@@ -22,7 +22,7 @@ export default class Header extends Component {
             <div class="header__left-icon" id="category"></div>
             <div class="location">
               <div id="loc" style="width: 1.6rem; height: 1.6rem; overflow: hidden; margin-right: 0.4rem;"></div>
-              <div class="header__title">${title}</div>
+              <div>${title}</div>
             </div>
             <div class="header__right-icon" style="display: flex;">
                 <div id="user" style="margin-right: 1.6rem"></div>
@@ -34,7 +34,7 @@ export default class Header extends Component {
         return `
         <div class="header menu-white">
             <div class="header__left-icon" id="left"></div>
-            <div class="header__title">${title}</div>
+            <div>${title}</div>
             <div class="header__right-icon" id="right"></div>
         </div>`;
 
@@ -42,7 +42,7 @@ export default class Header extends Component {
         return `
         <div class="header menu-off-white">
             <div class="header__left-icon" id="left"></div>
-            <div class="header__title">${title}</div>
+            <div>${title}</div>
         </div>`;
 
       case 'menu-invisible':

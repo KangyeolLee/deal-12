@@ -1,6 +1,7 @@
 // import { $router } from '../lib/router.js';
 
 import Component from '../../../core/Component';
+import ImgBox from '../ImgBox';
 import './styles.scss';
 
 export interface CategoryListItemProps {
@@ -28,7 +29,7 @@ export default class CategoryListItem extends Component {
 
     return `
     <div class="item-box">
-        <div class="img"></div>
+        <div id="img-box"></div>
         <div class="info">
             <div>
                 <div class="info__title">${title}</div>
@@ -51,5 +52,12 @@ export default class CategoryListItem extends Component {
     </div>
     <div class="line"></div>
     `;
+  }
+
+  mounted() {
+    const $img = this.$target.querySelector('#img-box');
+    new ImgBox($img as Element, {
+      imgType: 'large',
+    });
   }
 }

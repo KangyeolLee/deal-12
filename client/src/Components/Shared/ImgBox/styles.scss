@@ -1,0 +1,39 @@
+@import '../../../scss/theme';
+
+@mixin img-box {
+  border: 0.1rem solid $grey3;
+  background-color: $off-white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.imgbox-small {
+  @include img-box;
+  border-radius: 0.6rem;
+  min-width: 4rem;
+  height: 4rem;
+}
+.imgbox-medium {
+  @include img-box;
+  border-radius: 0.8rem;
+  min-width: 7.6rem;
+  height: 7.6rem;
+}
+.imgbox-large {
+  @include img-box;
+  border-radius: 1rem;
+  min-width: 10.6rem;
+  height: 10.6rem;
+}
+.imgbox-gradient {
+  width: 32rem;
+  height: 32rem;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.24) 0%,
+    rgba(0, 0, 0, 0) 16.52%,
+    rgba(0, 0, 0, 0) 87.36%,
+    rgba(0, 0, 0, 0.24) 100%
+  );
+}

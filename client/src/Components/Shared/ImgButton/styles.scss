@@ -1,0 +1,12 @@
+@import '../../../scss//theme';
+
+.imgbox-medium {
+  @include text-x-small;
+  color: $grey1;
+  .icon-btn {
+    margin-bottom: 0.4rem;
+  }
+  .img-num {
+    color: $title-active;
+  }
+}

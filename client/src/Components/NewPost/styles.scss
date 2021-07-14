@@ -1,0 +1,16 @@
+.new-post-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  box-shadow: inset 0px 1px 0px #d7d7d7;
+  .img-list {
+    width: 100%;
+    overflow-x: scroll;
+    display: flex;
+    padding: 2.4rem 1.6rem;
+    box-sizing: border-box;
+    .img-del {
+      margin-left: 1.6rem;
+    }
+  }
+}

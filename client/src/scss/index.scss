@@ -1,8 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&display=swap');
 @import 'reset';
 @import 'theme';
 
 html {
   font-size: 10px;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
 body {
@@ -21,7 +23,8 @@ body {
     width: 32rem;
     background-color: $white;
     overflow: hidden;
-
+    -ms-overflow-style: none;
+    scrollbar-width: none;
     &::-webkit-scrollbar {
       display: none;
     }
