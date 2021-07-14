@@ -19,9 +19,7 @@ export default class ChatDetail extends Component {
     return `
       <div class="chat-root">
         <header></header>
-        <div class="product-info">
-          ${InfoProduct(this.$state)}
-        </div>
+        <div class="product-info"></div>
         <div class="chat-bubbles"></div>
         <div class="chatbar"></div>
       </div>
@@ -32,6 +30,7 @@ export default class ChatDetail extends Component {
     const $header = this.$target.querySelector('header');
     const $chatBubbles = this.$target.querySelector('.chat-bubbles');
     const $chatbar = this.$target.querySelector('.chatbar');
+    const $productInfo = this.$target.querySelector('.product-info');
 
     new Header($header as HTMLElement, {
       headerType: 'menu-white',
@@ -41,5 +40,7 @@ export default class ChatDetail extends Component {
     new ChatBubble($chatBubbles as HTMLElement);
 
     new ChatBar($chatbar as HTMLElement);
+
+    new InfoProduct($productInfo as HTMLLIElement, this.$state);
   }
 }
