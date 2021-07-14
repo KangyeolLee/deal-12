@@ -14,3 +14,13 @@
   box-shadow: inset 0px 1px 0px $grey3;
   overflow-y: scroll;
 }
+
+.no-data {
+  @include text-small;
+  color: $grey3;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

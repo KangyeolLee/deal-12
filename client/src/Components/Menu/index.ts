@@ -15,6 +15,12 @@ const tapList = [
   { id: 'like-list', title: '관심목록' },
 ];
 
+const noData = [
+  '등록한 상품이 없습니다.',
+  '채팅 기록이 없습니다.',
+  '관심을 표시한 상품이 없습니다.',
+];
+
 const list: CategoryListItemProps[] = [];
 [0, 0, 0, 0, 0, 0, 0, 0, 0].forEach(() => {
   list.push({
@@ -64,26 +70,40 @@ export default class Menu extends Component {
       $tapBar?.append(btn);
     });
 
-    const $wrapper = this.$target.querySelector('.menu-wrapper');
+    const $wrapper =
+      this.$target.querySelector('.menu-wrapper') ||
+      document.createElement('div');
     switch (menu) {
       case 'sell-list':
-        list.forEach((item) => {
-          const $item = document.createElement('div');
-          $wrapper?.append($item);
-          new CategoryListItem($item as Element, item);
-        });
+        if (list.length > 0) {
+          list.forEach((item) => {
+            const $item = document.createElement('div');
+            $wrapper?.append($item);
+            new CategoryListItem($item as Element, item);
+          });
+        } else {
+          $wrapper.innerHTML = noData[0];
+          $wrapper.className = 'no-data';
+        }
         break;
 
       case 'chat-list':
         // new Chatlist($wrapper as Element);
+        $wrapper.innerHTML = noData[1];
+        $wrapper.className = 'no-data';
         break;
 
       case 'like-list':
-        list.forEach((item) => {
-          const $item = document.createElement('div');
-          $wrapper?.append($item);
-          new CategoryListItem($item as Element, item);
-        });
+        if (list.length > 0) {
+          list.forEach((item) => {
+            const $item = document.createElement('div');
+            $wrapper?.append($item);
+            new CategoryListItem($item as Element, item);
+          });
+        } else {
+          $wrapper.innerHTML = noData[0];
+          $wrapper.className = 'no-data';
+        }
         break;
 
       default:
