@@ -14,14 +14,9 @@ export default class Header extends Component {
   template() {
     const { headerType, title }: HeaderProps = this.$props;
 
-    let template = '';
-    let firstBtn = '';
-    let secondBtn = '';
-    let thirdBtn = '';
-
     switch (headerType) {
       case 'main':
-        template = `
+        return `
         <div class="header main">
             <div class="header__left-icon" id="category"></div>
             <div class="location">
@@ -33,35 +28,32 @@ export default class Header extends Component {
                 <div id="menu"></div>
             </div>
         </div>`;
-        break;
 
       case 'menu-white':
-        template = `
+        return `
         <div class="header menu-white">
+            <div class="header__left-icon" id="left"></div>
             <div class="header__title">${title}</div>
+            <div class="header__right-icon" id="right"></div>
         </div>`;
-        break;
 
       case 'menu-off-white':
-        template = `
+        return `
         <div class="header menu-off-white">
             <div class="header__left-icon" id="left"></div>
             <div class="header__title">${title}</div>
         </div>`;
-        break;
 
       case 'menu-invisible':
-        template = `
+        return `
         <div class="header menu-invisible">
             <div class="header__left-icon" id="left"></div>
             <div class="header__right-icon" id="right"></div>
         </div>`;
-        break;
 
       default:
-        break;
+        return '';
     }
-    return template;
   }
 
   mounted() {
@@ -87,8 +79,8 @@ export default class Header extends Component {
         });
         break;
 
-      // case 'menu-white':
-      //   break;
+      case 'menu-white':
+        break;
 
       case 'menu-off-white':
         const $left = this.$target.querySelector('#left');

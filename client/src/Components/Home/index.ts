@@ -4,8 +4,8 @@ import Category from '../Category';
 import Component from '../../core/Component';
 import CategoryListItem, {
   CategoryListItemProps,
-} from '../shared/CategoryListItem';
-import Header from '../shared/Header';
+} from '../Shared/CategoryListItem';
+import Header from '../Shared/Header';
 import './styles.scss';
 import Menu from '../Menu';
 
@@ -36,7 +36,7 @@ export default class Home extends Component {
     <header></header>
     <div id="item-list"></div>
     <div id="menu-modal" class="modal-close"></div>
-    <div id="category-modal" class="modal-close"></div>
+    <div id="category-modal" class="modal-close"></div>   
     `;
   }
   mounted() {
@@ -73,14 +73,6 @@ export default class Home extends Component {
     const $menuBtn = this.$target.querySelector('#menu');
     $menuBtn?.addEventListener('click', () => {
       $menuModal.className = 'modal-open';
-    });
-
-    const $backBtns = this.$target.querySelectorAll('#left');
-    $backBtns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const modal = btn.parentNode?.parentNode?.parentNode as Element;
-        modal.className = 'modal-close';
-      });
     });
   }
 }

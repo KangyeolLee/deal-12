@@ -1,8 +1,8 @@
 import './styles';
 import Component from '../../core/Component';
-import Header from '../shared/Header';
-import ProductBar from './../Shared/ProductBar/index';
-import InfoSaler from './../Shared/InfoSaler/index';
+import Header from '../Shared/Header';
+import ProductBar from '../Shared/ProductBar/index';
+import InfoSaler from '../Shared/InfoSaler/index';
 
 export default class SalesProductDetail extends Component {
   setup() {

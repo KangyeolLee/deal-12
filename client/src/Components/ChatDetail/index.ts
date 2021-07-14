@@ -1,9 +1,9 @@
 import './styles';
 import Component from '../../core/Component';
 import Header from '../Shared/Header';
-import InfoProduct from './../Shared/InfoProduct';
-import ChatBubble from './../Shared/ChatBubble';
-import ChatBar from './../Shared/ChatBar/index';
+import InfoProduct from '../Shared/InfoProduct';
+import ChatBubble from '../Shared/ChatBubble';
+import ChatBar from '../Shared/ChatBar/index';
 
 export default class ChatDetail extends Component {
   setup() {
