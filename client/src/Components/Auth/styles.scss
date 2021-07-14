@@ -1,0 +1,45 @@
+@import '../../scss/theme';
+
+.authentication {
+  margin-top: 1rem;
+  display: inline-flex;
+  flex-direction: column;
+  padding: 1.6rem;
+  gap: 2rem;
+
+  label {
+    @include text-small;
+    color: $title-active;
+
+    input {
+      margin-top: 1rem;
+    }
+  }
+
+  .user-email {
+    @include text-medium;
+    color: $grey1;
+  }
+
+  .login-btn {
+    @include link-medium;
+  }
+
+  .link-to-register {
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    @include link-small;
+
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+
+  .user-nickname {
+    @include link-small;
+    color: $title-active;
+    text-align: center;
+    padding: 1rem;
+  }
+}
