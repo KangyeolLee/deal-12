@@ -8,6 +8,7 @@ import CategoryListItem, {
 import Header from '../shared/Header';
 import './styles.scss';
 import Menu from '../Menu';
+import Auth from './../Auth/index';
 
 const list: CategoryListItemProps[] = [];
 [0, 0, 0, 0, 0, 0, 0, 0, 0].forEach(() => {
@@ -37,6 +38,7 @@ export default class Home extends Component {
     <div id="item-list"></div>
     <div id="menu-modal" class="modal-close"></div>
     <div id="category-modal" class="modal-close"></div>
+    <div id="user-modal" class="modal-close"></div>
     `;
   }
   mounted() {
@@ -64,6 +66,11 @@ export default class Home extends Component {
       document.createElement('div');
     new Menu($menuModal as Element);
 
+    const $userModal =
+      this.$target.querySelector('#user-modal') ||
+      document.createElement('div');
+    new Auth($userModal as Element);
+
     // buttons
     const $categoryBtn = this.$target.querySelector('#category');
     $categoryBtn?.addEventListener('click', () => {
@@ -73,6 +80,11 @@ export default class Home extends Component {
     const $menuBtn = this.$target.querySelector('#menu');
     $menuBtn?.addEventListener('click', () => {
       $menuModal.className = 'modal-open';
+    });
+
+    const $userBtn = this.$target.querySelector('#user');
+    $userBtn?.addEventListener('click', () => {
+      $userModal.className = 'modal-open';
     });
 
     const $backBtns = this.$target.querySelectorAll('#left');
