@@ -25,7 +25,7 @@ export default class Button extends Component {
     if (!title) {
       const $addIcon = document.createElement('div');
       new IconButton($addIcon as Element, {
-        path: '../../../assets/add-white.svg',
+        name: 'add-white',
       });
       this.$target.querySelector('#button')?.append($addIcon);
     }
