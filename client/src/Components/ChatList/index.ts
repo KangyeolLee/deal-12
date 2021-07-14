@@ -41,12 +41,19 @@ export default class Chatlist extends Component {
   mounted() {
     const $header = this.$target.querySelector('header');
     const $chatList = this.$target.querySelector('.chat-lists');
+    const chatData = this.$state;
 
     new Header($header as HTMLElement, {
       headerType: 'menu-off-white',
       title: '채팅하기',
     });
 
-    new ChatListItem($chatList as HTMLLIElement, this.$state);
+    chatData.forEach((chat: ChatType) => {
+      const $list = document.createElement('div');
+      $list.classList.add('chat-list__item');
+      if (chat.checked) $list.classList.add('checked');
+      $chatList?.append($list);
+      new ChatListItem($list as Element, chat);
+    });
   }
 }
