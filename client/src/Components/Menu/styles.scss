@@ -12,4 +12,16 @@
   height: 100%;
   box-sizing: border-box;
   box-shadow: inset 0px 1px 0px $grey3;
+  overflow-y: scroll;
+  padding-bottom: 5.2rem;
+}
+
+.no-data {
+  @include text-small;
+  color: $grey3;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }

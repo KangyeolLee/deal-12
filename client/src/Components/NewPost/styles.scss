@@ -1,0 +1,47 @@
+@import '../../scss/theme';
+
+.new-post-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  box-shadow: inset 0px 1px 0px $grey3;
+  .img-list {
+    width: 100%;
+    overflow-x: scroll;
+    display: flex;
+    padding: 2.4rem 1.6rem;
+    box-sizing: border-box;
+    .img-del {
+      margin-left: 1.6rem;
+    }
+  }
+
+  .post-container {
+    overflow-y: scroll;
+    input,
+    textarea {
+      width: 100%;
+      padding: 2.4rem 1.6rem;
+      box-sizing: border-box;
+      border: none;
+      @include text-medium;
+      &::placeholder {
+        color: $grey1;
+      }
+    }
+  }
+}
+
+.loc-footer {
+  @include text-small;
+  width: 100%;
+  height: 3.6rem;
+  display: flex;
+  align-items: center;
+  padding-left: 1.8rem;
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  box-shadow: inset 0px 1px 0px $grey3;
+}

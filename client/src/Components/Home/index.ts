@@ -1,13 +1,13 @@
-// import { $router } from '../lib/router.js';
-
+import { $router } from '../../lib/router';
 import Category from '../Category';
 import Component from '../../core/Component';
 import CategoryListItem, {
   CategoryListItemProps,
-} from '../shared/CategoryListItem';
-import Header from '../shared/Header';
+} from '../Shared/CategoryListItem';
+import Header from '../Shared/Header';
 import './styles.scss';
 import Menu from '../Menu';
+import Button from '../Shared/Button';
 import Auth from './../Auth/index';
 
 const list: CategoryListItemProps[] = [];
@@ -38,6 +38,7 @@ export default class Home extends Component {
     <div id="item-list"></div>
     <div id="menu-modal" class="modal-close"></div>
     <div id="category-modal" class="modal-close"></div>
+    <div class="post-new-btn"></div> 
     <div id="user-modal" class="modal-close"></div>
     `;
   }
@@ -82,6 +83,13 @@ export default class Home extends Component {
       $menuModal.className = 'modal-open';
     });
 
+    // post new btn
+    const $postNewBtn = this.$target.querySelector('.post-new-btn');
+    new Button($postNewBtn as Element, {
+      buttonType: 'fab',
+      handleClick: () => {
+        $router.push('/post/new');
+      },
     const $userBtn = this.$target.querySelector('#user');
     $userBtn?.addEventListener('click', () => {
       $userModal.className = 'modal-open';

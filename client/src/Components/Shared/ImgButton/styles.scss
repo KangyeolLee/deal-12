@@ -1,0 +1,31 @@
+@import '../../../scss//theme';
+
+.img-btn {
+  cursor: pointer;
+  position: relative;
+  .imgbox-medium {
+    @include text-x-small;
+    color: $grey1;
+    .icon-btn {
+      margin-bottom: 0.4rem;
+    }
+    .img-num {
+      color: $title-active;
+    }
+  }
+
+  .del-btn {
+    position: absolute;
+    box-sizing: border-box;
+    background-color: $title-active;
+    padding: 0.4rem;
+    border-radius: 50%;
+    top: -0.7rem;
+    right: -0.7rem;
+    z-index: 10;
+    .icon-btn {
+      width: 1.6rem;
+      height: 1.6rem;
+    }
+  }
+}

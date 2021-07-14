@@ -1,7 +1,7 @@
 import './styles';
 import Component from '../../core/Component';
-import ChatListItem from './../Shared/ChatListItem';
-import Header from './../Shared/Header';
+import ChatListItem from '../Shared/ChatListItem';
+import Header from '../Shared/Header';
 
 interface ChatType {
   username: string;

@@ -3,10 +3,10 @@
 @mixin button {
   cursor: pointer;
   background-color: $primary;
-  :hover {
+  &:hover {
     background-color: $primary3;
   }
-  :disabled {
+  &:disabled {
     background-color: $primary2;
   }
   display: flex;

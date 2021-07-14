@@ -1,6 +1,6 @@
 import { $router } from '../../lib/router';
 import Component from '../../core/Component';
-import Header from '../shared/Header';
+import Header from '../Shared/Header';
 import './styles.scss';
 
 const categories = [
@@ -60,6 +60,12 @@ export default class Category extends Component {
         name: category.name,
       });
       wrapper?.append($button);
+    });
+
+    const $backBtn = this.$target.querySelector('#left');
+    $backBtn?.addEventListener('click', () => {
+      console.log('asdf');
+      this.$target.className = 'modal-close';
     });
   }
 }

@@ -8,105 +8,101 @@ type HeaderType = 'main' | 'menu-white' | 'menu-off-white' | 'menu-invisible';
 interface HeaderProps {
   headerType: HeaderType;
   title?: string;
+  extraIconName?: string;
 }
 
 export default class Header extends Component {
   template() {
     const { headerType, title }: HeaderProps = this.$props;
 
-    let template = '';
-    let firstBtn = '';
-    let secondBtn = '';
-    let thirdBtn = '';
-
     switch (headerType) {
       case 'main':
-        template = `
+        return `
         <div class="header main">
             <div class="header__left-icon" id="category"></div>
             <div class="location">
               <div id="loc" style="width: 1.6rem; height: 1.6rem; overflow: hidden; margin-right: 0.4rem;"></div>
-              <div class="header__title">${title}</div>
+              <div>${title}</div>
             </div>
             <div class="header__right-icon" style="display: flex;">
                 <div id="user" style="margin-right: 1.6rem"></div>
                 <div id="menu"></div>
             </div>
         </div>`;
-        break;
 
       case 'menu-white':
-        template = `
+        return `
         <div class="header menu-white">
-            <div class="header__title">${title}</div>
+            <div class="header__left-icon" id="left"></div>
+            <div>${title}</div>
+            <div class="header__right-icon" id="right"></div>
         </div>`;
-        break;
 
       case 'menu-off-white':
-        template = `
+        return `
         <div class="header menu-off-white">
             <div class="header__left-icon" id="left"></div>
-            <div class="header__title">${title}</div>
+            <div>${title}</div>
         </div>`;
-        break;
 
       case 'menu-invisible':
-        template = `
+        return `
         <div class="header menu-invisible">
             <div class="header__left-icon" id="left"></div>
             <div class="header__right-icon" id="right"></div>
         </div>`;
-        break;
 
       default:
-        break;
+        return '';
     }
-    return template;
   }
 
   mounted() {
-    const { headerType }: HeaderProps = this.$props;
+    const { headerType, extraIconName }: HeaderProps = this.$props;
 
     switch (headerType) {
       case 'main':
         const $category = this.$target.querySelector('#category');
         new IconButton($category as Element, {
-          path: '../../../assets/category.svg',
+          name: 'category',
         });
         const $user = this.$target.querySelector('#user');
         new IconButton($user as Element, {
-          path: '../../../assets/user.svg',
+          name: 'user',
         });
         const $menu = this.$target.querySelector('#menu');
         new IconButton($menu as Element, {
-          path: '../../../assets/menu.svg',
+          name: 'menu',
         });
         const $loc = this.$target.querySelector('#loc');
         new IconButton($loc as Element, {
-          path: '../../../assets/pinmap.svg',
+          name: 'pinmap-white',
         });
         break;
 
-      // case 'menu-white':
-      //   break;
+      case 'menu-white':
+        new IconButton(this.$target.querySelector('#left') as Element, {
+          name: 'left',
+        });
+        new IconButton(this.$target.querySelector('#right') as Element, {
+          name: extraIconName,
+        });
+        break;
 
       case 'menu-off-white':
         const $left = this.$target.querySelector('#left');
         new IconButton($left as Element, {
-          path: '../../../assets/left.svg',
+          name: 'left',
         });
         break;
 
       case 'menu-invisible':
-        const $leftWhite = this.$target.querySelector('#left');
-        const $rightWhite = this.$target.querySelector('#right');
-
-        new IconButton($leftWhite as Element, {
-          path: '../../../assets/left-white.svg',
+        new IconButton(this.$target.querySelector('#left') as Element, {
+          name: 'left-white',
         });
 
-        new IconButton($rightWhite as Element, {
-          path: '../../../assets/more-white.svg',
+        new IconButton(this.$target.querySelector('#right') as Element, {
+          name: 'more-white',
         });
 
         break;

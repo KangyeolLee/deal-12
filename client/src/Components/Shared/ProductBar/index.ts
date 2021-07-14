@@ -21,7 +21,7 @@ export default class ProductBar extends Component {
     const $imageWrapper = this.$target.querySelector('.image-wrapper');
 
     new IconButton($imageWrapper as HTMLElement, {
-      path: '../../../assets/heart.svg',
+      name: 'heart',
     });
   }
 }
