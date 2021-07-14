@@ -48,7 +48,7 @@ export default class Category extends Component {
   mounted() {
     const $header = this.$target.querySelector('header');
     new Header($header as Element, {
-      title: '메뉴',
+      title: '카테고리',
       headerType: 'menu-off-white',
     });
 

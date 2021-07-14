@@ -1,0 +1,52 @@
+@import '../../../scss/theme';
+
+.chat-list__item {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.6rem;
+  background-color: $off-white;
+  border-top: 1px solid $grey3;
+  gap: 1rem;
+  cursor: pointer;
+
+  &.checked {
+    background-color: #fff;
+  }
+
+  &:hover {
+    opacity: 0.75;
+  }
+
+  .user-section {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+
+    .user-section__detail {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .username {
+        @include text-small;
+      }
+
+      .content {
+        @include text-small;
+        color: $grey1;
+      }
+    }
+  }
+
+  .image-wrapper {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 6px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
