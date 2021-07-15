@@ -50,8 +50,6 @@ export default class Chatlist extends Component {
 
     chatData.forEach((chat: ChatType) => {
       const $list = document.createElement('div');
-      $list.classList.add('chat-list__item');
-      if (chat.checked) $list.classList.add('checked');
       $chatList?.append($list);
       new ChatListItem($list as Element, chat);
     });
