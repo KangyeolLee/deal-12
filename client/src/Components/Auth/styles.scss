@@ -1,9 +1,12 @@
 @import '../../scss/theme';
 
 .authentication {
-  margin-top: 1rem;
+  width: 100%;
+  box-sizing: border-box;
   display: inline-flex;
   flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
   padding: 1.6rem;
   gap: 2rem;
 
@@ -19,10 +22,14 @@
   .user-email {
     @include text-medium;
     color: $grey1;
+    display: flex;
+    justify-content: center;
   }
 
   .login-btn {
     @include link-medium;
+    display: flex;
+    justify-content: center;
   }
 
   .link-to-register {
