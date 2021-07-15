@@ -2,6 +2,7 @@ import './styles';
 import Component from '../../core/Component';
 import ChatListItem from '../Shared/ChatListItem';
 import Header from '../Shared/Header';
+import { $router } from '../../lib/router';
 
 interface ChatType {
   username: string;
@@ -53,5 +54,9 @@ export default class Chatlist extends Component {
       $chatList?.append($list);
       new ChatListItem($list as Element, chat);
     });
+  }
+
+  setEvent() {
+    this.addEvent('click', '.chat-list__item', () => $router.push('/chat/:id'));
   }
 }
