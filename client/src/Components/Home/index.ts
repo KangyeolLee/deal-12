@@ -9,6 +9,7 @@ import './styles.scss';
 import Menu from '../Menu';
 import Button from '../Shared/Button';
 import Auth from './../Auth/index';
+import Dropdown from './../Shared/Dropdown/index';
 
 const list: CategoryListItemProps[] = [];
 [0, 0, 0, 0, 0, 0, 0, 0, 0].forEach(() => {
@@ -91,7 +92,21 @@ export default class Home extends Component {
     });
 
     const $locationBtn = this.$target.querySelector('.location');
-    $locationBtn?.addEventListener('click', () => $router.push('/location'));
+    new Dropdown($locationBtn as HTMLElement, {
+      lists: [
+        {
+          text: '역삼동',
+          isWarning: false,
+          onclick: () => console.log('역삼동 설정 완료!!'),
+        },
+        {
+          text: '내 동네 설정하기',
+          isWarning: false,
+          onclick: () => $router.push('/location'),
+        },
+      ],
+      offset: 'center',
+    });
 
     const $backBtns = this.$target.querySelectorAll('#left');
     $backBtns.forEach((btn) => {
