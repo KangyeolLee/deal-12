@@ -73,8 +73,10 @@ export default class SalesProductDetail extends Component {
     new Status($status as Element, {
       text: '판매중',
     });
-
-    const $backBtn = $header?.querySelector('#left');
-    $backBtn?.addEventListener('click', () => $router.push('/home'))
+  }
+  setEvent() {
+    this.addEvent('click', '#left', () => {
+      $router.push('/home');
+    });
   }
 }

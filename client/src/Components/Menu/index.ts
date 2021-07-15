@@ -130,9 +130,9 @@ export default class Menu extends Component {
       default:
         break;
     }
-
-    const $backBtn = this.$target.querySelector('#left');
-    $backBtn?.addEventListener('click', () => {
+  }
+  setEvent() {
+    this.addEvent('click', '#left', () => {
       this.$target.className = 'modal-close';
     });
   }

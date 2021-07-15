@@ -17,6 +17,10 @@
 }
 .iphone {
   padding-top: 8.6rem;
+  #result-item-list {
+    box-sizing: border-box;
+    padding-top: 8.6rem;
+  }
   .modal-open {
     @include modal;
     left: 0;
@@ -28,6 +32,10 @@
 }
 .galaxy {
   padding-top: 6.6rem;
+  #result-item-list {
+    box-sizing: border-box;
+    padding-top: 6.6rem;
+  }
   .modal-open {
     @include modal;
     left: 0;

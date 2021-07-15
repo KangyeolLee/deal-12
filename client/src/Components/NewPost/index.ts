@@ -68,14 +68,13 @@ export default class Home extends Component {
       });
       $imgList?.append($img);
     });
-
-    const $backBtn = this.$target.querySelector('#left');
-    $backBtn?.addEventListener('click', () => {
-      history.back();
-    });
   }
 
   setEvent() {
+    this.addEvent('click', '#left', () => {
+      history.back();
+    });
+
     this.$target.addEventListener('input', (e) => {
       //   if (e.target.id === 'title') {
       //     this.setState({ title: e.target.value });
@@ -101,5 +100,7 @@ export default class Home extends Component {
         });
       }
     });
+
+    this.addEvent('click', '.img-btn', () => {});
   }
 }
