@@ -1,9 +1,9 @@
-const express = require('express');
-const path = require('path');
-const morgan = require('morgan');
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
-require('dotenv').config();
+import express from 'express';
+// const path = require('path');
+import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
+// const session = require('express-session');
+import 'dotenv/config';
 
 // const FileStore = require("session-file-store")(session);
 
@@ -21,26 +21,26 @@ app.use('/api', require('./api'));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
-app.use(
-  session({
-    resave: false,
-    saveUninitialized: false,
-    secret: process.env.COOKIE_SECRET,
-    cookie: {
-      httpOnly: false,
-      secure: false,
-    },
-    // store: new FileStore(),
-  })
-);
+// app.use(
+//   session({
+//     resave: false,
+//     saveUninitialized: false,
+//     secret: process.env.COOKIE_SECRET,
+//     cookie: {
+//       httpOnly: false,
+//       secure: false,
+//     },
+//     // store: new FileStore(),
+//   })
+// );
 
-app.use((req, res, next) => {
-  const err = new Error('Not Found');
+app.use((req: any, res: any, next: any) => {
+  const err = new Error('Not Found') as any;
   err.status = 404;
   next(err);
 });
 
-app.use((err, req, res, next) => {
+app.use((err: any, req: any, res: any, next: any) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   res.status(err.status || 500);
