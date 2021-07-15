@@ -10,7 +10,7 @@
 
   .chat-bubbles__message {
     display: flex;
-    @include text-small;
+    @include link-small;
 
     &.by-partner {
       justify-content: flex-start;

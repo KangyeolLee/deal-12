@@ -4,6 +4,7 @@ import Header from '../Shared/Header';
 import InfoProduct from '../Shared/InfoProduct';
 import ChatBubble from '../Shared/ChatBubble';
 import ChatBar from '../Shared/ChatBar/index';
+import { $router } from '../../lib/router';
 
 interface ChatBubbleType {
   userId: string;
@@ -72,5 +73,9 @@ export default class ChatDetail extends Component {
     new ChatBar($chatbar as HTMLElement);
 
     new InfoProduct($productInfo as HTMLLIElement, this.$state);
+  }
+
+  setEvent() {
+    this.addEvent('click', '#left', () => $router.push('/chat'));
   }
 }
