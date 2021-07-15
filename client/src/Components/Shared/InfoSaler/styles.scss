@@ -4,10 +4,10 @@
   background-color: $off-white;
   padding: 1.6rem;
   color: $title-active;
-  @include text-small;
   display: flex;
 
   .sub-title {
+    @include link-medium;
     width: 50%;
   }
 
@@ -16,6 +16,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    .username {
+      @include link-small;
+    }
 
     .location {
       @include text-x-small;

@@ -28,7 +28,7 @@ export default class SalesProductDetail extends Component {
   }
 
   template() {
-    const { title, image, content, users } = this.$state;
+    const { title, image, content } = this.$state;
 
     return `
       <header></header>
@@ -46,8 +46,8 @@ export default class SalesProductDetail extends Component {
           </div>
           <div class="user-specification"></div>
         </div>
-        <div class="product-bar"></div>
         <div class="dropdown-area"></div>
+        <div class="product-bar"></div>
       </div>
     `;
   }
