@@ -1,6 +1,7 @@
 import './styles';
 
 import Component from '../../../core/Component';
+import ImgBox from './../ImgBox/index';
 
 interface ParamsType {
   username: string;
@@ -12,7 +13,8 @@ interface ParamsType {
 
 export default class ChatListItem extends Component {
   template() {
-    const { checked, username, content, timestamp, img }: ParamsType = this.$props;
+    const { checked, username, content, timestamp, img }: ParamsType =
+      this.$props;
 
     return `
     <div class="chat-list__item ${checked ? 'checked' : ''}">
@@ -23,10 +25,18 @@ export default class ChatListItem extends Component {
         </div>
         <span class="timestamp">${timestamp}</span>
       </div>
-      <div class="image-wrapper">
-        <img src="${img}" alt="상품 미리보기" />
-      </div>
+      <div class="image-wrapper"></div>
     </div>
     `;
+  }
+
+  mounted() {
+    const { img } = this.$props;
+    const $imageWrapper = this.$target.querySelector('.image-wrapper');
+
+    new ImgBox($imageWrapper as HTMLElement, {
+      imgType: 'small',
+      img,
+    });
   }
 }

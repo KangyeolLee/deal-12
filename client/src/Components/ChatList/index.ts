@@ -57,6 +57,7 @@ export default class Chatlist extends Component {
   }
 
   setEvent() {
+    this.addEvent('click', '#left', () => $router.push('/post'));
     this.addEvent('click', '.chat-list__item', () => $router.push('/chat/:id'));
   }
 }
