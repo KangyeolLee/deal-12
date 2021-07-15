@@ -13,25 +13,18 @@ import Auth from './../Auth/index';
 const list: CategoryListItemProps[] = [];
 [0, 0, 0, 0, 0, 0, 0, 0, 0].forEach(() => {
   list.push({
-    title: 'Title',
-    img: 'asdf',
+    title: '빈티지 롤러 스케이트',
+    img: 'https://user-images.githubusercontent.com/48883344/125383566-8c373e00-e3d2-11eb-82c3-565a0f5da5f6.png',
     price: 12345,
     location: '역삼동',
     timestamp: '3시간 전',
-    commentNum: 1,
+    chatNum: 1,
     likeNum: 1,
     pageName: 'home',
   });
 });
 
 export default class Home extends Component {
-  // setup() {
-  //   this.$state = {
-  //     isMenuOpened: false,
-  //     isCategoryOpened: false,
-  //     isUserOpened: false,
-  //   };
-  // }
   template() {
     return `
     <header></header>

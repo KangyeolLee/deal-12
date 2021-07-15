@@ -14,6 +14,7 @@ const routes = [
   { path: '/', redirect: '/home' },
   { path: '/home', component: Home },
   { path: '/post', component: SalesProductDetail },
+  { path: '/post/:id', component: SalesProductDetail },
   { path: '/post/new', component: NewPost },
   { path: '/chat', component: Chatlist },
   { path: '/chat/:id', component: ChatDetail },

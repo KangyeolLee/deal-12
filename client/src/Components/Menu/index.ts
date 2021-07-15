@@ -29,7 +29,7 @@ const list: CategoryListItemProps[] = [];
     price: 12345,
     location: '역삼동',
     timestamp: '3시간 전',
-    commentNum: 1,
+    chatNum: 1,
     likeNum: 1,
     pageName: 'menu',
   });

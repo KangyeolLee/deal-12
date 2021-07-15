@@ -3,12 +3,15 @@ import './styles.scss';
 
 interface IconButtonProps {
   name: string;
+  small?: boolean;
 }
 
 export default class IconButton extends Component {
   template() {
-    const { name }: IconButtonProps = this.$props;
+    const { name, small }: IconButtonProps = this.$props;
 
-    return `<div class="icon-btn" style="background-image: url(../../../../assets/${name}.svg)"></div>`;
+    return `<div class="${
+      small ? 'icon-btn small' : 'icon-btn'
+    }" style="background-image: url(../../../../assets/${name}.svg)"></div>`;
   }
 }

@@ -1,6 +1,7 @@
 @import '../../../scss/theme';
 
 .item-box {
+  cursor: pointer;
   width: 100%;
   padding: 1.6rem;
   box-sizing: border-box;
@@ -33,8 +34,16 @@
     &__counts {
       display: flex;
       justify-content: flex-end;
-      &--count:last-child {
-        margin-left: 1.7rem;
+      #chat-icon,
+      #heart-icon {
+        margin-right: 0.4rem;
+      }
+      &--count {
+        display: flex;
+        align-items: center;
+        &:last-child {
+          margin-left: 1.6rem;
+        }
       }
     }
   }

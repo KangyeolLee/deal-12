@@ -1,3 +1,4 @@
+import { $router } from '../../../lib/router';
 import Component from '../../../core/Component';
 import IconButton from '../IconButton';
 import ImgBox from '../ImgBox';
@@ -9,7 +10,7 @@ export interface CategoryListItemProps {
   price: number;
   location: string;
   timestamp: string;
-  commentNum: number;
+  chatNum: number;
   likeNum: number;
   pageName: string;
 }
@@ -26,7 +27,7 @@ export default class CategoryListItem extends Component {
       price,
       location,
       timestamp,
-      commentNum,
+      chatNum,
       likeNum,
     }: CategoryListItemProps = this.$props;
 
@@ -44,12 +45,18 @@ export default class CategoryListItem extends Component {
             </div>
             <div class="info__counts">
                 ${
-                  commentNum !== 0 &&
-                  `<div class="info__counts--count">${commentNum}</div>`
+                  chatNum !== 0 &&
+                  `<div class="info__counts--count">
+                      <div id="chat-icon"></div>
+                      <div>${chatNum}</div>
+                  </div>`
                 }
                 ${
                   likeNum !== 0 &&
-                  `<div class="info__counts--count">${likeNum}</div>`
+                  `<div class="info__counts--count">
+                      <div id="heart-icon"></div>
+                      <div>${likeNum}</div>
+                  </div>`
                 }
             </div>
         </div>
@@ -59,18 +66,16 @@ export default class CategoryListItem extends Component {
   }
 
   mounted() {
-    const { pageName } = this.$props;
+    const { pageName, img } = this.$props;
     const { isLiked } = this.$state;
 
     const $img = this.$target.querySelector('#img-box');
     new ImgBox($img as Element, {
       imgType: 'large',
+      img: img,
     });
 
     const $iconBtn = this.$target.querySelector('#icon-btn');
-    $iconBtn?.addEventListener('click', () => {
-      this.setState({ isLiked: !isLiked });
-    });
     let name = '';
     if (pageName === 'menu') {
       name = 'more';
@@ -81,5 +86,34 @@ export default class CategoryListItem extends Component {
     new IconButton($iconBtn as Element, {
       name,
     });
+
+    // icons
+    const $chatIcon = this.$target.querySelector('#chat-icon') as HTMLElement;
+    $chatIcon.style.width = '1.6rem';
+    $chatIcon.style.height = '1.6rem';
+    const $heartIcon = this.$target.querySelector('#heart-icon');
+    new IconButton($chatIcon as Element, {
+      name: 'chat-small',
+      small: true,
+    });
+    new IconButton($heartIcon as Element, {
+      name: 'heart-small',
+      small: true,
+    });
+  }
+
+  setEvent() {
+    this.addEvent(
+      'click',
+      '.item-box',
+      ({ target }: { target: HTMLElement }) => {
+        console.log(target.className);
+        if (target.className === 'icon-btn') {
+          this.setState({ isLiked: !this.$state.isLiked });
+        } else {
+          $router.push('/post/:id');
+        }
+      }
+    );
   }
 }
