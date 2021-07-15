@@ -28,7 +28,7 @@ export default class Home extends Component {
   template() {
     return `
     <header></header>
-    <div id="item-list"></div>
+    <div class="item-list"></div>
     <div id="menu-modal" class="modal-close"></div>
     <div id="category-modal" class="modal-close"></div>
     <div class="post-new-btn"></div> 
@@ -42,7 +42,7 @@ export default class Home extends Component {
       headerType: 'main',
     });
 
-    const $itemList = this.$target.querySelector('#item-list');
+    const $itemList = this.$target.querySelector('.item-list');
     list.forEach((item) => {
       const $item = document.createElement('div');
       $itemList?.append($item);

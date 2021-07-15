@@ -1,4 +1,3 @@
-import { $router } from '../../lib/router';
 import Component from '../../core/Component';
 import Header from '../Shared/Header';
 import Button from '../Shared/Button';
@@ -7,7 +6,6 @@ import CategoryListItem, {
   CategoryListItemProps,
 } from '../Shared/CategoryListItem';
 import ChatListItem from '../Shared/ChatListItem';
-import Chatlist from 'Components/ChatList';
 
 const tapList = [
   { id: 'sell-list', title: '판매목록' },

@@ -26,8 +26,9 @@ html {
   .header {
     padding-top: 3rem;
   }
-  #menu-modal, #user-modal {
-    padding-top: 6.9rem;
+  #menu-modal,
+  #user-modal {
+    padding-top: 8.6rem;
   }
   &::after {
     content: '';
@@ -45,6 +46,10 @@ html {
   width: 36rem;
   height: 80rem;
   padding-top: 6.6rem;
+  #menu-modal,
+  #user-modal {
+    padding-top: 6.6rem;
+  }
 }
 
 body {
