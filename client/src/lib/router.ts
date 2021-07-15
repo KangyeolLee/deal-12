@@ -113,6 +113,19 @@ export let $router: {
  * @param {{$app: HTMLElement, routes: Route[], fallback?: string}} options
  */
 export function initRouter(options: RouterType) {
+  // dropdown 영역 밖 클릭 시 드랍다운 제거 이벤트는 최상단 $app에서 관리
+  const { $app } = options;
+  $app.addEventListener('click', (e: MouseEvent) => {
+    const $dropdowns = $app.querySelectorAll('.dropdown');
+    $dropdowns.forEach(($dropdown: HTMLElement) => {
+      const isOpen = $dropdown.className.includes('open-dropdown');
+
+      if (isOpen) {
+        $dropdown.classList.remove('open-dropdown');
+      }
+    });
+  });
+
   const router = new Router(options);
 
   $router = {

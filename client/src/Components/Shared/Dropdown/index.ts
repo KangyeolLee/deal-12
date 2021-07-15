@@ -1,38 +1,63 @@
 import './styles';
 import Component from '../../../core/Component';
 
-export default class Dropdown extends Component {
-  template() {
-    const { lists } = this.$props;
+interface DropdownListType {
+  isWarning?: boolean;
+  text: string;
+  onclick: Function;
+}
 
-    return `
-      ${lists
-        .map(
-          (list) =>
-            `<li class="dropdown-item ${list.isWarning ? 'warning' : ''}">${
-              list.text
-            }</li>`
-        )
-        .join('')}
-    `;
+export default class Dropdown extends Component {
+  setup() {
+    const { offset } = this.$props;
+    const $dropdown = document.createElement('ul');
+    $dropdown.classList.add('dropdown', offset);
+    this.$target.append($dropdown);
+    this.$target.style.position = 'relative';
   }
 
   mounted() {
-    const { offset } = this.$props;
-    const dropdownOpener = this.$target.parentElement;
+    const { lists, offset } = this.$props;
+    const $dropdown = this.$target.querySelector('.dropdown') as HTMLElement;
 
-    const toggleDropdown = () => {
-      const currentStatus = this.$target.style.display;
+    const dropdownOpener = $dropdown?.parentElement;
 
-      if (!currentStatus || currentStatus === 'none') {
-        this.$target.style.display = 'block';
+    // const dropdownItems = lists
+    //   .map((list: DropdownListType) => {
+    //     return `
+    //     <li class="dropdown-item ${list.isWarning ? 'warning' : ''}">
+    //       ${list.text}
+    //     </li>
+    //   `;
+    //   })
+    //   .join('');
+    // $dropdown!.innerHTML = dropdownItems;
+
+    // template literal로 이벤트콜백 `<li onclick=${onclick}>...</li>` 를 넣는 방법이 있을까요오오?
+
+    lists.forEach((list: DropdownListType) => {
+      const { isWarning, text, onclick } = list;
+      const $li = document.createElement('li');
+      $li.classList.add('dropdown-item');
+      if (isWarning) $li.classList.add('warning');
+      $li.innerText = text;
+      $li.addEventListener('click', () => onclick());
+      $dropdown.append($li);
+    });
+
+    const toggleDropdown = (e: MouseEvent) => {
+      e.stopPropagation();
+      const isOpen = $dropdown.className.includes('open-dropdown');
+
+      if (isOpen) {
+        $dropdown.classList.remove('open-dropdown');
       } else {
-        this.$target.style.display = 'none';
+        $dropdown.classList.add('open-dropdown');
       }
     };
 
     this.$target?.classList.add(offset);
-    dropdownOpener.addEventListener('click', toggleDropdown);
+    dropdownOpener?.addEventListener('click', (e) => toggleDropdown(e));
   }
 
   setEvent() {
