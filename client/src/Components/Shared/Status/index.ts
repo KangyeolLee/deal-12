@@ -23,7 +23,7 @@ export default class Status extends Component {
     const { readonly } = this.$props as PropsType;
 
     const $status = this.$target.querySelector('.icon-button');
-    const $dropdown = this.$target.querySelector('.dropdown');
+    const $dropdown = this.$target;
 
     if (readonly) {
       return;
@@ -35,10 +35,17 @@ export default class Status extends Component {
 
     new Dropdown($dropdown as HTMLElement, {
       lists: [
-        { text: '예약중으로 변경', isWarning: false },
-        { text: '판매완료로 변경', isWarning: false },
+        {
+          text: '예약중으로 변경',
+          isWarning: false,
+          onclick: () => console.log('예약중'),
+        },
+        {
+          text: '판매완료로 변경',
+          isWarning: false,
+          onclick: () => console.log('판매완료'),
+        },
       ],
-      onclick: () => console.log(1),
       offset: 'left',
     });
   }

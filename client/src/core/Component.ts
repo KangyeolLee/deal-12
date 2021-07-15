@@ -15,7 +15,10 @@ export default class Component {
     return '';
   }
   render() {
-    this.$target.innerHTML = this.template();
+    const template = this.template();
+    if (template) {
+      this.$target.innerHTML = template;
+    }
     this.mounted();
   }
   setEvent() {}
