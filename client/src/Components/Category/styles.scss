@@ -1,8 +1,10 @@
 @import '../../scss/theme';
 
 .category-wrapper {
-  height: 51.2rem;
-  width: 32rem;
+  height: 100%;
+  width: 100%;
+  padding: 5rem 2rem;
+  box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   align-content: space-around;
