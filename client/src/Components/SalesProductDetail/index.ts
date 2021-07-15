@@ -5,6 +5,7 @@ import ProductBar from './../Shared/ProductBar/index';
 import InfoSaler from './../Shared/InfoSaler/index';
 import Dropdown from './../Shared/Dropdown/index';
 import Status from './../Shared/Status/index';
+import { $router } from '../../lib/router';
 
 export default class SalesProductDetail extends Component {
   setup() {
@@ -72,5 +73,8 @@ export default class SalesProductDetail extends Component {
     new Status($status as Element, {
       text: '판매중',
     });
+
+    const $backBtn = $header?.querySelector('#left');
+    $backBtn?.addEventListener('click', () => $router.push('/home'))
   }
 }

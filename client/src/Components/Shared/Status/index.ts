@@ -19,7 +19,7 @@ export default class Status extends Component {
     const $dropdown = this.$target.querySelector('.dropdown');
 
     new IconButton($status as HTMLElement, {
-      path: '../../../assets/down-xs.svg',
+      name: 'down-xs',
     });
 
     new Dropdown($dropdown as HTMLElement, {
