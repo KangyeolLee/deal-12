@@ -10,6 +10,13 @@
   height: 100%;
   overflow-y: scroll;
 
+  .image-wrapper {
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
   .content {
     padding: 1.6rem;
     color: $title-active;
