@@ -37,5 +37,17 @@ export default class InputPopup extends Component {
     function turnOffModal() {
       $modal.classList.remove('modal-open');
     }
+
+    this.addEvent('input', 'input', () => {
+      const $confirmBtn = this.$target.querySelector('.confirm-btn');
+      const $input = this.$target.querySelector('input');
+
+      if ($input?.value) {
+        $confirmBtn?.classList.add('on');
+        return;
+      }
+
+      $confirmBtn?.classList.remove('on');
+    });
   }
 }
