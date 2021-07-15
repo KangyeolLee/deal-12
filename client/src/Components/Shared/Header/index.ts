@@ -1,5 +1,3 @@
-// import { $router } from '../lib/router.js';
-
 import Component from '../../../core/Component';
 import IconButton from '../IconButton';
 import './styles.scss';

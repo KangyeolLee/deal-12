@@ -5,6 +5,12 @@
   padding: 1.6rem;
   box-sizing: border-box;
   display: flex;
+  position: relative;
+  #icon-btn {
+    position: absolute;
+    top: 1.6rem;
+    right: 1.6rem;
+  }
   .info {
     width: 100%;
     height: 10.6rem;

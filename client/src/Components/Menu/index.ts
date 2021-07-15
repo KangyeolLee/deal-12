@@ -29,9 +29,9 @@ const list: CategoryListItemProps[] = [];
     price: 12345,
     location: '역삼동',
     timestamp: '3시간 전',
-    isLiked: true,
     commentNum: 1,
     likeNum: 1,
+    pageName: 'menu',
   });
 });
 const chatList = [

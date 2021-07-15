@@ -1,6 +1,5 @@
-// import { $router } from '../lib/router.js';
-
 import Component from '../../../core/Component';
+import IconButton from '../IconButton';
 import ImgBox from '../ImgBox';
 import './styles.scss';
 
@@ -10,19 +9,23 @@ export interface CategoryListItemProps {
   price: number;
   location: string;
   timestamp: string;
-  isLiked: boolean;
   commentNum: number;
   likeNum: number;
+  pageName: string;
 }
 
 export default class CategoryListItem extends Component {
+  setup() {
+    this.$state = {
+      isLiked: false, // getLikes 해서 현재 postId와 비교
+    };
+  }
   template() {
     const {
       title,
       price,
       location,
       timestamp,
-      //   isLiked,
       commentNum,
       likeNum,
     }: CategoryListItemProps = this.$props;
@@ -30,6 +33,7 @@ export default class CategoryListItem extends Component {
     return `
     <div class="item-box">
         <div id="img-box"></div>
+        <div id="icon-btn"></div>
         <div class="info">
             <div>
                 <div class="info__title">${title}</div>
@@ -55,9 +59,27 @@ export default class CategoryListItem extends Component {
   }
 
   mounted() {
+    const { pageName } = this.$props;
+    const { isLiked } = this.$state;
+
     const $img = this.$target.querySelector('#img-box');
     new ImgBox($img as Element, {
       imgType: 'large',
+    });
+
+    const $iconBtn = this.$target.querySelector('#icon-btn');
+    $iconBtn?.addEventListener('click', () => {
+      this.setState({ isLiked: !isLiked });
+    });
+    let name = '';
+    if (pageName === 'menu') {
+      name = 'more';
+    } else {
+      if (isLiked) name = 'heart-fill';
+      else name = 'heart';
+    }
+    new IconButton($iconBtn as Element, {
+      name,
     });
   }
 }
