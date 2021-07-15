@@ -15,6 +15,10 @@ html {
   font-family: 'Noto Sans KR', sans-serif;
 }
 
+::-webkit-scrollbar {
+  display: none !important;
+}
+
 .iphone {
   width: 39rem;
   height: 84.4rem;
@@ -57,10 +61,6 @@ body {
     overflow: hidden;
     border-radius: 3rem;
     -ms-overflow-style: none;
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
   }
   .background {
     left: 0;
