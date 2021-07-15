@@ -1,0 +1,40 @@
+@import '../../../scss/theme';
+
+.input-popup {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  color: $title-active;
+  padding: 1.6rem;
+  background-color: $off-white;
+  border-radius: 1rem;
+  position: absolute;
+  width: 28.8rem;
+  height: 13.2rem;
+  box-sizing: border-box;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  .sub-title {
+    @include text-small;
+  }
+
+  .buttons-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .close-btn {
+      cursor: pointer;
+      @include link-small;
+    }
+
+    .confirm-btn {
+      cursor: pointer;
+      @include link-small;
+      color: $grey1;
+    }
+  }
+}

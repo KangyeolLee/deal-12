@@ -3,6 +3,7 @@ import Component from '../../core/Component';
 import Header from './../Shared/Header/index';
 import { $router } from '../../lib/router';
 import LocationButton from './../Shared/LocationButton/index';
+import InputPopup from './../Shared/InputPopup/indext';
 
 interface PropsType {
   type: string;
@@ -65,6 +66,13 @@ export default class Location extends Component {
         new LocationButton($location as HTMLElement, loc);
       });
     }
+
+    const $modal = this.$target.querySelector('.location-modal');
+    new InputPopup($modal as HTMLElement, {
+      message: '우리 동네를 입력하세요.',
+      btnText: '확인',
+      isAlert: false,
+    });
   }
 
   setEvent() {
