@@ -41,5 +41,15 @@
   background-color: $off-white;
 }
 .menu-invisible {
-  background-color: none;
+  background-color: transparent;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 0 1.6rem;
+
+  #left,
+  #right {
+    position: relative;
+    left: 0;
+    right: 0;
+  }
 }

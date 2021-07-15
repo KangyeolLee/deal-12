@@ -74,7 +74,24 @@ export default class SalesProductDetail extends Component {
       text: '판매중',
     });
 
+    const $moreBtn = $header?.querySelector('#right');
+    new Dropdown($moreBtn as HTMLElement, {
+      lists: [
+        {
+          text: '수정하기',
+          isWarning: false,
+          onclick: () => console.log('수정이벤트 발생'),
+        },
+        {
+          text: '삭제하기',
+          isWarning: true,
+          onclick: () => console.log('삭제이벤트 발생'),
+        },
+      ],
+      offset: 'right',
+    });
+
     const $backBtn = $header?.querySelector('#left');
-    $backBtn?.addEventListener('click', () => $router.push('/home'))
+    $backBtn?.addEventListener('click', () => $router.push('/home'));
   }
 }
