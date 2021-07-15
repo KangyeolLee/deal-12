@@ -17,11 +17,11 @@
     .image-wrapper {
       padding: 1rem;
       padding-left: 0;
-      border-right: 1px solid $grey3;
+      border-right: 0.1rem solid $grey3;
     }
 
     .product-price {
-      @include text-small;
+      @include link-small;
     }
   }
 }
