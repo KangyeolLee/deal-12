@@ -1,0 +1,8 @@
+// POST /posts (글작성)
+// GET /posts/location/{locationId}/category/{categoryId} (글목록)
+// GET /posts/{postId} (상세글)
+// PUT /posts/{postId} (글수정)
+// PUT /posts/{postId}/state (글상태 수정)
+// DELETE /posts/{postId} (글삭제)
+// POST /posts/{postId}/like (좋아요)
+// DELETE /posts/{postId}/like (좋아요 해제)
