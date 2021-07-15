@@ -1,9 +1,8 @@
 import './styles';
 import Component from '../../core/Component';
-import Header from '../shared/Header';
+import Header from '../Shared/Header';
 import ProductBar from './../Shared/ProductBar/index';
 import InfoSaler from './../Shared/InfoSaler/index';
-import Dropdown from './../Shared/Dropdown/index';
 import Status from './../Shared/Status/index';
 import { $router } from '../../lib/router';
 import ImgBox from './../Shared/ImgBox/index';
