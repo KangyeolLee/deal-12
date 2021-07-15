@@ -22,6 +22,9 @@ html {
   .header {
     padding-top: 3rem;
   }
+  #menu-modal, #user-modal {
+    padding-top: 6.9rem;
+  }
   &::after {
     content: '';
     background-color: #000;
