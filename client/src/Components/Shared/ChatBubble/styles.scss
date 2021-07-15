@@ -16,10 +16,8 @@
       justify-content: flex-start;
 
       .content {
+        border-radius: 0 0.8rem 0.8rem 0.8rem;
         border: 1px solid $primary;
-        border-bottom-left-radius: 8px;
-        border-bottom-right-radius: 8px;
-        border-top-right-radius: 8px;
       }
     }
 
@@ -27,9 +25,7 @@
       justify-content: flex-end;
 
       .content {
-        border-bottom-right-radius: 8px;
-        border-top-left-radius: 8px;
-        border-bottom-left-radius: 8px;
+        border-radius: 0.8rem 0 0.8rem 0.8rem;
         background-color: $primary;
         color: $white;
       }

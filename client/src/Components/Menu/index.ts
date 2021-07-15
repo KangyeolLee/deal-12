@@ -34,6 +34,22 @@ const list: CategoryListItemProps[] = [];
     likeNum: 1,
   });
 });
+const chatList = [
+  {
+    username: 'UserE',
+    timestamp: '1분 전',
+    content: '실제로 신어볼 수 있는 건가요?',
+    img: 'https://user-images.githubusercontent.com/48883344/125383566-8c373e00-e3d2-11eb-82c3-565a0f5da5f6.png',
+    checked: true,
+  },
+  {
+    username: 'UserD',
+    timestamp: '1시간 전',
+    content: '감사합니다 :)',
+    img: 'https://user-images.githubusercontent.com/48883344/125383566-8c373e00-e3d2-11eb-82c3-565a0f5da5f6.png',
+    checked: false,
+  },
+];
 export default class Menu extends Component {
   setup() {
     this.$state = { menu: 'sell-list' };
@@ -88,9 +104,16 @@ export default class Menu extends Component {
         break;
 
       case 'chat-list':
-        // new Chatlist($wrapper as Element);
-        $wrapper.innerHTML = noData[1];
-        $wrapper.className = 'no-data';
+        if (chatList.length > 0) {
+          chatList.forEach((item) => {
+            const $item = document.createElement('div');
+            $wrapper?.append($item);
+            new ChatListItem($item as Element, item);
+          });
+        } else {
+          $wrapper.innerHTML = noData[1];
+          $wrapper.className = 'no-data';
+        }
         break;
 
       case 'like-list':
@@ -101,7 +124,7 @@ export default class Menu extends Component {
             new CategoryListItem($item as Element, item);
           });
         } else {
-          $wrapper.innerHTML = noData[0];
+          $wrapper.innerHTML = noData[2];
           $wrapper.className = 'no-data';
         }
         break;
@@ -112,7 +135,6 @@ export default class Menu extends Component {
 
     const $backBtn = this.$target.querySelector('#left');
     $backBtn?.addEventListener('click', () => {
-      console.log('asdf');
       this.$target.className = 'modal-close';
     });
   }

@@ -1,32 +1,195 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&display=swap');
+@font-face {
+  font-family: 'twaysky';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_tway@1.0/twaysky.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 @import 'reset';
 @import 'theme';
+@import 'animation';
 
 html {
   font-size: 10px;
   font-family: 'Noto Sans KR', sans-serif;
 }
 
+.iphone {
+  width: 39rem;
+  height: 84.4rem;
+  padding-top: 8.6rem;
+  .header {
+    padding-top: 3rem;
+  }
+  &::after {
+    content: '';
+    background-color: #000;
+    width: 19rem;
+    height: 3rem;
+    top: 0;
+    left: 10rem;
+    position: absolute;
+    z-index: 100;
+    border-radius: 0 0 1.6rem 1.6rem;
+  }
+}
+.galaxy {
+  width: 36rem;
+  height: 80rem;
+  padding-top: 6.6rem;
+}
+
 body {
+  position: relative;
   height: 100vh;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: $title-active;
-  background-color: $title-active;
+  background-color: #000;
   #app {
+    transition: 0.5s;
     position: relative;
     box-sizing: border-box;
-    padding-top: 5.6rem;
-    height: 65rem;
-    width: 32rem;
     background-color: $white;
     overflow: hidden;
+    border-radius: 3rem;
     -ms-overflow-style: none;
     scrollbar-width: none;
     &::-webkit-scrollbar {
       display: none;
     }
+  }
+  .background {
+    left: 0;
+    top: 0;
+    position: fixed;
+    font-size: 18rem;
+    color: $white;
+    font-family: 'twaysky';
+    letter-spacing: 10rem;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    text-align: center;
+    &__text {
+      position: absolute;
+      letter-spacing: -1rem;
+      &:first-child {
+        top: 3rem;
+        left: 3rem;
+        &::after {
+          content: '우아';
+          position: absolute;
+          white-space: nowrap;
+          top: 1rem;
+          left: 1rem;
+          color: transparent;
+          -webkit-text-stroke: 0.3rem $primary;
+          animation: blink 0.8s linear infinite;
+        }
+      }
+      &:last-child {
+        bottom: 3rem;
+        right: 3rem;
+        &::after {
+          content: '마켓';
+          position: absolute;
+          white-space: nowrap;
+          top: 1rem;
+          left: 1rem;
+          color: transparent;
+          -webkit-text-stroke: 0.3rem $primary;
+          animation: blink 0.8s linear infinite;
+        }
+      }
+    }
+  }
+  .buttons {
+    font-family: 'twaysky';
+    margin: 5rem;
+    position: fixed;
+    font-size: 3rem;
+    left: 0;
+    bottom: 0;
+    &__btn {
+      border: none;
+      cursor: pointer;
+      margin: 4rem;
+      position: relative;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .active {
+      &::after {
+        content: '';
+        transform: skewX(-35deg);
+        position: absolute;
+        z-index: -1;
+        width: 12rem;
+        height: 5rem;
+        background-color: $primary;
+        top: 0rem;
+        left: 5rem;
+      }
+    }
+  }
+}
+
+.stars {
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  box-shadow: $shadows-small;
+  animation: animStar 50s linear infinite;
+
+  &:after {
+    content: ' ';
+    position: absolute;
+    top: -100vh;
+    width: 1px;
+    height: 1px;
+    background: transparent;
+    box-shadow: $shadows-small;
+  }
+}
+
+.stars2 {
+  width: 2px;
+  height: 2px;
+  background: transparent;
+  box-shadow: $shadows-medium;
+  animation: animStar 70s linear infinite;
+
+  &:after {
+    content: ' ';
+    position: absolute;
+    top: -100vh;
+    width: 2px;
+    height: 2px;
+    background: transparent;
+    box-shadow: $shadows-medium;
+  }
+}
+
+.stars3 {
+  width: 3px;
+  height: 3px;
+  background: transparent;
+  box-shadow: $shadows-big;
+  animation: animStar 100s linear infinite;
+
+  &:after {
+    content: ' ';
+    position: absolute;
+    top: -100vh;
+    width: 3px;
+    height: 3px;
+    background: transparent;
+    box-shadow: $shadows-big;
   }
 }
