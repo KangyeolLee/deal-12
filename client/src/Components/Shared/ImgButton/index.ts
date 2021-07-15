@@ -6,28 +6,37 @@ import './styles.scss';
 type ButtonType = 'add' | 'delete';
 interface ImgButtonProps {
   btnType: ButtonType;
-  url?: string;
+  img?: string;
   imgNum?: number;
+  addImg?: EventHandlerNonNull;
 }
 
 export default class ImgButton extends Component {
   template() {
-    const { imgNum }: ImgButtonProps = this.$props;
-
     return `
     <div class="img-btn"></div>`;
   }
 
   mounted() {
-    const { btnType, imgNum }: ImgButtonProps = this.$props;
+    const { btnType, imgNum, addImg, img }: ImgButtonProps = this.$props;
 
     const $button = this.$target.querySelector('.img-btn');
     new ImgBox($button as Element, {
       imgType: 'medium',
+      img: img,
     });
     const $imgBox = this.$target.querySelector('.imgbox-medium');
 
     if (btnType === 'add') {
+      // 사진 추가
+      const $fileInput = document.createElement('input');
+      $fileInput.type = 'file';
+      $fileInput.className = 'file-input';
+      $fileInput.onchange = addImg as
+        | ((this: GlobalEventHandlers, ev: Event) => any)
+        | null;
+      $button?.append($fileInput);
+
       new IconButton($imgBox as Element, {
         name: 'image',
       });
