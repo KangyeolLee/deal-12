@@ -41,6 +41,13 @@ export default class LocationButton extends Component {
   }
 
   setEvent() {
-    this.addEvent('click', '.location-button', () => console.log(1));
+    const $location = this.$target.parentElement?.parentElement;
+
+    this.addEvent('click', '.add', () => handleClickOnAddBtn());
+
+    function handleClickOnAddBtn() {
+      const $modal = $location?.querySelector('.location-modal');
+      $modal?.classList.add('modal-open');
+    }
   }
 }
