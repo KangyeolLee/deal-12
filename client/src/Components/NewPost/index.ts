@@ -101,6 +101,5 @@ export default class Home extends Component {
         });
       }
     });
-    // console.log(this.$state.title);
   }
 }

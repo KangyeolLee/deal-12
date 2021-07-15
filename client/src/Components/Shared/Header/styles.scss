@@ -1,11 +1,13 @@
 @import '../../../scss/theme';
 
 .header {
-  z-index: 1000;
+  transition: 0.5s;
+  z-index: 100;
   position: absolute;
   left: 0;
   top: 0;
   width: 100%;
+  padding-top: 1rem;
   height: 5.6rem;
   display: flex;
   align-items: center;
@@ -28,7 +30,7 @@
   @include link-medium;
   background-color: $primary;
   color: $white;
-  border-radius: 0px 0px 16px 16px;
+  border-radius: 0 0 1.6rem 1.6rem;
 }
 .menu-white {
   @include text-medium;

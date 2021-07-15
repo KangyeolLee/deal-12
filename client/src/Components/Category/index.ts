@@ -64,7 +64,6 @@ export default class Category extends Component {
 
     const $backBtn = this.$target.querySelector('#left');
     $backBtn?.addEventListener('click', () => {
-      console.log('asdf');
       this.$target.className = 'modal-close';
     });
   }

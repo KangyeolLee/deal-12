@@ -5,6 +5,36 @@
     <title>asdf</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div class="background">
+      <div class="background__text">우아</div>
+      <div class="background__text">마켓</div>
+    </div>
+    <div class="background">
+      <div class="stars"></div>
+      <div class="stars2"></div>
+      <div class="stars3"></div>
+    </div>
+    <div id="app" class="iphone"></div>
+    <div class="buttons">
+      <div id="iphone" class="buttons__btn active">iPhoneX</div>
+      <div id="galaxy" class="buttons__btn">Galaxy20</div>
+    </div>
   </body>
+  <script>
+    const $app = document.querySelector('#app');
+
+    const $iphone = document.querySelector('#iphone');
+    const $galaxy = document.querySelector('#galaxy');
+
+    $iphone.addEventListener('click', () => {
+      $app.className = 'iphone';
+      $iphone.className = 'buttons__btn active';
+      $galaxy.className = 'buttons__btn';
+    });
+    $galaxy.addEventListener('click', () => {
+      $app.className = 'galaxy';
+      $iphone.className = 'buttons__btn';
+      $galaxy.className = 'buttons__btn active';
+    });
+  </script>
 </html>
