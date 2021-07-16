@@ -54,6 +54,20 @@ export default class Register extends Component {
       handleClick: () => console.log('회원가입 폼 제출!'),
     });
 
+    const $button = $registerBtn?.querySelector('#button') as HTMLButtonElement;
+    $button.disabled = true;
+
+    this.$target.addEventListener('input', (e: HTMLInputElement) => {
+      const $inputs = this.$target.querySelectorAll('input');
+      const isActivated = [...$inputs].every((input) => input.value);
+
+      if (isActivated) {
+        $button.disabled = false;
+      } else {
+        $button.disabled = true;
+      }
+    });
+
     const $backBtn = this.$target.querySelector('#left');
     $backBtn?.addEventListener('click', () => {
       $router.push('/home');

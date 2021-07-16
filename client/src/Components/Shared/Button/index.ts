@@ -15,9 +15,9 @@ export default class Button extends Component {
     const { buttonType, title, isClicked }: HeaderProps = this.$props;
 
     return `
-    <div id="button" class="${buttonType} ${isClicked ? 'active' : ''}">
+    <button id="button" class="${buttonType} ${isClicked ? 'active' : ''}">
         ${title ? title : ''}
-    </div>`;
+    </button>`;
   }
 
   mounted() {
