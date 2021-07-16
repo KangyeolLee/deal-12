@@ -5,6 +5,12 @@ import Button from '../Button/index';
 import { $router } from '../../../lib/router';
 
 export default class ProductBar extends Component {
+  setup() {
+    this.$state = {
+      isLiked: false, // getLikes 해서 현재 postId와 비교
+    };
+  }
+
   template() {
     const { price } = this.$props;
 
@@ -18,11 +24,12 @@ export default class ProductBar extends Component {
   }
 
   mounted() {
+    const { isLiked } = this.$state;
     const $imageWrapper = this.$target.querySelector('.image-wrapper');
     const $button = this.$target.querySelector('.button');
 
     new IconButton($imageWrapper as HTMLElement, {
-      name: 'heart',
+      name: isLiked ? 'heart-fill' : 'heart',
     });
 
     new Button($button as HTMLElement, {
@@ -30,5 +37,17 @@ export default class ProductBar extends Component {
       title: '채팅 목록 보기',
       handleClick: () => $router.push('/chat'),
     });
+  }
+
+  setEvent() {
+    this.addEvent(
+      'click',
+      '.icon-btn',
+      ({ target }: { target: HTMLElement }) => {
+        if (target.className === 'icon-btn') {
+          this.setState({ isLiked: !this.$state.isLiked });
+        }
+      }
+    );
   }
 }
