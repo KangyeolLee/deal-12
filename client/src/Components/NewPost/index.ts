@@ -4,14 +4,14 @@ import './styles.scss';
 import ImgButton from '../Shared/ImgButton';
 import IconButton from '../Shared/IconButton';
 
-const imgs = [0, 0, 0, 0, 0, 0];
-
 export default class Home extends Component {
   setup() {
     this.$state = {
       title: null,
       price: null,
       content: null,
+      files: [],
+      imgs: [],
     };
   }
 
@@ -54,28 +54,44 @@ export default class Home extends Component {
       name: 'pinmap',
     });
 
+    // 사진 선택
+    const selectImg = (e: any) => {
+      const reader = new FileReader();
+      const targetFile = e.target.files[0];
+      reader.onloadend = () => {
+        this.setState({
+          files: [...this.$state.files, targetFile],
+          imgs: [...this.$state.imgs, reader.result],
+        });
+      };
+
+      reader.readAsDataURL(targetFile);
+    };
+
     const $imgList = this.$target.querySelector('.img-list');
     new ImgButton($imgList as Element, {
       btnType: 'add',
-      imgNum: imgs.length,
+      imgNum: this.$state.imgs.length,
+      addImg: selectImg,
     });
 
-    imgs.forEach(() => {
+    this.$state.imgs.forEach((url: string, idx: number) => {
       const $img = document.createElement('div');
+      $img.id = `img-del-${idx}`;
       $img.className = 'img-del';
       new ImgButton($img as Element, {
         btnType: 'delete',
+        img: url,
       });
       $imgList?.append($img);
-    });
-
-    const $backBtn = this.$target.querySelector('#left');
-    $backBtn?.addEventListener('click', () => {
-      history.back();
     });
   }
 
   setEvent() {
+    this.addEvent('click', '#left', () => {
+      history.back();
+    });
+
     this.$target.addEventListener('input', (e) => {
       //   if (e.target.id === 'title') {
       //     this.setState({ title: e.target.value });
@@ -100,6 +116,21 @@ export default class Home extends Component {
           name: 'check-disable',
         });
       }
+    });
+
+    this.addEvent('click', '.del-btn', ({ target }: { target: Element }) => {
+      const idx = (
+        target.parentNode?.parentNode?.parentNode as Element
+      ).id.split('img-del-')[1];
+
+      this.setState({
+        files: this.$state.files.filter(
+          (_: File, i: number) => Number(idx) !== i
+        ),
+        imgs: this.$state.imgs.filter(
+          (_: string, i: number) => Number(idx) !== i
+        ),
+      });
     });
   }
 }

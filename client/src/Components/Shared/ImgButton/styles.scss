@@ -1,7 +1,6 @@
 @import '../../../scss//theme';
 
 .img-btn {
-  cursor: pointer;
   position: relative;
   .imgbox-medium {
     @include text-x-small;
@@ -13,8 +12,18 @@
       color: $title-active;
     }
   }
+  .file-input {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 7.8rem;
+    height: 7.8rem;
+    opacity: 0;
+  }
 
   .del-btn {
+    cursor: pointer;
     position: absolute;
     box-sizing: border-box;
     background-color: $title-active;
