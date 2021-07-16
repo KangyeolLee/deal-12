@@ -7,9 +7,9 @@ import Header from '../Shared/Header';
 const list: CategoryListItemProps[] = [];
 [0, 0, 0, 0, 0, 0, 0, 0, 0].forEach(() => {
   list.push({
-    title: '빈티지 롤러 스케이트',
-    img: 'https://user-images.githubusercontent.com/48883344/125383566-8c373e00-e3d2-11eb-82c3-565a0f5da5f6.png',
-    price: 12345,
+    title: '우아한 옷 팔아요',
+    img: 'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
+    price: 69000,
     location: '역삼동',
     timestamp: '3시간 전',
     chatNum: 1,

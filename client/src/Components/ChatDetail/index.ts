@@ -36,9 +36,9 @@ export default class ChatDetail extends Component {
   setup() {
     // UI 확인용 임시 더미데이터
     this.$state = {
-      title: '빈티지 롤러 스케이트',
+      title: '우아한 옷 팔아요',
       image:
-        'https://user-images.githubusercontent.com/48883344/125383566-8c373e00-e3d2-11eb-82c3-565a0f5da5f6.png',
+        'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
       price: '169,000원',
     };
   }

@@ -6,6 +6,7 @@ import InfoSaler from './../Shared/InfoSaler/index';
 import Status from './../Shared/Status/index';
 import { $router } from '../../lib/router';
 import ImgBox from './../Shared/ImgBox/index';
+import Dropdown from '../Shared/Dropdown';
 
 export default class SalesProductDetail extends Component {
   setup() {
@@ -13,15 +14,15 @@ export default class SalesProductDetail extends Component {
     // 이를 this.$state 에 할당하는 것으로 변경
 
     this.$state = {
-      title: '빈티지 롤러 스케이트',
+      title: '우아한 옷 팔아요',
       image:
-        'https://user-images.githubusercontent.com/48883344/125383566-8c373e00-e3d2-11eb-82c3-565a0f5da5f6.png',
+        'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
       content:
-        '어린시절 추억의 향수를 불러 일으키는 롤러 스케이트입니다. 빈티지 특성상 사용감 있지만 전체적으로 깨끗한 상태입니다. 촬영용 소품이나, 거실에 장식용으로 추천해 드립니다. 단품 입고 되었습니다. 새 제품으로 보존된 제품으로 전용박스까지 보내드립니다. 사이즈는 235 입니다.',
-      price: '169,000원',
+        '이 옷 입으시면 우아한 사람이 될 수 있습니다. 몇 번 안 입어서 저는 우아한 사람이 되지 못한 것 같습니다. 네고 가능해요. 프리사이즈로 남녀노소 모두 입으실 수 있습니다. 연락주세용 제에바알',
+      price: '69,000원',
       users: {
         info: '판매자정보',
-        name: 'username',
+        name: '우아해지고 싶은 사람',
         location: '역삼동',
       },
     };
@@ -39,7 +40,7 @@ export default class SalesProductDetail extends Component {
             <div class="status-button"></div>
             <div class="product-description">
               <h1 class="product-title">${title}</h1>
-              <p class="category">기타 중고물품 · 3분 전</p>
+              <p class="category">기타 중고물품 · 3시간 전</p>
               <p class="desc">${content}</p>
               <p class="more-info"> 채팅 0 · 관심 0 · 조회 1 </p>
             </div>
