@@ -46,3 +46,23 @@
   bottom: 0;
   box-shadow: inset 0px 1px 0px $grey3;
 }
+
+.categories {
+  @include text-small;
+  color: $grey3;
+  margin-bottom: 2.4rem;
+  &__buttons {
+    .btn {
+      padding-left: 0.5rem;
+      &:first-child {
+        padding-left: 1.6rem;
+      }
+      &:last-child {
+        padding-right: 1.6rem;
+      }
+    }
+    margin-top: 1rem;
+    display: flex;
+    overflow-y: scroll;
+  }
+}

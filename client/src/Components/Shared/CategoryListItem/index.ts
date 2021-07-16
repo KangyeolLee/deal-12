@@ -15,12 +15,31 @@ export interface CategoryListItemProps {
   pageName: string;
 }
 
-export default class CategoryListItem extends Component {
+class LikeBtn extends Component {
   setup() {
     this.$state = {
       isLiked: false, // getLikes 해서 현재 postId와 비교
     };
   }
+  template() {
+    return `<div></div>`;
+  }
+  mounted() {
+    const { isLiked } = this.$state;
+    const $iconBtn = this.$target.querySelector('div');
+
+    new IconButton($iconBtn as Element, {
+      name: isLiked ? 'heart-fill' : 'heart',
+    });
+  }
+  setEvent() {
+    this.addEvent('click', '#icon-btn', () => {
+      this.setState({ isLiked: !this.$state.isLiked });
+    });
+  }
+}
+
+export default class CategoryListItem extends Component {
   template() {
     const {
       title,
@@ -67,7 +86,6 @@ export default class CategoryListItem extends Component {
 
   mounted() {
     const { pageName, img } = this.$props;
-    const { isLiked } = this.$state;
 
     const $img = this.$target.querySelector('#img-box');
     new ImgBox($img as Element, {
@@ -76,18 +94,15 @@ export default class CategoryListItem extends Component {
     });
 
     const $iconBtn = this.$target.querySelector('#icon-btn');
-    let name = '';
     if (pageName === 'menu') {
-      name = 'more';
+      new IconButton($iconBtn as Element, {
+        pageName,
+      });
     } else {
-      if (isLiked) name = 'heart-fill';
-      else name = 'heart';
+      new LikeBtn($iconBtn as Element);
     }
-    new IconButton($iconBtn as Element, {
-      name,
-    });
 
-    // icons
+    // small icons
     const $chatIcon = this.$target.querySelector('#chat-icon') as HTMLElement;
     $chatIcon.style.width = '1.6rem';
     $chatIcon.style.height = '1.6rem';

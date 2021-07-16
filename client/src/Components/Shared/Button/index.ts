@@ -2,7 +2,7 @@ import Component from '../../../core/Component';
 import IconButton from '../../Shared/IconButton';
 import './styles.scss';
 
-type ButtonType = 'medium' | 'large' | 'fab' | 'tap';
+type ButtonType = 'medium' | 'large' | 'fab' | 'tap' | 'category';
 interface HeaderProps {
   buttonType: ButtonType;
   title?: string;
