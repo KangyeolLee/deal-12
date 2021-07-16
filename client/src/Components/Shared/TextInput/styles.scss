@@ -1,6 +1,7 @@
 @import '../../../scss/theme';
 
 input.text-input {
+  background: $white;
   border: 0.1rem solid $grey3;
   outline: none;
   box-sizing: border-box;
