@@ -2,6 +2,8 @@
 
 @mixin button {
   cursor: pointer;
+  outline: none;
+  border: none;
   background-color: $primary;
   &:hover {
     background-color: $primary3;

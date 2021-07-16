@@ -85,13 +85,12 @@ export default class Home extends Component {
       });
       $imgList?.append($img);
     });
+
+    const $backBtn = $header?.querySelector('#left');
+    $backBtn?.addEventListener('click', () => history.back());
   }
 
   setEvent() {
-    this.addEvent('click', '#left', () => {
-      history.back();
-    });
-
     this.$target.addEventListener('input', (e) => {
       //   if (e.target.id === 'title') {
       //     this.setState({ title: e.target.value });
