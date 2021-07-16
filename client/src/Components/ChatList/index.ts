@@ -19,14 +19,14 @@ export default class Chatlist extends Component {
         username: 'UserE',
         timestamp: '1분 전',
         content: '실제로 신어볼 수 있는 건가요?',
-        img: 'https://user-images.githubusercontent.com/48883344/125383566-8c373e00-e3d2-11eb-82c3-565a0f5da5f6.png',
+        img: 'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
         checked: true,
       },
       {
         username: 'UserD',
         timestamp: '1시간 전',
         content: '감사합니다 :)',
-        img: 'https://user-images.githubusercontent.com/48883344/125383566-8c373e00-e3d2-11eb-82c3-565a0f5da5f6.png',
+        img: 'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
         checked: false,
       },
     ];

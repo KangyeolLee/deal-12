@@ -19,17 +19,30 @@ const noData = [
   '관심을 표시한 상품이 없습니다.',
 ];
 
-const list: CategoryListItemProps[] = [];
+const sellList: CategoryListItemProps[] = [];
 [0, 0, 0, 0, 0, 0, 0, 0, 0].forEach(() => {
-  list.push({
-    title: 'Title',
-    img: 'asdf',
-    price: 12345,
+  sellList.push({
+    title: '우아한 옷 팔아요',
+    img: 'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
+    price: 69000,
     location: '역삼동',
     timestamp: '3시간 전',
     chatNum: 1,
     likeNum: 1,
-    pageName: 'menu',
+    pageName: 'home',
+  });
+});
+const likeList: CategoryListItemProps[] = [];
+[0, 0].forEach(() => {
+  likeList.push({
+    title: '우아한 옷 팔아요',
+    img: 'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
+    price: 69000,
+    location: '역삼동',
+    timestamp: '3시간 전',
+    chatNum: 1,
+    likeNum: 1,
+    pageName: 'home',
   });
 });
 const chatList = [
@@ -37,14 +50,14 @@ const chatList = [
     username: 'UserE',
     timestamp: '1분 전',
     content: '실제로 신어볼 수 있는 건가요?',
-    img: 'https://user-images.githubusercontent.com/48883344/125383566-8c373e00-e3d2-11eb-82c3-565a0f5da5f6.png',
+    img: 'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
     checked: true,
   },
   {
     username: 'UserD',
     timestamp: '1시간 전',
     content: '감사합니다 :)',
-    img: 'https://user-images.githubusercontent.com/48883344/125383566-8c373e00-e3d2-11eb-82c3-565a0f5da5f6.png',
+    img: 'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
     checked: false,
   },
 ];
@@ -89,8 +102,8 @@ export default class Menu extends Component {
       document.createElement('div');
     switch (menu) {
       case 'sell-list':
-        if (list.length > 0) {
-          list.forEach((item) => {
+        if (sellList.length > 0) {
+          sellList.forEach((item) => {
             const $item = document.createElement('div');
             $wrapper?.append($item);
             new CategoryListItem($item as Element, item);
@@ -115,8 +128,8 @@ export default class Menu extends Component {
         break;
 
       case 'like-list':
-        if (list.length > 0) {
-          list.forEach((item) => {
+        if (likeList.length > 0) {
+          likeList.forEach((item) => {
             const $item = document.createElement('div');
             $wrapper?.append($item);
             new CategoryListItem($item as Element, item);

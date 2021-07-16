@@ -7,7 +7,7 @@ import { $router } from '../../lib/router';
 export default class Logout extends Component {
   setup() {
     this.$state = {
-      username: 'username',
+      username: '우아해지고 싶은 사람',
     };
   }
   template() {

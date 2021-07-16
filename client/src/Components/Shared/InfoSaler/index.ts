@@ -14,7 +14,7 @@ export default class InfoSaler extends Component {
     return `
       <p class="sub-title">판매자 정보</p>
       <div class="user-area">
-        <p class="username">Username</p>
+        <p class="username">우아해지고 싶은 사람</p>
         <p class="location">역삼동</p>
       </div>
     `;
