@@ -73,9 +73,8 @@ export default class Location extends Component {
       btnText: '확인',
       isAlert: false,
     });
-  }
 
-  setEvent() {
-    this.addEvent('click', '#left', () => $router.push('/home'));
+    const $backBtn = $header?.querySelector('#left');
+    $backBtn?.addEventListener('click', () => $router.push('/home'));
   }
 }
