@@ -111,7 +111,7 @@ export default class CategoryListItem extends Component {
         if (target.className === 'icon-btn') {
           this.setState({ isLiked: !this.$state.isLiked });
         } else {
-          $router.push('/post/:id');
+          $router.push('/post/1');
         }
       }
     );

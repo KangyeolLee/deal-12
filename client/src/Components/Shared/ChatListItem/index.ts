@@ -41,6 +41,6 @@ export default class ChatListItem extends Component {
       img,
     });
 
-    $list?.addEventListener('click', () => $router.push('/chat/:id'));
+    $list?.addEventListener('click', () => $router.push('/chat/uuid'));
   }
 }

@@ -66,11 +66,22 @@ class Router {
     this.$app.innerHTML = '';
 
     const hash = window.location.hash;
-    const path = hash.substr(1);
+    let path = hash.substr(1);
 
-    const route = this.hasRoute(path)
-      ? this.getRoute(path)
-      : this.getRoute(this.fallback);
+    /* 동적 라우팅 처리 */
+
+    let route;
+    const regex = /\w{1,}$/; // 동적 라우팅으로 전달되는 :id 는 모두 [문자열 + 숫자] 조합으로 간주
+
+    if (this.hasRoute(path)) {
+      route = this.getRoute(path);
+    } else if (regex.test(path)) {
+      // 주소가 없는 경우를 동적 라우팅으로 간주하고 이를 :id 로 치환
+      route = this.getRoute(path.replace(regex, ':id'));
+    } else {
+      // 그 외 입력되지 않은 모든 주소에 대해서는 fallback 실행
+      route = this.getRoute(this.fallback);
+    }
 
     if (route.redirect) {
       this.push(route.redirect);
