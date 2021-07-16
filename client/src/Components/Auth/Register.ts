@@ -9,7 +9,7 @@ export default class Register extends Component {
   template() {
     return `
       <header></header>
-      <form class="authentication">
+      <form id="register-form">
         <label for="userId">아이디
           <div class="user-email"></div>
         </label>
@@ -57,7 +57,7 @@ export default class Register extends Component {
     const $button = $registerBtn?.querySelector('#button') as HTMLButtonElement;
     $button.disabled = true;
 
-    this.$target.addEventListener('input', (e: HTMLInputElement) => {
+    this.$target.addEventListener('input', () => {
       const $inputs = this.$target.querySelectorAll('input');
       const isActivated = [...$inputs].every((input) => input.value);
 
