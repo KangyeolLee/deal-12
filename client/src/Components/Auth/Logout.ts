@@ -34,9 +34,10 @@ export default class Logout extends Component {
       title: '로그아웃',
       handleClick: () => console.log('로그아웃 폼 제출!'),
     });
-  }
 
-  setEvent() {
-    this.addEvent('click', '#left', () => $router.push('/home'));
+    const $backBtn = this.$target.querySelector('#left');
+    $backBtn?.addEventListener('click', () => {
+      $router.push('/home');
+    });
   }
 }

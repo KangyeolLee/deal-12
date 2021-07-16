@@ -85,10 +85,11 @@ export default class ChatDetail extends Component {
 
     const $backBtn = $header?.querySelector('#left');
     $backBtn?.addEventListener('click', () => $router.push('/chat'));
-  }
 
-  setEvent() {
-    const $modal = this.$target.querySelector('.chat-modal');
-    this.addEvent('click', '#right', () => $modal?.classList.add('modal-open'));
+    const $rightBtn = this.$target.querySelector('#right');
+    $rightBtn?.addEventListener('click', () => {
+      console.log('asdf');
+      ($modal as HTMLElement).classList.add('modal-open');
+    });
   }
 }

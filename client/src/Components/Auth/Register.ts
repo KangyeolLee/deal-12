@@ -53,9 +53,10 @@ export default class Register extends Component {
       title: '회원가입',
       handleClick: () => console.log('회원가입 폼 제출!'),
     });
-  }
 
-  setEvent() {
-    this.addEvent('click', '#left', () => $router.push('/home'));
+    const $backBtn = this.$target.querySelector('#left');
+    $backBtn?.addEventListener('click', () => {
+      $router.push('/home');
+    });
   }
 }
