@@ -31,6 +31,7 @@ export default class ImgButton extends Component {
       // 사진 추가
       const $fileInput = document.createElement('input');
       $fileInput.type = 'file';
+      $fileInput.accept = 'image/*';
       $fileInput.className = 'file-input';
       $fileInput.onchange = addImg as
         | ((this: GlobalEventHandlers, ev: Event) => any)
