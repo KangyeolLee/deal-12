@@ -26,7 +26,25 @@ export default class ChatBar extends Component {
     });
 
     new IconButton($sendBtn as HTMLElement, {
-      name: 'end',
+      name: 'end-off',
+    });
+  }
+
+  setEvent() {
+    this.addEvent('input', 'input', () => {
+      const $sendBtn = this.$target.querySelector('.send-button');
+      const $input = this.$target.querySelector('input');
+
+      if ($input?.value) {
+        new IconButton($sendBtn as HTMLElement, {
+          name: 'end-on',
+        });
+        return;
+      }
+
+      new IconButton($sendBtn as HTMLElement, {
+        name: 'end-off',
+      });
     });
   }
 }

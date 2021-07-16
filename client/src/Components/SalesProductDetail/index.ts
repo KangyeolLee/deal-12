@@ -1,11 +1,11 @@
 import './styles';
 import Component from '../../core/Component';
-import Header from '../shared/Header';
+import Header from '../Shared/Header';
 import ProductBar from './../Shared/ProductBar/index';
 import InfoSaler from './../Shared/InfoSaler/index';
-import Dropdown from './../Shared/Dropdown/index';
 import Status from './../Shared/Status/index';
 import { $router } from '../../lib/router';
+import ImgBox from './../Shared/ImgBox/index';
 
 export default class SalesProductDetail extends Component {
   setup() {
@@ -28,38 +28,39 @@ export default class SalesProductDetail extends Component {
   }
 
   template() {
-    const { title, image, content } = this.$state;
+    const { title, content } = this.$state;
 
     return `
-      <header></header>
-      <div class="product-detail">
-        <div class="image-wrapper">
-          <img src="${image}" alt="상품이미지" />
-        </div>
-        <div class="content">
-          <div class="status-button"></div>
-          <div class="product-description">
-            <h1 class="product-title">${title}</h1>
-            <p class="category">기타 중고물품 · 3분 전</p>
-            <p class="desc">${content}</p>
-            <p class="more-info"> 채팅 0 · 관심 0 · 조회 1 </p>
+      <div class="product-wrapper">
+        <header></header>
+        <div class="product-detail">
+          <div class="image-wrapper"></div>
+          <div class="content">
+            <div class="status-button"></div>
+            <div class="product-description">
+              <h1 class="product-title">${title}</h1>
+              <p class="category">기타 중고물품 · 3분 전</p>
+              <p class="desc">${content}</p>
+              <p class="more-info"> 채팅 0 · 관심 0 · 조회 1 </p>
+            </div>
+            <div class="user-specification"></div>
           </div>
-          <div class="user-specification"></div>
+          <div class="dropdown-area"></div>
         </div>
-        <div class="dropdown-area"></div>
         <div class="product-bar"></div>
-      </div>
+      <div>
     `;
   }
 
   mounted() {
-    const { price } = this.$state;
+    const { price, image } = this.$state;
     const $productDetail = this.$target.querySelector('.product-bar');
     const $header = this.$target.querySelector('header');
     const $userSpecification = this.$target.querySelector(
       '.user-specification'
     );
     const $status = this.$target.querySelector('.status-button');
+    const $imageWrapper = this.$target.querySelector('.image-wrapper');
 
     new Header($header as Element, {
       headerType: 'menu-invisible',
@@ -67,6 +68,11 @@ export default class SalesProductDetail extends Component {
 
     new ProductBar($productDetail as Element, {
       price,
+    });
+
+    new ImgBox($imageWrapper as HTMLElement, {
+      imgType: 'gradient',
+      img: image,
     });
 
     new InfoSaler($userSpecification as HTMLLIElement, this.$state.users);

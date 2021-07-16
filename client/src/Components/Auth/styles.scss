@@ -7,10 +7,11 @@
   flex-direction: column;
   align-items: center;
   margin-top: 2rem;
-  padding: 1.6rem;
+  padding: 4rem;
   gap: 2rem;
 
   label {
+    width: 100%;
     @include text-small;
     color: $title-active;
 
@@ -19,17 +20,31 @@
     }
   }
 
+  .register-btn {
+    width: 100%;
+
+    #button {
+      width: 100%;
+    }
+  }
+
   .user-email {
     @include text-medium;
+    width: 100%;
     color: $grey1;
     display: flex;
     justify-content: center;
   }
 
   .login-btn {
+    width: 100%;
     @include link-medium;
     display: flex;
     justify-content: center;
+
+    #button {
+      width: 100%;
+    }
   }
 
   .link-to-register {

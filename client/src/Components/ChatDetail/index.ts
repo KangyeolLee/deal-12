@@ -4,6 +4,8 @@ import Header from '../Shared/Header';
 import InfoProduct from '../Shared/InfoProduct';
 import ChatBubble from '../Shared/ChatBubble';
 import ChatBar from '../Shared/ChatBar/index';
+import { $router } from '../../lib/router';
+import InputPopup from './../Shared/InputPopup/indext';
 
 interface ChatBubbleType {
   userId: string;
@@ -48,6 +50,7 @@ export default class ChatDetail extends Component {
         <div class="product-info"></div>
         <div class="chat-bubbles"></div>
         <div class="chatbar"></div>
+        <div class="chat-modal"></div>
       </div>
     `;
   }
@@ -57,10 +60,22 @@ export default class ChatDetail extends Component {
     const $chatBubbles = this.$target.querySelector('.chat-bubbles');
     const $chatbar = this.$target.querySelector('.chatbar');
     const $productInfo = this.$target.querySelector('.product-info');
+    const $modal = this.$target.querySelector('.chat-modal');
 
     new Header($header as HTMLElement, {
       headerType: 'menu-white',
+      extraIconName: 'logout',
       title: 'UserE',
+    });
+
+    new ChatBar($chatbar as HTMLElement);
+
+    new InfoProduct($productInfo as HTMLLIElement, this.$state);
+
+    new InputPopup($modal as HTMLElement, {
+      message: '정말로 이 채팅방을 나가시겠습니까?',
+      btnText: '나기기',
+      isAlert: true,
     });
 
     dummyChatBubblesData.forEach((chat: ChatBubbleType) => {
@@ -68,9 +83,11 @@ export default class ChatDetail extends Component {
       $chatBubbles?.append($chatItem);
       new ChatBubble($chatItem as HTMLElement, chat);
     });
+  }
 
-    new ChatBar($chatbar as HTMLElement);
-
-    new InfoProduct($productInfo as HTMLLIElement, this.$state);
+  setEvent() {
+    const $modal = this.$target.querySelector('.chat-modal');
+    this.addEvent('click', '#right', () => $modal?.classList.add('modal-open'));
+    this.addEvent('click', '#left', () => $router.push('/chat'));
   }
 }

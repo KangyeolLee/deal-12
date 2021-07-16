@@ -13,7 +13,9 @@ export default class TextInput extends Component {
     const { placeholder, type, size, id }: PropsType = this.$props;
 
     return `
-      <input id="${id}" class="text-input size-${size}" placeholder="${placeholder}" type="${type}" />
+      <input id="${
+        id ? id : ''
+      }" class="text-input size-${size}" placeholder="${placeholder}" type="${type}" />
     `;
   }
 }

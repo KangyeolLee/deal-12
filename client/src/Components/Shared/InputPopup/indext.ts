@@ -31,11 +31,27 @@ export default class InputPopup extends Component {
   }
 
   setEvent() {
+    const { isAlert } = this.$props;
     const $modal = this.$target;
+    console.log($modal);
     this.addEvent('click', '.close-btn', turnOffModal);
 
     function turnOffModal() {
       $modal.classList.remove('modal-open');
+    }
+
+    if (!isAlert) {
+      this.addEvent('input', 'input', () => {
+        const $confirmBtn = this.$target.querySelector('.confirm-btn');
+        const $input = this.$target.querySelector('input');
+
+        if ($input?.value) {
+          $confirmBtn?.classList.add('on');
+          return;
+        }
+
+        $confirmBtn?.classList.remove('on');
+      });
     }
   }
 }
