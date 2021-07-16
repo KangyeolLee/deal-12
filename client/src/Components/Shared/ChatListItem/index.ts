@@ -2,6 +2,7 @@ import './styles';
 
 import Component from '../../../core/Component';
 import ImgBox from './../ImgBox/index';
+import { $router } from '../../../lib/router';
 
 interface ParamsType {
   username: string;
@@ -33,10 +34,13 @@ export default class ChatListItem extends Component {
   mounted() {
     const { img } = this.$props;
     const $imageWrapper = this.$target.querySelector('.image-wrapper');
+    const $list = this.$target.querySelector('.chat-list__item');
 
     new ImgBox($imageWrapper as HTMLElement, {
       imgType: 'small',
       img,
     });
+
+    $list?.addEventListener('click', () => $router.push('/chat/:id'));
   }
 }
