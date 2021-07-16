@@ -28,8 +28,7 @@
   height: 10.6rem;
 }
 .imgbox-gradient {
-  width: 32rem;
-  height: 32rem;
+  width: 100%;
   background: linear-gradient(
     180deg,
     rgba(0, 0, 0, 0.24) 0%,
@@ -37,4 +36,18 @@
     rgba(0, 0, 0, 0) 87.36%,
     rgba(0, 0, 0, 0.24) 100%
   );
+}
+
+.iphone {
+  .imgbox-gradient {
+    height: 39rem;
+    background-size: 39rem;
+  }
+}
+
+.galaxy {
+  .imgbox-gradient {
+    height: 36rem;
+    background-size: 36rem;
+  }
 }

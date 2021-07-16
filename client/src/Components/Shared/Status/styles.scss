@@ -11,9 +11,13 @@
 
   @include link-small;
 
-  div {
+  .icon-button {
     width: 1.4rem;
     height: 1.4rem;
     overflow: hidden;
+
+    &.hidden {
+      display: none;
+    }
   }
 }

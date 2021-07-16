@@ -9,7 +9,6 @@ interface PropsType {
 
 export default class InfoSaler extends Component {
   template() {
-    console.log(this.$props, this.$target);
     const { info, name, location }: PropsType = this.$props;
 
     return `
