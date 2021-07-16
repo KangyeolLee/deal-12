@@ -21,7 +21,6 @@ export default class SalesProductDetail extends Component {
         '이 옷 입으시면 우아한 사람이 될 수 있습니다. 몇 번 안 입어서 저는 우아한 사람이 되지 못한 것 같습니다. 네고 가능해요. 프리사이즈로 남녀노소 모두 입으실 수 있습니다. 연락주세용 제에바알',
       price: '69,000원',
       users: {
-        info: '판매자정보',
         name: '우아해지고 싶은 사람',
         location: '역삼동',
       },
