@@ -15,7 +15,6 @@ export default class Status extends Component {
     return `
         <span>${text}</span>
         <div class="icon-button ${readonly ? 'hidden' : ''}"></div>
-        <ul class="dropdown"></ul>
     `;
   }
 

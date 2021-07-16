@@ -61,7 +61,6 @@ export default class ChatDetail extends Component {
     const $chatbar = this.$target.querySelector('.chatbar');
     const $productInfo = this.$target.querySelector('.product-info');
     const $modal = this.$target.querySelector('.chat-modal');
-
     new Header($header as HTMLElement, {
       headerType: 'menu-white',
       extraIconName: 'logout',
@@ -83,11 +82,13 @@ export default class ChatDetail extends Component {
       $chatBubbles?.append($chatItem);
       new ChatBubble($chatItem as HTMLElement, chat);
     });
+
+    const $backBtn = $header?.querySelector('#left');
+    $backBtn?.addEventListener('click', () => $router.push('/chat'));
   }
 
   setEvent() {
     const $modal = this.$target.querySelector('.chat-modal');
     this.addEvent('click', '#right', () => $modal?.classList.add('modal-open'));
-    this.addEvent('click', '#left', () => $router.push('/chat'));
   }
 }

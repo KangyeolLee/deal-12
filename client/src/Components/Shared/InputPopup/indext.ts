@@ -33,7 +33,6 @@ export default class InputPopup extends Component {
   setEvent() {
     const { isAlert } = this.$props;
     const $modal = this.$target;
-    console.log($modal);
     this.addEvent('click', '.close-btn', turnOffModal);
 
     function turnOffModal() {

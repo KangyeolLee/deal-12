@@ -54,10 +54,12 @@ export default class Chatlist extends Component {
       $chatList?.append($list);
       new ChatListItem($list as Element, chat);
     });
+
+    const $backBtn = $header?.querySelector('#left');
+    $backBtn?.addEventListener('click', () => $router.push('/post'));
   }
 
   setEvent() {
-    this.addEvent('click', '#left', () => $router.push('/post'));
     this.addEvent('click', '.chat-list__item', () => $router.push('/chat/:id'));
   }
 }
