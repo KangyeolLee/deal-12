@@ -46,11 +46,26 @@
   width: 8.6rem;
   height: 5rem;
   color: $grey1;
-  border: 0px solid transparent;
+  border: 0 solid transparent;
   border-bottom-width: 0.2rem;
+  &.active {
+    color: $primary;
+    border: 0 solid $primary;
+    border-bottom-width: 0.2rem;
+  }
 }
-.active {
-  color: $primary;
-  border: 0px solid $primary;
-  border-bottom-width: 0.2rem;
+
+.category {
+  @include link-small;
+  border-radius: 99.9rem;
+  cursor: pointer;
+  color: $grey1;
+  border: 0.1rem solid $grey3;
+  padding: 0.4rem 1.6rem;
+  white-space: nowrap;
+  &.active {
+    color: $white;
+    border: 0.1rem solid $primary;
+    background-color: $primary;
+  }
 }
