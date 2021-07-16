@@ -48,18 +48,9 @@ class Router {
     return typeof this.routes[path] !== 'undefined';
   }
 
-  async getComponent(route: Route) {
-    const component =
-      isFunction(route.component) && !isClass(route.component)
-        ? route.component()
-        : route.component;
-
-    if (isPromise(component)) {
-      const res = await component;
-      return res.default ? res.default : res;
-    } else {
-      return component;
-    }
+  getComponent(route: Route) {
+    const component = route.component;
+    return component;
   }
 
   async onHashChangeHandler() {
@@ -88,20 +79,8 @@ class Router {
       return;
     }
 
-    if (route.middlewares) {
-      for (const middleware of route.middlewares) {
-        if (!(await middleware())) {
-          return;
-        }
-      }
-    }
-
-    const component = await this.getComponent(route);
-    if (typeof component === 'string') {
-      this.$app.innerHTML = component;
-    } else if (component instanceof HTMLElement) {
-      this.$app?.appendChild(component);
-    } else if (isClass(component)) {
+    const component = this.getComponent(route);
+    if (isClass(component)) {
       new component(this.$app);
     } else {
       throw new Error('invalid component');
