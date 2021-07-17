@@ -137,6 +137,36 @@ export function initRouter(options: RouterType) {
     });
   });
 
+  // mutation observer 로 슬라이더 크기 관리....
+  const $buttons = $app.parentElement.querySelector('.buttons');
+  const observer = new MutationObserver((mutationRecord) => {
+    const $slider = $app.querySelector('.image-navigation') as HTMLElement;
+
+    if ($slider) {
+      const record = mutationRecord.filter((record) => {
+        const isActive = (<HTMLElement>record.target).className.includes(
+          'active'
+        );
+        if (isActive) {
+          return record;
+        }
+      })[0];
+
+      const { target } = record;
+
+      if (target.id === 'iphone') {
+        $slider.style.left = '-390px';
+      } else if (target.id === 'galaxy') {
+        $slider.style.left = '-360px';
+      }
+    }
+  });
+  observer.observe($buttons as HTMLElement, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+  });
+
   const router = new Router(options);
 
   $router = {
