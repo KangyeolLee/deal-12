@@ -1,5 +1,5 @@
 import express from 'express';
-// const path = require('path');
+import path from 'path';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 // const session = require('express-session');
@@ -18,6 +18,10 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 app.use('/api', router);
+app.use(express.static(path.join(__dirname, '/deploy/src')));
+app.get('/', (req, res) =>
+  res.sendFile(path.join(__dirname + '/deploy/src', 'index.html'))
+);
 
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
