@@ -5,8 +5,8 @@ import ProductBar from './../Shared/ProductBar/index';
 import InfoSaler from './../Shared/InfoSaler/index';
 import Status from './../Shared/Status/index';
 import { $router } from '../../lib/router';
-import ImgBox from './../Shared/ImgBox/index';
 import Dropdown from '../Shared/Dropdown';
+import ImgNavigation from './../Shared/ImgNavigation/index';
 
 export default class SalesProductDetail extends Component {
   setup() {
@@ -15,8 +15,11 @@ export default class SalesProductDetail extends Component {
 
     this.$state = {
       title: '우아한 옷 팔아요',
-      image:
+      images: [
         'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
+        'https://user-images.githubusercontent.com/48883344/125383566-8c373e00-e3d2-11eb-82c3-565a0f5da5f6.png',
+        'https://ae01.alicdn.com/kf/HTB1Voc0XnjxK1Rjy0Fnq6yBaFXaC/Kpop.jpg',
+      ],
       content: `이 옷 입으시면 우아한 사람이 될 수 있습니다. 몇 번 안 입어서 저는 우아한 사람이 되지 못한 것 같습니다. 네고 가능해요. 프리사이즈로 남녀노소 모두 입으실 수 있습니다. 연락주세용 제에바알
         이 옷 입으시면 우아한 사람이 될 수 있습니다. 몇 번 안 입어서 저는 우아한 사람이 되지 못한 것 같습니다. 네고 가능해요. 프리사이즈로 남녀노소 모두 입으실 수 있습니다. 연락주세용 제에바알`,
       price: '69,000원',
@@ -34,7 +37,7 @@ export default class SalesProductDetail extends Component {
       <div class="product-wrapper">
         <header></header>
         <div class="product-detail">
-          <div class="image-wrapper"></div>
+          <div class="image-slider"></div>
           <div class="content">
             <div class="status-button"></div>
             <div class="product-description">
@@ -60,7 +63,7 @@ export default class SalesProductDetail extends Component {
       '.user-specification'
     );
     const $status = this.$target.querySelector('.status-button');
-    const $imageWrapper = this.$target.querySelector('.image-wrapper');
+    const $imageWrapper = this.$target.querySelector('.image-slider');
 
     new Header($header as Element, {
       headerType: 'menu-invisible',
@@ -70,9 +73,8 @@ export default class SalesProductDetail extends Component {
       price,
     });
 
-    new ImgBox($imageWrapper as HTMLElement, {
-      imgType: 'gradient',
-      img: image,
+    new ImgNavigation($imageWrapper as HTMLElement, {
+      images: this.$state.images,
     });
 
     new InfoSaler($userSpecification as HTMLLIElement, this.$state.users);
