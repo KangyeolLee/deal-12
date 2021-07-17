@@ -13,6 +13,15 @@ export default class SalesProductDetail extends Component {
     // 추후 getProductById(id)와 같은 API를 통해 값을 가져오고
     // 이를 this.$state 에 할당하는 것으로 변경
 
+    fetch('/api')
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('에러!');
+        }
+        return res.json();
+      })
+      .then((json) => console.log(json));
+
     this.$state = {
       title: '우아한 옷 팔아요',
       image:

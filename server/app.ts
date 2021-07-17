@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 // const session = require('express-session');
 import 'dotenv/config';
+import router from './api';
 
 // const FileStore = require("session-file-store")(session);
 
@@ -16,7 +17,7 @@ app.use(morgan('dev'));
 
 app.use(express.json());
 
-app.use('/api', require('./api'));
+app.use('/api', router);
 
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -46,6 +47,6 @@ app.use((err: any, req: any, res: any, next: any) => {
   res.status(err.status || 500);
 });
 
-app.listen(app.get('port'), () => {
+app.listen(app.get('port'), '0.0.0.0', () => {
   console.log(app.get('port'), '번 포트에서 대기중');
 });

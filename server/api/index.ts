@@ -1,11 +1,15 @@
 import express from 'express';
+import { getCategories } from './../config';
 
 const router = express.Router();
 
 router.get('/', async (req: any, res: any, next: any) => {
   try {
-    return res.status(200).json({
-      message: 'OK',
+    getCategories().then((category) => {
+      return res.status(200).json({
+        category,
+        message: 'OK',
+      });
     });
   } catch (error) {
     console.error(error);
@@ -13,7 +17,7 @@ router.get('/', async (req: any, res: any, next: any) => {
   }
 });
 
-module.exports = router;
+export default router;
 
 /**
 

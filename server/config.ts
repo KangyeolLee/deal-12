@@ -1,31 +1,31 @@
-// // get the client
-// const mysql = require('mysql2');
+// get the client
+const mysql = require('mysql2');
 
-// // create the connection to database
-// const config = {
-//   host: 'localhost',
-//   port: '3306',
-//   user: 'root',
-//   password: '1108',
-//   database: 'woowa_db',
-// };
+// create the connection to database
+const config = {
+  host: '54.180.140.194',
+  port: '3306',
+  user: 'kg',
+  password: '12345678',
+  database: 'woowamarket',
+};
 
 // console.log('asdf');
 
-// const getCategories = () => {
-//   return new Promise((resolve, reject) => {
-//     const connection = mysql.createConnection(config);
-//     let query = `SELECT * FROM category`;
-//     connection.query(query, (err:any, results:any) => {
-//       if (err) {
-//         reject(err);
-//       } else {
-//         resolve(results);
-//       }
-//       connection.end();
-//     });
-//   });
-// };
+export const getCategories = () => {
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(config);
+    const query = `SELECT * FROM category`;
+    connection.query(query, (err: any, results: any) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+      connection.end();
+    });
+  });
+};
 
 // const getLocations = () => {
 //   return new Promise((resolve, reject) => {
