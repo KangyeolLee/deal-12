@@ -124,21 +124,38 @@ export let $router: {
  * @param {{$app: HTMLElement, routes: Route[], fallback?: string}} options
  */
 export function initRouter(options: RouterType) {
-  // dropdown 영역 밖 클릭 시 드랍다운 제거 이벤트는 최상단 $app에서 관리
   const { $app } = options;
+
+  // dropdown 영역 밖 클릭 시 드랍다운 제거 이벤트는 최상단 $app에서 관리
+  handleDropdown($app);
+
+  // mutation observer 로 슬라이더 크기 관리....
+  handleMutationObserver($app);
+
+  const router = new Router(options);
+
+  $router = {
+    push: (path) => router.push(path),
+  };
+
+  router.onHashChangeHandler();
+}
+
+function handleDropdown($app: HTMLElement) {
   $app.addEventListener('click', (e: MouseEvent) => {
-    const $dropdowns = $app.querySelectorAll('.dropdown');
-    $dropdowns.forEach(($dropdown: HTMLElement) => {
-      const isOpen = $dropdown.className.includes('open-dropdown');
+    const $dropdowns = $app.querySelectorAll<HTMLElement>('.dropdown');
+    $dropdowns.forEach((dropdown) => {
+      const isOpen = dropdown.className.includes('open-dropdown');
 
       if (isOpen) {
-        $dropdown.classList.remove('open-dropdown');
+        dropdown.classList.remove('open-dropdown');
       }
     });
   });
+}
 
-  // mutation observer 로 슬라이더 크기 관리....
-  const $buttons = $app.parentElement.querySelector('.buttons');
+function handleMutationObserver($app: HTMLElement) {
+  const $buttons = $app.parentElement?.querySelector('.buttons');
   const observer = new MutationObserver((mutationRecord) => {
     const $slider = $app.querySelector('.image-navigation') as HTMLElement;
 
@@ -152,8 +169,9 @@ export function initRouter(options: RouterType) {
         }
       })[0];
 
-      const { target } = record;
+      const target = record.target as HTMLElement;
 
+      // 현재 사진 위치를 그대로 적용할 방법이 없을까ㅏ아아
       if (target.id === 'iphone') {
         $slider.style.left = '-390px';
       } else if (target.id === 'galaxy') {
@@ -166,12 +184,4 @@ export function initRouter(options: RouterType) {
     subtree: true,
     attributes: true,
   });
-
-  const router = new Router(options);
-
-  $router = {
-    push: (path) => router.push(path),
-  };
-
-  router.onHashChangeHandler();
 }
