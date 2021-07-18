@@ -35,11 +35,11 @@ export const PostService = {
     return `SELECT * FROM post limit 25 offset 1;`;
   },
 
-  findPostByUserId: ({ user_id }: UserType) => {
+  findPostByUserId: (user_id: number) => {
     return `SELECT * FROM post WHERE user_id=${user_id};`;
   },
 
-  findPostById: ({ post_id }: { post_id: number }) => {
+  findPostById: (post_id: number) => {
     return `
     SELECT * FROM post
       join image ON image.post_id = post.id

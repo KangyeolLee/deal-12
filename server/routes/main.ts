@@ -1,6 +1,6 @@
 import express from 'express';
-import { CategoryController } from '../controller/CategoryController';
-import { LocationController } from '../controller/LocationController';
+import { CategoryController } from '../controllers/CategoryController';
+import { LocationController } from '../controllers/LocationController';
 
 export const router = express.Router();
 
@@ -11,29 +11,8 @@ export const router = express.Router();
 // GET /main/locations (위치목록)
 // SELECT * FROM location
 
-router.get('/categories', async (req: any, res: any, next: any) => {
-  try {
-    CategoryController.getCategories();
-    return res.status(200).json({
-      message: 'OK',
-    });
-  } catch (error) {
-    console.error(error);
-    return next(error);
-  }
-});
-
-router.get('/locations', async (req: any, res: any, next: any) => {
-  try {
-    LocationController.getLocations;
-    return res.status(200).json({
-      message: 'OK',
-    });
-  } catch (error) {
-    console.error(error);
-    return next(error);
-  }
-});
+router.get('/categories', CategoryController.getCategories);
+router.get('/locations', LocationController.getLocations);
 
 /**
 

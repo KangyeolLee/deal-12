@@ -6,6 +6,8 @@ export const PostLikeService = {
     // DELETE FROM `like` WHERE post_id={postId} and user_id={userId}
   },
   findPostLikesByUserIdService: () => {
-    // SELECT * FROM `like` WHERE user_id={userId}
+    // SELECT * FROM `like`
+    // JOIN post ON postMessage.id = like.post_id
+    // WHERE id={post_id}
   },
 };
