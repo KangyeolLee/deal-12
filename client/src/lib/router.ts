@@ -103,18 +103,13 @@ export let $router: {
  * @param {{$app: HTMLElement, routes: Route[], fallback?: string}} options
  */
 export function initRouter(options: RouterType) {
-  // dropdown 영역 밖 클릭 시 드랍다운 제거 이벤트는 최상단 $app에서 관리
   const { $app } = options;
-  $app.addEventListener('click', (e: MouseEvent) => {
-    const $dropdowns = $app.querySelectorAll('.dropdown');
-    $dropdowns.forEach(($dropdown: HTMLElement) => {
-      const isOpen = $dropdown.className.includes('open-dropdown');
 
-      if (isOpen) {
-        $dropdown.classList.remove('open-dropdown');
-      }
-    });
-  });
+  // dropdown 영역 밖 클릭 시 드랍다운 제거 이벤트는 최상단 $app에서 관리
+  handleDropdown($app);
+
+  // mutation observer 로 슬라이더 크기 관리....
+  handleMutationObserver($app);
 
   const router = new Router(options);
 
@@ -123,4 +118,61 @@ export function initRouter(options: RouterType) {
   };
 
   router.onHashChangeHandler();
+}
+
+function handleDropdown($app: HTMLElement) {
+  $app.addEventListener('click', (e: MouseEvent) => {
+    const $dropdowns = $app.querySelectorAll<HTMLElement>('.dropdown');
+    $dropdowns.forEach((dropdown) => {
+      const isOpen = dropdown.className.includes('open-dropdown');
+
+      if (isOpen) {
+        dropdown.classList.remove('open-dropdown');
+      }
+    });
+  });
+}
+
+function handleMutationObserver($app: HTMLElement) {
+  const $buttons = $app.parentElement?.querySelector('.buttons');
+  const observer = new MutationObserver((mutationRecord) => {
+    const $slider = $app.querySelector('.image-navigation') as HTMLElement;
+
+    if ($slider) {
+      const record = mutationRecord.filter((record) => {
+        const isActive = (<HTMLElement>record.target).className.includes(
+          'active'
+        );
+        if (isActive) {
+          return record;
+        }
+      })[0];
+
+      const target = record.target as HTMLElement;
+      const slidesIdx = findCurrentViewOnSlides($app);
+      let offset = slidesIdx + 1;
+
+      if (target.id === 'iphone') {
+        $slider.style.left = -390 * offset + 'px';
+      } else if (target.id === 'galaxy') {
+        $slider.style.left = -360 * offset + 'px';
+      }
+    }
+  });
+
+  observer.observe($buttons as HTMLElement, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+  });
+}
+
+function findCurrentViewOnSlides($app: HTMLElement) {
+  const $imgaeNav = $app.querySelector('.image-nav') as HTMLElement;
+  const regex = /[\d]{1,}/;
+
+  const activatedTarget = $imgaeNav.querySelector('.on') as HTMLElement;
+  const targetIdx = activatedTarget.className.match(regex)?.[0];
+
+  return +targetIdx!;
 }
