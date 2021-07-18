@@ -1,41 +1,33 @@
 import { config } from 'dotenv';
+import { execQuery } from '../database/database';
+import { CREATE_USER, FIND_BY_USER_NICKNAME } from './../quries/user';
 
 const mysql = require('mysql2');
 
 export type UserType = {
-  user_id: number;
+  nickname: string;
   location1_id: number;
-  location2_id: number;
+  location2_id?: number;
 };
 
 export const UserService = {
-  createUser: async ({ user_id, location1_id }: UserType) => {
+  createUser: async ({ nickname, location1_id }: UserType) => {
+    const result = await execQuery(CREATE_USER({ nickname, location1_id }));
+    return result;
+  },
+
+  updateUser: async ({ nickname, location1_id, location2_id }: UserType) => {
     const connection = await mysql.createConnection(config);
     const { err, results } = await connection.query(
-      `INSERT INTO user('user_id', 'location1_id') VALUES(${user_id}, ${location1_id});`
+      `UPDATE post SET location1_id=${location1_id} location2_id=${location2_id} WHERE nickname=${nickname};`
     );
     if (err) throw Error;
     connection.end();
     return results;
   },
 
-  updateUser: async ({ user_id, location1_id, location2_id }: UserType) => {
-    const connection = await mysql.createConnection(config);
-    const { err, results } = await connection.query(
-      `UPDATE post SET location1_id=${location1_id} location2_id=${location2_id} WHERE user_id=${user_id};`
-    );
-    if (err) throw Error;
-    connection.end();
-    return results;
-  },
-
-  findUserById: async ({ user_id }: UserType) => {
-    const connection = await mysql.createConnection(config);
-    const { err, results } = await connection.query(
-      `SELECT * FROM user WHERE id=${user_id};`
-    );
-    if (err) throw Error;
-    connection.end();
-    return results;
+  findUserByUsername: async ({ nickname }: { nickname: string }) => {
+    const result = await execQuery(FIND_BY_USER_NICKNAME({ nickname }));
+    return result[0];
   },
 };
