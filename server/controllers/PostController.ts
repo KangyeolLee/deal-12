@@ -1,8 +1,9 @@
+import { Request, Response } from 'express';
 import { PostService, PostType } from '../services/post/PostService';
 import { PostLikeService } from '../services/post/PostLikeService';
 import { UserType } from '../services/UserService';
 
-const createPost = (req: any, res: any) => {
+const createPost = (req: Request, res: Response) => {
   const post = req.body;
   try {
     PostService.cratePost(post);
@@ -12,7 +13,7 @@ const createPost = (req: any, res: any) => {
   }
 };
 
-const getPosts = (req: any, res: any) => {
+const getPosts = (req: Request, res: Response) => {
   try {
     PostService.findPosts();
   } catch (err) {
@@ -21,7 +22,7 @@ const getPosts = (req: any, res: any) => {
   }
 };
 
-const getPostByUserId = (req: any, res: any) => {
+const getPostByUserId = (req: Request, res: Response) => {
   const { user_id } = req.body;
   try {
     PostService.findPostByUserId(user_id);
