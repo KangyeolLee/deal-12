@@ -2,7 +2,7 @@ import express from 'express';
 import { CategoryController } from '../controllers/CategoryController';
 import { LocationController } from '../controllers/LocationController';
 
-export const router = express.Router();
+const mainRouter = express.Router();
 
 // * main
 // GET /main/categories (카테고리 목록)
@@ -11,9 +11,10 @@ export const router = express.Router();
 // GET /main/locations (위치목록)
 // SELECT * FROM location
 
-router.get('/categories', CategoryController.getCategories);
-router.get('/locations', LocationController.getLocations);
+mainRouter.get('/categories', CategoryController.getCategories);
+mainRouter.get('/locations', LocationController.getLocations);
 
+export default mainRouter;
 /**
 
 

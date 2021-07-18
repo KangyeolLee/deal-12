@@ -13,8 +13,10 @@ import { LocationController } from '../controllers/LocationController';
 import { PostController } from '../controllers/PostController';
 import { UserController } from '../controllers/UserController';
 
-export const router = express.Router();
+const usersRouter = express.Router();
 
-router.get('/me/like/posts', PostController.getPostLikesByUserId);
-router.get('/me/locations', LocationController.getLocations);
-router.put('/me/locations', UserController.updateUser);
+usersRouter.get('/me/like/posts', PostController.getPostLikesByUserId);
+usersRouter.get('/me/locations', LocationController.getLocationsByUserId);
+usersRouter.put('/me/locations', UserController.updateUser);
+
+export default usersRouter;

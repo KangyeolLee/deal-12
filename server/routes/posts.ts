@@ -4,19 +4,21 @@
 import express from 'express';
 import { PostController } from '../controllers/PostController';
 
-export const router = express.Router();
+const postsRouter = express.Router();
 
 // 글작성
-router.post('/', PostController.createPost);
+postsRouter.post('/', PostController.createPost);
 // GET /location/{locationId}/category/{categoryId} (글목록)
 // SELECT * FROM post limit 25 offset 1
-router.get(
+postsRouter.get(
   '/location/:locationId/category/:categoryId',
   PostController.createPost
 );
-router.get('/:postId', PostController.getPostById);
-router.put('/:postId', PostController.updatePost);
-router.put('/:postId/state', PostController.updatePostState);
-router.delete('/:postId', PostController.deletePost);
-router.post('/:postId/like', PostController.creatPostLike);
-router.delete('/:postId/like', PostController.deletePostLike);
+postsRouter.get('/:postId', PostController.getPostById);
+postsRouter.put('/:postId', PostController.updatePost);
+postsRouter.put('/:postId/state', PostController.updatePostState);
+postsRouter.delete('/:postId', PostController.deletePost);
+postsRouter.post('/:postId/like', PostController.creatPostLike);
+postsRouter.delete('/:postId/like', PostController.deletePostLike);
+
+export default postsRouter;
