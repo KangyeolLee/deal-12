@@ -22,16 +22,17 @@ export default class Auth extends Component {
     const $header = this.$target.querySelector('header');
     const $authentication = this.$target.querySelector('.authentication');
 
+    const title = isLogin ? '로그인' : '내 계정';
     if (isLogin) {
       new Header($header as HTMLElement, {
-        title: '로그인',
+        title,
         headerType: 'menu-off-white',
       });
 
       new Login($authentication as HTMLElement);
     } else {
       new Header($header as HTMLElement, {
-        title: '내 계정',
+        title,
         headerType: 'menu-off-white',
       });
 

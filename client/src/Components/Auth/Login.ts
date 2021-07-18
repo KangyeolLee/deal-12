@@ -42,12 +42,7 @@ export default class Login extends Component {
     ) as HTMLInputElement;
     $userIdInput.addEventListener('input', () => {
       const isActivated = $userIdInput.value;
-
-      if (isActivated) {
-        $button.disabled = false;
-      } else {
-        $button.disabled = true;
-      }
+      $button.disabled = isActivated ? false : true;
     });
 
     new Register($modal as HTMLElement);
