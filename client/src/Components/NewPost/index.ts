@@ -5,7 +5,7 @@ import ImgButton from '../Shared/ImgButton';
 import IconButton from '../Shared/IconButton';
 import Button from '../Shared/Button';
 
-export default class Home extends Component {
+export default class NewPost extends Component {
   setup() {
     this.$state = {
       title: null,
@@ -180,13 +180,13 @@ class Categories extends Component {
       const $btn = document.createElement('div');
       $btn.id = `category-${category.id}`;
       $btn.className = 'btn';
-      new Button($btn as Element, {
-        buttonType: 'category',
+      new Category($btn as Element, {
+        // buttonType: 'category',
         title: category.name,
-        isClicked: categoryProps === category.id,
-        handleClick: () => {
-          setCategory(category.id);
-        },
+        // isClicked: categoryProps === category.id,
+        // handleClick: () => {
+        //   setCategory(category.id);
+        // },
       });
       $buttons?.append($btn);
     });
@@ -202,31 +202,37 @@ class Categories extends Component {
   // }
 }
 
-// class Category extends Component {
-//   template() {
-//     return '<div></div>';
-//   }
-//   mounted() {
-//     const { setCategories, categories, title, categoryId,isClicked } = this.$props;
-//     const $btn = this.$target.querySelector('div');
-//     new Button($btn as Element, {
-//       buttonType: 'category',
-//       title: title,
-//       isClicked: isClicked,
-//     });
-//   }
-//   setEvent() {
-//     const { setCategories, categories, title, categoryId } = this.$props;
-
-//     this.addEvent('click', '#button', () => {
-//       console.log('asdf');
-//       this.setState({ isClicked: !this.$state.isClicked });
-//       console.log(this.$state.isClicked);
-//       if (this.$state.isClicked) setCategories([...categories, categoryId]);
-//       else {
-//         const idx = (categories as number[]).findIndex((c) => c === categoryId);
-//         setCategories(categories.splice(idx, 1));
-//       }
-//     });
-//   }
-// }
+class Category extends Component {
+  setup() {
+    this.$state = {
+      isClicked: false,
+    };
+  }
+  template() {
+    return '<div></div>';
+  }
+  mounted() {
+    const { title } = this.$props;
+    const $btn = this.$target.querySelector('div');
+    new Button($btn as Element, {
+      buttonType: 'category',
+      title: title,
+      isClicked: this.$state.isClicked,
+      handleClick: () => {
+        this.setState({ isClicked: !this.$state.isClicked });
+      },
+    });
+  }
+  // setEvent() {
+  //   this.addEvent('click', '#button', () => {
+  //     console.log('asdf');
+  //     this.setState({ isClicked: !this.$state.isClicked });
+  //     console.log(this.$state.isClicked);
+  //     this.setState({ isClicked: !this.$state.isClicked });
+  //     // else {
+  //     //   const idx = (categories as number[]).findIndex((c) => c === categoryId);
+  //     //   setCategories(categories.splice(idx, 1));
+  //     // }
+  //   });
+  // }
+}
