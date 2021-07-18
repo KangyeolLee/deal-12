@@ -9,6 +9,7 @@
     background-color: $primary3;
   }
   &:disabled {
+    cursor: default;
     background-color: $primary2;
   }
   display: flex;

@@ -2,13 +2,17 @@
 
 .authentication {
   width: 100%;
-  box-sizing: border-box;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 2rem;
+  height: 100%;
   padding: 4rem;
-  gap: 2rem;
+  box-sizing: border-box;
+
+  form {
+    width: 100%;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
 
   label {
     width: 100%;
@@ -63,5 +67,12 @@
     color: $title-active;
     text-align: center;
     padding: 1rem;
+  }
+
+  #register-modal {
+    form {
+      padding: 4rem;
+      box-sizing: border-box;
+    }
   }
 }

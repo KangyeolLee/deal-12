@@ -1,6 +1,5 @@
 import './styles';
 import Component from '../../core/Component';
-import Header from './../Shared/Header/index';
 import Button from './../Shared/Button/index';
 import { $router } from '../../lib/router';
 
@@ -12,8 +11,7 @@ export default class Logout extends Component {
   }
   template() {
     return `
-      <header></header>
-      <form class="authentication">
+      <form id="logout-form">
         <div class="user-nickname">${this.$state.username}</div>
         <div class="logout-btn"></div>
       </form>
@@ -21,13 +19,7 @@ export default class Logout extends Component {
   }
 
   mounted() {
-    const $header = this.$target.querySelector('header');
     const $logoutBtn = this.$target.querySelector('.logout-btn');
-
-    new Header($header as HTMLElement, {
-      title: '내 계정',
-      headerType: 'menu-off-white',
-    });
 
     new Button($logoutBtn as HTMLElement, {
       buttonType: 'large',
