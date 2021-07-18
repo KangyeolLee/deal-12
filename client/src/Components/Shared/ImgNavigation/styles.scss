@@ -27,6 +27,7 @@
     gap: 1rem;
 
     .nav-item {
+      cursor: pointer;
       width: 1rem;
       height: 1rem;
       border-radius: 100%;
@@ -34,6 +35,9 @@
 
       &.on {
         background-color: $white;
+      }
+      &:hover {
+        opacity: 0.7;
       }
     }
   }

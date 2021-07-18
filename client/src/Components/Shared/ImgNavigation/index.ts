@@ -15,7 +15,7 @@ export default class ImgNavigation extends Component {
   private posX2 = 0;
   private index = 0;
   private allowMove = true;
-  private itemsLength;
+  private itemsLength!: number;
 
   template() {
     return `
@@ -28,7 +28,6 @@ export default class ImgNavigation extends Component {
 
   mounted() {
     const { images } = this.$props;
-    const $slider = this.$target as HTMLElement;
     const $navigation = this.$target.querySelector(
       '.image-navigation'
     ) as HTMLElement;
@@ -51,7 +50,7 @@ export default class ImgNavigation extends Component {
     this.initSlider({ $navigation });
   }
 
-  initSlider({ $navigation }: SliderTypes) {
+  private initSlider({ $navigation }: SliderTypes) {
     const navigationItems = $navigation.querySelectorAll('.navigation-item');
     this.itemsLength = navigationItems.length;
 
@@ -61,6 +60,7 @@ export default class ImgNavigation extends Component {
     const cloneFirstItem = firstItem.cloneNode(true);
     const cloneLastItem = lastItem.cloneNode(true);
     const $ImgNav = this.$target.querySelectorAll('.image-nav .nav-item');
+    const $ImgNavigator = this.$target.querySelector('.image-nav');
 
     $navigation.style.left = -itemSize + 'px';
     $navigation.append(cloneFirstItem);
@@ -70,9 +70,22 @@ export default class ImgNavigation extends Component {
       this.dragStart(e as DragEvent, $navigation)
     );
 
-    $navigation.addEventListener('transitionend', (e) =>
+    $navigation.addEventListener('transitionend', () =>
       this.checkIndex($ImgNav as NodeListOf<HTMLElement>, $navigation)
     );
+
+    $ImgNavigator?.addEventListener('click', (e) => {
+      const target = e.target as HTMLLIElement;
+      const regex = /[\d]{1,}/;
+
+      if (!target.className.includes('nav-item')) {
+        return;
+      }
+
+      const targetIdx = target.className.match(regex)?.[0];
+      this.moveByClickImgNav($navigation, +targetIdx!);
+      this.activateImgNav($ImgNav as NodeListOf<HTMLElement>);
+    });
   }
 
   private dragStart(e: DragEvent, $navigation: HTMLElement) {
@@ -116,6 +129,14 @@ export default class ImgNavigation extends Component {
         item.classList.add('on');
       }
     });
+  }
+
+  private moveByClickImgNav($navigation: HTMLElement, index: number) {
+    const itemSize = $navigation.parentElement!.offsetWidth;
+    this.index = index;
+
+    $navigation.classList.add('working');
+    $navigation.style.left = -(itemSize * (index + 1)) + 'px';
   }
 
   private checkIndex(
