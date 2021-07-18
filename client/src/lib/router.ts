@@ -170,18 +170,30 @@ function handleMutationObserver($app: HTMLElement) {
       })[0];
 
       const target = record.target as HTMLElement;
+      const slidesIdx = findCurrentViewOnSlides($app);
+      let offset = slidesIdx + 1;
 
-      // 현재 사진 위치를 그대로 적용할 방법이 없을까ㅏ아아
       if (target.id === 'iphone') {
-        $slider.style.left = '-390px';
+        $slider.style.left = -390 * offset + 'px';
       } else if (target.id === 'galaxy') {
-        $slider.style.left = '-360px';
+        $slider.style.left = -360 * offset + 'px';
       }
     }
   });
+
   observer.observe($buttons as HTMLElement, {
     childList: true,
     subtree: true,
     attributes: true,
   });
+}
+
+function findCurrentViewOnSlides($app: HTMLElement) {
+  const $imgaeNav = $app.querySelector('.image-nav') as HTMLElement;
+  const regex = /[\d]{1,}/;
+
+  const activatedTarget = $imgaeNav.querySelector('.on') as HTMLElement;
+  const targetIdx = activatedTarget.className.match(regex)?.[0];
+
+  return +targetIdx!;
 }
