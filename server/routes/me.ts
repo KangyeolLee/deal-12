@@ -19,7 +19,12 @@ const usersRouter = express.Router();
 usersRouter.get(
   '/like/posts',
   authenticateAccessToken,
-  PostController.getPostInterestsByUserId
+  PostController.getPostInterestsByUserNickname
+);
+usersRouter.get(
+  '/posts',
+  authenticateAccessToken,
+  PostController.getPostBySellerNickname
 );
 usersRouter.get('/locations', LocationController.getLocationsByUserId);
 usersRouter.put('/locations', UserController.updateUser);

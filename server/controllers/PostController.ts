@@ -22,16 +22,33 @@ const getPosts = (req: Request, res: Response) => {
   }
 };
 
-const getPostByUserId = (req: Request, res: Response) => {
-  const { user_id } = req.body;
+const getPostBySellerNickname = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    PostService.findPostByUserId(user_id);
-    return res.status(200).json({
-      message: 'OK',
+    const result = await PostService.findPostBySellerNickname({
+      nickname: req.user.id,
     });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json(err);
+    res.status(200).json({ result });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getPostInterestsByUserNickname = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const result = await PostInterestService.findPostInterestsByUserNickname({
+      nickname: req.user.id,
+    });
+    res.status(200).json({ result });
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -62,32 +79,15 @@ const deletePostInterest = () => {
   PostInterestService.deletePostInterest();
 };
 
-const getPostInterestsByUserId = async (
-  req: any,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const result = await PostInterestService.findPostInterestsByUserNickname({
-      nickname: req.user.id,
-    });
-    res.status(200).json({
-      result,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 export const PostController = {
   createPost,
   getPosts,
-  getPostByUserId,
+  getPostBySellerNickname,
   deletePost,
   getPostById,
   updatePost,
   updatePostState,
   creatPostInterest,
   deletePostInterest,
-  getPostInterestsByUserId,
+  getPostInterestsByUserNickname,
 };
