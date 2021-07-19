@@ -29,7 +29,7 @@ export const FIND_ALL_POSTS = ({ location_id, category_id } : { location_id: num
     JOIN location ON location.id = post.location_id
     WHERE location_id = ${location_id} AND category_id = ${category_id} AND state = '판매중'
   `;
-}
+};
 
 // 포스트넘버에 해당하는 하나의 포스트 디테일 가지고 오는 쿼리
 export const FIND_POST_BY_POSTID = ({ post_id }: { post_id: number}) => `
@@ -47,10 +47,11 @@ export const FIND_POST_BY_POSTID = ({ post_id }: { post_id: number}) => `
 `;
 
 // 포스트넘버에 해당하는 포스트의 조회수 +1 만큼 증가하는 쿼리
-export const UPDATE_POST_VIEWCOUNT = ({ post_id }: { post_id: number}) => `
+export const UPDATE_POST_VIEWCOUNT = ({ post_id }: { post_id: number }) => `
   UPDATE post SET view_count = view_count+1
   WHERE id = ${post_id}  
 `
+
 // 새로운 포스트를 작성하는 쿼리
 export const CREATE_POST = ({ title, location_id, category_id, content, view_count, price, seller_id, state, thumbnail, interest_count}: PostType) => `
   INSERT INTO post (title, location_id, category_id, content, view_count, price, seller_id, state, thumbnail, interest_count)
@@ -73,6 +74,13 @@ export const UPDATE_POST_STATE_BY_POSTID = ({ post_id, state}: { post_id: number
   WHERE post.id = ${post_id}
 `
 
+// 포스트넘버에 해당하는 포스트의 좋아요 수를 +1 만큼 증가하는 쿼리
+export const UPDATE_POST_INTERESTCOUNT = ({ post_id }: { post_id: number }) => `
+  UPDATE post SET interest_count = interest_count+1
+  WHERE id = ${post_id}
+`;
+
+// 유저 닉네임으로 유저가 작성한 글들을 가져오는 쿼리
 export const FIND_POST_BY_USER_NICKNAME = ({
   nickname,
 }: {
@@ -80,5 +88,6 @@ export const FIND_POST_BY_USER_NICKNAME = ({
 }) => `
     SELECT * FROM post
       JOIN user ON user.nickname = '${nickname}'
+      JOIN location ON location.id = post.location_id
     WHERE seller_id=user.id
   `;

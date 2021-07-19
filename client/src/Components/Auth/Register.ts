@@ -51,7 +51,7 @@ export default class Register extends Component {
     new Button($registerBtn as HTMLElement, {
       buttonType: 'large',
       title: '회원가입',
-      handleClick: () => console.log('회원가입 폼 제출!'),
+      // handleClick: () => console.log('회원가입 폼 제출!'),
     });
 
     const $button = $registerBtn?.querySelector('#button') as HTMLButtonElement;

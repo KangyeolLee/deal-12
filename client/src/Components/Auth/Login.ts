@@ -20,11 +20,6 @@ export default class Login extends Component {
     const $loginBtn = this.$target.querySelector('.login-btn');
     const $modal = this.$target.querySelector('#register-modal');
 
-    const form = this.$target.querySelector('#login-form');
-    form?.addEventListener('submit', (e) => {
-      e.preventDefault();
-    });
-
     new TextInput($userLogin as HTMLElement, {
       type: 'text',
       placeholder: '닉네임을 입력하세요.',
@@ -52,7 +47,10 @@ export default class Login extends Component {
     new Button($loginBtn as HTMLElement, {
       buttonType: 'large',
       title: '로그인',
-      handleClick: handleLogin,
+      handleClick: () => {
+        handleLogin();
+        (this.$target.parentNode as Element).className = 'modal-close';
+      },
     });
 
     const $button = $loginBtn?.querySelector('#button') as HTMLButtonElement;

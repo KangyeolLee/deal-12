@@ -5,6 +5,7 @@ export const FIND_POST_INTERESTS_BY_USER_NICKNAME = ({
 }) => `
   SELECT * FROM interest
     JOIN post ON post.id = interest.post_id
+    JOIN location ON location.id = post.location_id
     JOIN user ON user.nickname = '${nickname}'
   WHERE user_id=user.id
 `;

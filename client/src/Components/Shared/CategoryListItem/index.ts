@@ -3,15 +3,16 @@ import Component from '../../../core/Component';
 import IconButton from '../IconButton';
 import ImgBox from '../ImgBox';
 import './styles.scss';
+import { getTimestamp } from '../../../lib/util';
 
 export interface CategoryListItemProps {
   title: string;
-  img: string;
+  thumbnail: string;
   price: number;
-  location: string;
-  timestamp: string;
-  chatNum: number;
-  likeNum: number;
+  name: string;
+  createdAt: string;
+  chat_count: number;
+  interest_count: number;
   pageName: string;
 }
 
@@ -44,10 +45,10 @@ export default class CategoryListItem extends Component {
     const {
       title,
       price,
-      location,
-      timestamp,
-      chatNum,
-      likeNum,
+      name,
+      createdAt,
+      chat_count = 3,
+      interest_count,
     }: CategoryListItemProps = this.$props;
 
     return `
@@ -57,24 +58,26 @@ export default class CategoryListItem extends Component {
         <div class="info">
             <div>
                 <div class="info__title">${title}</div>
-                <div class="info__location">${location} ∙ ${timestamp}</div>
+                <div class="info__location">${name} ∙ ${getTimestamp(
+      createdAt
+    )}</div>
                 <div class="info__price">${price
                   .toString()
                   .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</div>
             </div>
             <div class="info__counts">
                 ${
-                  chatNum !== 0 &&
+                  chat_count !== 0 &&
                   `<div class="info__counts--count">
                       <div id="chat-icon"></div>
-                      <div>${chatNum}</div>
+                      <div>${chat_count}</div>
                   </div>`
                 }
                 ${
-                  likeNum !== 0 &&
+                  interest_count !== 0 &&
                   `<div class="info__counts--count">
                       <div id="heart-icon"></div>
-                      <div>${likeNum}</div>
+                      <div>${interest_count}</div>
                   </div>`
                 }
             </div>
@@ -85,12 +88,12 @@ export default class CategoryListItem extends Component {
   }
 
   mounted() {
-    const { pageName, img } = this.$props;
+    const { pageName, thumbnail, chat_count = 3, interest_count } = this.$props;
 
     const $img = this.$target.querySelector('#img-box');
     new ImgBox($img as Element, {
       imgType: 'large',
-      img: img,
+      img: thumbnail,
     });
 
     const $iconBtn = this.$target.querySelector('#icon-btn');
@@ -103,18 +106,20 @@ export default class CategoryListItem extends Component {
     }
 
     // small icons
-    const $chatIcon = this.$target.querySelector('#chat-icon') as HTMLElement;
-    $chatIcon.style.width = '1.6rem';
-    $chatIcon.style.height = '1.6rem';
-    const $heartIcon = this.$target.querySelector('#heart-icon');
-    new IconButton($chatIcon as Element, {
-      name: 'chat-small',
-      small: true,
-    });
-    new IconButton($heartIcon as Element, {
-      name: 'heart-small',
-      small: true,
-    });
+    if (chat_count > 0) {
+      const $chatIcon = this.$target.querySelector('#chat-icon') as HTMLElement;
+      new IconButton($chatIcon as Element, {
+        name: 'chat-small',
+        small: true,
+      });
+    }
+    if (interest_count > 0) {
+      const $heartIcon = this.$target.querySelector('#heart-icon');
+      new IconButton($heartIcon as Element, {
+        name: 'heart-small',
+        small: true,
+      });
+    }
   }
 
   setEvent() {
@@ -122,7 +127,6 @@ export default class CategoryListItem extends Component {
       'click',
       '.item-box',
       ({ target }: { target: HTMLElement }) => {
-        console.log(target.className);
         if (target.className === 'icon-btn') {
           this.setState({ isLiked: !this.$state.isLiked });
         } else {

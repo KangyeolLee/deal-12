@@ -26,7 +26,11 @@ usersRouter.get(
   authenticateAccessToken,
   PostController.getPostBySellerNickname
 );
-usersRouter.get('/locations', LocationController.getLocationsByUserId);
+usersRouter.get(
+  '/locations',
+  authenticateAccessToken,
+  LocationController.getLocationsByUserNickname
+);
 usersRouter.put('/locations', UserController.updateUser);
 
 export default usersRouter;

@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { PostService, PostType } from '../services/post/PostService';
 import { PostInterestService } from '../services/post/PostInterestService';
-import { UserType } from '../services/UserService';
 
 const createPost = async (req: Request, res: Response, next: NextFunction) => {
   const post: PostType = {
@@ -30,12 +29,15 @@ const createPost = async (req: Request, res: Response, next: NextFunction) => {
 const getPosts = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { locationId, categoryId } = req.params;
-    const result = await PostService.findPosts({ location_id: +locationId , category_id: +categoryId});
+    const result = await PostService.findPosts({
+      location_id: +locationId,
+      category_id: +categoryId,
+    });
     res.status(200).json({
       result,
-    })
+    });
   } catch (err) {
-    next(err)
+    next(err);
   }
 };
 
@@ -88,7 +90,7 @@ const getPostById = async (req: Request, res: Response, next: NextFunction) => {
     await PostService.updatePostViewCount(+postId);
     res.status(200).json({
       result,
-    })
+    });
   } catch (error) {
     next(error);
   }
@@ -129,9 +131,10 @@ const getPostInterestByUserId = async (req: any, res: Response, next: NextFuncti
       result,
     })
   } catch (error) {
-    next(error)
+    next(error);
   }
 }
+
 const creatPostInterest = async (req: any, res: Response, next: NextFunction) => {
   try {
     const { postId } = req.params;

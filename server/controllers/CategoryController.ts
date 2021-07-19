@@ -12,7 +12,7 @@ const getCategories = async (req: Request, res: Response) => {
       result,
     });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 
