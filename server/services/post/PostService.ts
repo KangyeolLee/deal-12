@@ -1,5 +1,5 @@
 import { execQuery } from '../../database/database';
-import { UserType } from '../UserService';
+import { FIND_POST_BY_USER_NICKNAME } from '../../queries/post';
 import { FIND_ALL_POSTS, FIND_POST_BY_POSTID, UPDATE_POST_VIEWCOUNT } from '../../queries/post';
 
 export type PostType = {
@@ -38,8 +38,9 @@ export const PostService = {
     return data;
   },
 
-  findPostByUserId: (user_id: number) => {
-    return `SELECT * FROM post WHERE user_id=${user_id};`;
+  findPostBySellerNickname: async ({ nickname }: { nickname: string }) => {
+    const data = await execQuery(FIND_POST_BY_USER_NICKNAME({ nickname }));
+    return data;
   },
 
   findPostById: async (post_id: number) => {

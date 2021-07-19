@@ -54,3 +54,12 @@ export const FIND_INTEREST_FOR_POST_BY_ID_AND_USERID = ({ post_id, user_id }: { 
   JOIN interest ON interest.user_id = user.id
   WHERE interest.user_id = ${user_id} AND intertest.post_id = ${post_id}
 `
+export const FIND_POST_BY_USER_NICKNAME = ({
+  nickname,
+}: {
+  nickname: string;
+}) => `
+    SELECT * FROM post
+      JOIN user ON user.nickname = '${nickname}'
+    WHERE seller_id=user.id
+  `;

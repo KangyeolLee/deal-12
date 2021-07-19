@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { UserService, UserType } from '../services/UserService';
+import jwt, { Secret } from 'jsonwebtoken';
 
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -8,7 +9,7 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
       location1_id: 2,
     };
 
-    const isAlreadyExist = await UserService.findUserByUsername({
+    const isAlreadyExist = await UserService.findUserByNickname({
       nickname: user.nickname,
     });
 
@@ -34,16 +35,37 @@ const updateUser = (req: Request, res: Response) => {
 };
 
 const getUserById = () => {
-  UserService.findUserByUsername;
+  UserService.findUserByNickname;
 };
 
-const login = async (req: Request, res: Response) => {
-  const { user_id } = req.body;
+const login = async (req: Request, res: Response, next: NextFunction) => {
+  const { nickname } = req.body;
+
   try {
-    UserService.findUserByUsername(user_id);
-    return res.status(200).json({ message: 'OK' });
+    const result = await UserService.findUserByNickname({ nickname });
+
+    if (result.length > 0) {
+      // access token을 secret key 기반으로 생성
+      const generateAccessToken = (nickname: string) => {
+        return jwt.sign(
+          { id: nickname },
+          process.env.ACCESS_TOKEN_SECRET as Secret,
+          {
+            expiresIn: '1000h',
+          }
+        );
+      };
+
+      let accessToken = generateAccessToken(nickname);
+
+      res.status(200).json({ accessToken });
+    } else {
+      res.status(300).json({
+        message: 'not exist',
+      });
+    }
   } catch (err) {
-    return res.status(403).json(err);
+    next(err);
   }
 };
 

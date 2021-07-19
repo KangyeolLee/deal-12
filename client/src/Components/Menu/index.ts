@@ -6,6 +6,7 @@ import CategoryListItem, {
   CategoryListItemProps,
 } from '../Shared/CategoryListItem';
 import ChatListItem from '../Shared/ChatListItem';
+import { token } from '../../lib/util';
 
 const tapList = [
   { id: 'sell-list', title: '판매목록' },
@@ -19,32 +20,32 @@ const noData = [
   '관심을 표시한 상품이 없습니다.',
 ];
 
-const sellList: CategoryListItemProps[] = [];
-[0, 0, 0, 0, 0, 0, 0, 0, 0].forEach(() => {
-  sellList.push({
-    title: '우아한 옷 팔아요',
-    img: 'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
-    price: 69000,
-    location: '역삼동',
-    timestamp: '3시간 전',
-    chatNum: 1,
-    likeNum: 1,
-    pageName: 'home',
-  });
-});
-const likeList: CategoryListItemProps[] = [];
-[0, 0].forEach(() => {
-  likeList.push({
-    title: '우아한 옷 팔아요',
-    img: 'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
-    price: 69000,
-    location: '역삼동',
-    timestamp: '3시간 전',
-    chatNum: 1,
-    likeNum: 1,
-    pageName: 'home',
-  });
-});
+// const sellList: CategoryListItemProps[] = [];
+// [0, 0, 0, 0, 0, 0, 0, 0, 0].forEach(() => {
+//   sellList.push({
+//     title: '우아한 옷 팔아요',
+//     img: 'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
+//     price: 69000,
+//     location: '역삼동',
+//     timestamp: '3시간 전',
+//     chatNum: 1,
+//     likeNum: 1,
+//     pageName: 'home',
+//   });
+// });
+// const likeList: CategoryListItemProps[] = [];
+// [0, 0].forEach(() => {
+//   likeList.push({
+//     title: '우아한 옷 팔아요',
+//     img: 'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
+//     price: 69000,
+//     location: '역삼동',
+//     timestamp: '3시간 전',
+//     chatNum: 1,
+//     likeNum: 1,
+//     pageName: 'home',
+//   });
+// });
 const chatList = [
   {
     username: 'UserE',
@@ -63,7 +64,28 @@ const chatList = [
 ];
 export default class Menu extends Component {
   setup() {
-    this.$state = { menu: 'sell-list' };
+    this.$state = { menu: 'sell-list', sells: [], interests: [] };
+
+    var headers = new Headers();
+    headers.append('Authorization', token());
+
+    fetch('/api/me/like/posts', {
+      method: 'GET',
+      headers,
+    })
+      .then((res) => res.json())
+      .then(({ result }) => {
+        this.setState({ interests: result });
+      });
+
+    fetch('/api/me/posts', {
+      method: 'GET',
+      headers,
+    })
+      .then((res) => res.json())
+      .then(({ result }) => {
+        this.setState({ sells: result });
+      });
   }
 
   template() {
@@ -102,8 +124,8 @@ export default class Menu extends Component {
       document.createElement('div');
     switch (menu) {
       case 'sell-list':
-        if (sellList.length > 0) {
-          sellList.forEach((item) => {
+        if (this.$state.sells.length > 0) {
+          this.$state.sells.forEach((item: any) => {
             const $item = document.createElement('div');
             $wrapper?.append($item);
             new CategoryListItem($item as Element, item);
@@ -128,8 +150,8 @@ export default class Menu extends Component {
         break;
 
       case 'like-list':
-        if (likeList.length > 0) {
-          likeList.forEach((item) => {
+        if (this.$state.interests.length > 0) {
+          this.$state.interests.forEach((item: any) => {
             const $item = document.createElement('div');
             $wrapper?.append($item);
             new CategoryListItem($item as Element, item);
