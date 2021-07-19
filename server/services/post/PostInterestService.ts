@@ -16,6 +16,7 @@ export const PostInterestService = {
     const data = await execQuery(
       FIND_POST_INTERESTS_BY_USER_NICKNAME({ nickname: nickname })
     );
+    console.log(data);
     return data;
   },
 };

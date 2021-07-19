@@ -50,6 +50,7 @@ export default class Menu extends Component {
     })
       .then((res) => res.json())
       .then(({ result }) => {
+        console.log(result);
         this.setState({ sells: result });
       });
 
@@ -101,7 +102,7 @@ export default class Menu extends Component {
     switch (menu) {
       case 'sell-list':
         if (this.$state.sells.length > 0) {
-          this.$state.sells.forEach((item: any) => {
+          this.$state.sells.forEach((item: CategoryListItemProps) => {
             const $item = document.createElement('div');
             $wrapper?.append($item);
             new CategoryListItem($item as Element, item);
@@ -127,7 +128,7 @@ export default class Menu extends Component {
 
       case 'like-list':
         if (this.$state.interests.length > 0) {
-          this.$state.interests.forEach((item: any) => {
+          this.$state.interests.forEach((item: CategoryListItemProps) => {
             const $item = document.createElement('div');
             $wrapper?.append($item);
             new CategoryListItem($item as Element, item);
