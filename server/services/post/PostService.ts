@@ -1,4 +1,6 @@
+import { execQuery } from '../../database/database';
 import { UserType } from '../UserService';
+import { FIND_ALL_POSTS, FIND_POST_BY_POSTID, UPDATE_POST_VIEWCOUNT } from '../../queries/post';
 
 export type PostType = {
   title: string;
@@ -31,26 +33,27 @@ export const PostService = {
       ${state});`;
   },
 
-  findPosts: () => {
-    return `SELECT * FROM post limit 25 offset 1;`;
+  findPosts: async ({ location_id, category_id }: { location_id : number, category_id?: number }) => {
+    const data = await execQuery(FIND_ALL_POSTS({ location_id, category_id }));
+    return data;
   },
 
   findPostByUserId: (user_id: number) => {
     return `SELECT * FROM post WHERE user_id=${user_id};`;
   },
 
-  findPostById: (post_id: number) => {
-    return `
-    SELECT * FROM post
-      join image ON image.post_id = post.id
-      WHERE id=${post_id};`;
+  findPostById: async (post_id: number) => {
+    const data = await execQuery(FIND_POST_BY_POSTID({ post_id} ));
+    return data;
   },
 
-  updatePostViewCount: () => {
-    return `UPDATE post SET view_count=view_count + 1 WHERE id={postId};`;
+  updatePostViewCount: async (post_id: number) => {
+    const data = await execQuery(UPDATE_POST_VIEWCOUNT({ post_id }));
+    return data;
   },
-  updatePost: () => {
-    return `UPDATE post SET title={asdf} WHERE id={postId};`;
+  updatePost: async (post_id: number) => {
+    // const data = await execQuery(UPDATE_POST_VIEWCOUNT({ post_id }));
+    // return data;
   },
   updatePostState: () => {
     return `UPDATE post SET state={asdf} WHERE id={postId};`;
