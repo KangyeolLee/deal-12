@@ -17,11 +17,11 @@ import { authenticateAccessToken } from '../middlewares/authenticate';
 const usersRouter = express.Router();
 
 usersRouter.get(
-  '/me/like/posts',
+  '/like/posts',
   authenticateAccessToken,
   PostController.getPostInterestsByUserId
 );
-usersRouter.get('/me/locations', LocationController.getLocationsByUserId);
-usersRouter.put('/me/locations', UserController.updateUser);
+usersRouter.get('/locations', LocationController.getLocationsByUserId);
+usersRouter.put('/locations', UserController.updateUser);
 
 export default usersRouter;
