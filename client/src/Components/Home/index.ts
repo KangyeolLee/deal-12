@@ -11,21 +11,19 @@ import Button from '../Shared/Button';
 import Auth from './../Auth/index';
 import Dropdown from './../Shared/Dropdown/index';
 
-const list: CategoryListItemProps[] = [];
-[0, 0, 0, 0, 0, 0, 0, 0, 0].forEach(() => {
-  list.push({
-    title: '우아한 옷 팔아요',
-    img: 'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
-    price: 69000,
-    location: '역삼동',
-    timestamp: '3시간 전',
-    chatNum: 1,
-    likeNum: 1,
-    pageName: 'home',
-  });
-});
-
 export default class Home extends Component {
+  setup() {
+    this.$state = {
+      categories: [],
+    };
+    fetch('/api/main/categories', {
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then(({ result }) => {
+        this.setState({ cateries: result });
+      });
+  }
   template() {
     return `
     <header></header>
@@ -44,7 +42,7 @@ export default class Home extends Component {
     });
 
     const $itemList = this.$target.querySelector('.item-list');
-    list.forEach((item) => {
+    this.$state.categories.forEach((item: CategoryListItemProps) => {
       const $item = document.createElement('div');
       $itemList?.append($item);
       new CategoryListItem($item as Element, item);
