@@ -6,6 +6,7 @@ import CategoryListItem, {
   CategoryListItemProps,
 } from '../Shared/CategoryListItem';
 import ChatListItem from '../Shared/ChatListItem';
+import { token } from '../../lib/util';
 
 const tapList = [
   { id: 'sell-list', title: '판매목록' },
@@ -32,19 +33,19 @@ const sellList: CategoryListItemProps[] = [];
     pageName: 'home',
   });
 });
-const likeList: CategoryListItemProps[] = [];
-[0, 0].forEach(() => {
-  likeList.push({
-    title: '우아한 옷 팔아요',
-    img: 'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
-    price: 69000,
-    location: '역삼동',
-    timestamp: '3시간 전',
-    chatNum: 1,
-    likeNum: 1,
-    pageName: 'home',
-  });
-});
+// const likeList: CategoryListItemProps[] = [];
+// [0, 0].forEach(() => {
+//   likeList.push({
+//     title: '우아한 옷 팔아요',
+//     img: 'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
+//     price: 69000,
+//     location: '역삼동',
+//     timestamp: '3시간 전',
+//     chatNum: 1,
+//     likeNum: 1,
+//     pageName: 'home',
+//   });
+// });
 const chatList = [
   {
     username: 'UserE',
@@ -63,7 +64,19 @@ const chatList = [
 ];
 export default class Menu extends Component {
   setup() {
-    this.$state = { menu: 'sell-list' };
+    this.$state = { menu: 'sell-list', interests: [] };
+
+    var headers = new Headers();
+    headers.append('Authorization', token());
+
+    fetch('/api/me/like/posts', {
+      method: 'GET',
+      headers,
+    })
+      .then((res) => res.json())
+      .then(({ result }) => {
+        this.setState({ interests: result });
+      });
   }
 
   template() {
@@ -128,8 +141,8 @@ export default class Menu extends Component {
         break;
 
       case 'like-list':
-        if (likeList.length > 0) {
-          likeList.forEach((item) => {
+        if (this.$state.interests.length > 0) {
+          this.$state.interests.forEach((item: any) => {
             const $item = document.createElement('div');
             $wrapper?.append($item);
             new CategoryListItem($item as Element, item);

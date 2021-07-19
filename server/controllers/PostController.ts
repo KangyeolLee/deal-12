@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { PostService, PostType } from '../services/post/PostService';
-import { PostLikeService } from '../services/post/PostLikeService';
+import { PostInterestService } from '../services/post/PostInterestService';
 import { UserType } from '../services/UserService';
 
 const createPost = (req: Request, res: Response) => {
@@ -54,16 +54,29 @@ const updatePostState = () => {
   PostService.updatePostState();
 };
 
-const creatPostLike = () => {
-  PostLikeService.createPostLikeService();
+const creatPostInterest = () => {
+  PostInterestService.createPostInterest();
 };
 
-const deletePostLike = () => {
-  PostLikeService.deletePostLikeService();
+const deletePostInterest = () => {
+  PostInterestService.deletePostInterest();
 };
 
-const getPostLikesByUserId = () => {
-  PostLikeService.findPostLikesByUserIdService();
+const getPostInterestsByUserId = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const result = await PostInterestService.findPostInterestsByUserNickname({
+      nickname: req.user.id,
+    });
+    res.status(200).json({
+      result,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const PostController = {
@@ -74,7 +87,7 @@ export const PostController = {
   getPostById,
   updatePost,
   updatePostState,
-  creatPostLike,
-  deletePostLike,
-  getPostLikesByUserId,
+  creatPostInterest,
+  deletePostInterest,
+  getPostInterestsByUserId,
 };
