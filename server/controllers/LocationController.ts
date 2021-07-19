@@ -18,8 +18,9 @@ const getLocationsByUserNickname = async (
   next: NextFunction
 ) => {
   try {
+    const { user } = req;
     const result = await LocationService.findLocationsByUserNickname({
-      nickname: req.user.id,
+      nickname: user.nickname,
     });
     res.status(200).json({
       result,
