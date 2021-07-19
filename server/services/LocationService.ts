@@ -1,5 +1,5 @@
 import { execQuery } from '../database/database';
-import { GET_LOCATIONS, GET_LOCATIONS_BY_NICKNAME } from './../quries/location';
+import { GET_LOCATIONS, GET_LOCATIONS_BY_NICKNAME } from '../queries/location';
 
 export const LocationService = {
   findLocations: async () => {
