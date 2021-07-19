@@ -11,6 +11,9 @@
   &:disabled {
     cursor: default;
     background-color: $primary2;
+    .icon-btn {
+      cursor: default;
+    }
   }
   display: flex;
   align-items: center;

@@ -10,29 +10,50 @@ import Menu from '../Menu';
 import Button from '../Shared/Button';
 import Auth from './../Auth/index';
 import Dropdown from './../Shared/Dropdown/index';
+import { token } from '../../lib/util';
 
 export default class Home extends Component {
   setup() {
     this.$state = {
       items: [],
-      locationId: '',
+      locationId: 0,
+      locationName: '',
     };
-    fetch('/api/me/locations', {
-      method: 'GET',
-    })
-      .then((res) => res.json())
-      .then(({ result }) => {
-        this.setState({ locationId: result[0].id });
+    if (token()) {
+      var headers = new Headers();
+      headers.append('Authorization', token());
+
+      fetch('/api/me/locations', {
+        method: 'GET',
+        headers,
       })
-      .then(() => {
-        fetch(`/api/posts/location/${this.$state.locationId}/category/0`, {
-          method: 'GET',
-        })
-          .then((res) => res.json())
-          .then(({ result }) => {
-            this.setState({ items: result });
+        .then((res) => res.json())
+        .then(({ result }) => {
+          console.log(result);
+          this.setState({
+            locationId: result[0].id,
+            locationName: result[0].name,
           });
-      });
+        })
+        .then(() => {
+          fetch(`/api/posts/location/${this.$state.locationId}/category/0`, {
+            method: 'GET',
+          })
+            .then((res) => res.json())
+            .then(({ result }) => {
+              this.setState({ items: result });
+            });
+        });
+    } else {
+      // 전체 글
+      fetch(`/api/posts/location/0/category/0`, {
+        method: 'GET',
+      })
+        .then((res) => res.json())
+        .then(({ result }) => {
+          this.setState({ items: result });
+        });
+    }
   }
   template() {
     return `
@@ -45,10 +66,12 @@ export default class Home extends Component {
     `;
   }
   mounted() {
+    const isLogin = token();
     const $header = this.$target.querySelector('header');
     new Header($header as Element, {
-      title: '역삼동',
+      title: isLogin ? this.$state.locationName : '로그인해주세요',
       headerType: 'main',
+      isLogin,
     });
 
     const $itemList = this.$target.querySelector('.item-list');
@@ -62,6 +85,7 @@ export default class Home extends Component {
     const $postNewBtn = this.$target.querySelector('.post-new-btn');
     new Button($postNewBtn as Element, {
       buttonType: 'fab',
+      disabled: !isLogin,
       handleClick: () => {
         $router.push('/post/new');
       },

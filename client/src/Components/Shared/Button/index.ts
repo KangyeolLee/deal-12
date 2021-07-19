@@ -8,14 +8,22 @@ interface HeaderProps {
   title?: string;
   isClicked?: boolean;
   handleClick: Function;
+  disabled?: boolean;
 }
 
 export default class Button extends Component {
   template() {
-    const { buttonType, title, isClicked }: HeaderProps = this.$props;
+    const {
+      buttonType,
+      title,
+      isClicked,
+      disabled = false,
+    }: HeaderProps = this.$props;
 
     return `
-    <button id="button" class="${buttonType} ${isClicked ? 'active' : ''}">
+    <button id="button" ${disabled && 'disabled'} class="${buttonType} ${
+      isClicked ? 'active' : ''
+    }">
         ${title ? title : ''}
     </button>`;
   }
