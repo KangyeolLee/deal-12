@@ -38,5 +38,10 @@ export default class Auth extends Component {
 
       new Logout($authentication as HTMLElement);
     }
+
+    const $backBtn = this.$target.querySelector('#left');
+    $backBtn?.addEventListener('click', () => {
+      this.$target.className = 'modal-close';
+    });
   }
 }

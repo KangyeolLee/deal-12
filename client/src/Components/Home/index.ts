@@ -71,31 +71,33 @@ export default class Home extends Component {
     const $categoryModal =
       this.$target.querySelector('#category-modal') ||
       document.createElement('div');
-    new Category($categoryModal as Element);
 
     const $menuModal =
       this.$target.querySelector('#menu-modal') ||
       document.createElement('div');
-    new Menu($menuModal as Element);
 
     const $userModal =
       this.$target.querySelector('#user-modal') ||
       document.createElement('div');
-    new Auth($userModal as Element);
 
     // buttons
     const $categoryBtn = this.$target.querySelector('#category');
     $categoryBtn?.addEventListener('click', () => {
+      new Category($categoryModal as Element, {
+        locationId: this.$state.locationId,
+      });
       $categoryModal.className = 'modal-open';
     });
 
     const $menuBtn = this.$target.querySelector('#menu');
     $menuBtn?.addEventListener('click', () => {
+      new Menu($menuModal as Element);
       $menuModal.className = 'modal-open';
     });
 
     const $userBtn = this.$target.querySelector('#user');
     $userBtn?.addEventListener('click', () => {
+      new Auth($userModal as Element);
       $userModal.className = 'modal-open';
     });
 
@@ -114,14 +116,6 @@ export default class Home extends Component {
         },
       ],
       offset: 'center',
-    });
-
-    const $backBtns = this.$target.querySelectorAll('#left');
-    $backBtns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const modal = btn.parentNode?.parentNode?.parentNode as Element;
-        modal.className = 'modal-close';
-      });
     });
   }
 }

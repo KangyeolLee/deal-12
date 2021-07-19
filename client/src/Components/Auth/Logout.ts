@@ -24,7 +24,7 @@ export default class Logout extends Component {
     new Button($logoutBtn as HTMLElement, {
       buttonType: 'large',
       title: '로그아웃',
-      handleClick: () => console.log('로그아웃 폼 제출!'),
+      // handleClick: () => console.log('로그아웃 폼 제출!'),
     });
 
     const $backBtn = this.$target.querySelector('#left');

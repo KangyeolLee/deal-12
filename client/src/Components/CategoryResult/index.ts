@@ -4,21 +4,22 @@ import CategoryListItem, {
 } from '../Shared/CategoryListItem';
 import Header from '../Shared/Header';
 
-const list: CategoryListItemProps[] = [];
-[0, 0, 0, 0, 0, 0, 0, 0, 0].forEach(() => {
-  list.push({
-    title: '우아한 옷 팔아요',
-    img: 'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
-    price: 69000,
-    location: '역삼동',
-    timestamp: '3시간 전',
-    chatNum: 1,
-    likeNum: 1,
-    pageName: 'home',
-  });
-});
-
 export default class CategoryResult extends Component {
+  setup() {
+    this.$state = {
+      items: [],
+    };
+    fetch(
+      `/api/posts/location/${this.$props.locationId}/category/${this.$props.category.id}`,
+      {
+        method: 'GET',
+      }
+    )
+      .then((res) => res.json())
+      .then(({ result }) => {
+        this.setState({ items: result });
+      });
+  }
   template() {
     return `
     <header></header>
@@ -26,16 +27,17 @@ export default class CategoryResult extends Component {
     `;
   }
   mounted() {
-    const { category }: { category: string } = this.$props;
+    const { category }: { category: { id: number; name: string } } =
+      this.$props;
 
     const $header = this.$target.querySelector('header');
     new Header($header as Element, {
-      title: category,
+      title: category.name,
       headerType: 'menu-off-white',
     });
 
     const $itemList = this.$target.querySelector('#result-item-list');
-    list.forEach((item) => {
+    this.$state.list.forEach((item: CategoryListItemProps) => {
       const $item = document.createElement('div');
       $itemList?.append($item);
       new CategoryListItem($item as Element, item);
