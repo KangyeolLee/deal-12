@@ -13,16 +13,17 @@ const getLocations = async (req: Request, res: Response) => {
   }
 };
 
-const getLocationsByUserId = async (
+const getLocationsByUserNickname = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const nickname = req.body.nickname || '우아한나그네';
-    const result = await LocationService.findLocationsByUserId({ nickname });
+    const result = await LocationService.findLocationsByUserNickname({
+      nickname,
+    });
     res.status(200).json({
-      message: 'ok',
       result,
     });
   } catch (error) {
@@ -32,5 +33,5 @@ const getLocationsByUserId = async (
 
 export const LocationController = {
   getLocations,
-  getLocationsByUserId,
+  getLocationsByUserNickname,
 };

@@ -14,14 +14,24 @@ import Dropdown from './../Shared/Dropdown/index';
 export default class Home extends Component {
   setup() {
     this.$state = {
-      categories: [],
+      items: [],
+      locationId: '',
     };
-    fetch('/api/main/categories', {
+    fetch('/api/me/locations', {
       method: 'GET',
     })
       .then((res) => res.json())
       .then(({ result }) => {
-        this.setState({ cateries: result });
+        this.setState({ locationId: result[0].id });
+      })
+      .then(() => {
+        fetch(`/api/posts/location/${this.$state.locationId}/category/0`, {
+          method: 'GET',
+        })
+          .then((res) => res.json())
+          .then(({ result }) => {
+            this.setState({ items: result });
+          });
       });
   }
   template() {
@@ -42,7 +52,7 @@ export default class Home extends Component {
     });
 
     const $itemList = this.$target.querySelector('.item-list');
-    this.$state.categories.forEach((item: CategoryListItemProps) => {
+    this.$state.items.forEach((item: CategoryListItemProps) => {
       const $item = document.createElement('div');
       $itemList?.append($item);
       new CategoryListItem($item as Element, item);
