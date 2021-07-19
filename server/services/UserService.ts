@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 import { execQuery } from '../database/database';
-import { CREATE_USER, FIND_BY_USER_NICKNAME } from './../quries/user';
+import { CREATE_USER, FIND_BY_USER_NICKNAME } from '../queries/user';
 
 const mysql = require('mysql2');
 

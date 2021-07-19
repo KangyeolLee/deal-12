@@ -1,5 +1,5 @@
 import { execQuery } from '../database/database';
-import { GET_CATEGORIES } from './../quries/category';
+import { GET_CATEGORIES } from '../queries/category';
 
 export const CategoryService = {
   findCaregories: async () => {

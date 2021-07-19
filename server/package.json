@@ -5,8 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "tsc && node build/app",
-    "dev": "nodemon --watch ** --ext 'ts' --exec 'ts-node' app",
-    "devwin": "nodemon --watch \"**\" --ext \"ts\" --exec \"ts-node\" app"
+    "dev": "nodemon --watch \"**\" --ext \"ts\" --exec \"ts-node\" app"
   },
   "dependencies": {
     "cookie-parser": "^1.4.5",
