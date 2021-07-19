@@ -23,8 +23,7 @@ export const authenticateAccessToken = async (
       process.env.ACCESS_TOKEN_SECRET as Secret | GetPublicKeyOrSecret,
       ((error: Error, user: JwtPayload) => {
         if (error) {
-          console.log(error);
-          return next(error);
+          next(error);
         }
 
         req.user = user;

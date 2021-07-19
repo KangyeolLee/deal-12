@@ -20,32 +20,6 @@ const noData = [
   '관심을 표시한 상품이 없습니다.',
 ];
 
-// const sellList: CategoryListItemProps[] = [];
-// [0, 0, 0, 0, 0, 0, 0, 0, 0].forEach(() => {
-//   sellList.push({
-//     title: '우아한 옷 팔아요',
-//     img: 'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
-//     price: 69000,
-//     location: '역삼동',
-//     timestamp: '3시간 전',
-//     chatNum: 1,
-//     likeNum: 1,
-//     pageName: 'home',
-//   });
-// });
-// const likeList: CategoryListItemProps[] = [];
-// [0, 0].forEach(() => {
-//   likeList.push({
-//     title: '우아한 옷 팔아요',
-//     img: 'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
-//     price: 69000,
-//     location: '역삼동',
-//     timestamp: '3시간 전',
-//     chatNum: 1,
-//     likeNum: 1,
-//     pageName: 'home',
-//   });
-// });
 const chatList = [
   {
     username: 'UserE',
@@ -69,15 +43,7 @@ export default class Menu extends Component {
     var headers = new Headers();
     headers.append('Authorization', token());
 
-    fetch('/api/me/like/posts', {
-      method: 'GET',
-      headers,
-    })
-      .then((res) => res.json())
-      .then(({ result }) => {
-        this.setState({ interests: result });
-      });
-
+    // 판매목록
     fetch('/api/me/posts', {
       method: 'GET',
       headers,
@@ -85,6 +51,16 @@ export default class Menu extends Component {
       .then((res) => res.json())
       .then(({ result }) => {
         this.setState({ sells: result });
+      });
+
+    // 관심목록
+    fetch('/api/me/like/posts', {
+      method: 'GET',
+      headers,
+    })
+      .then((res) => res.json())
+      .then(({ result }) => {
+        this.setState({ interests: result });
       });
   }
 
@@ -125,7 +101,7 @@ export default class Menu extends Component {
     switch (menu) {
       case 'sell-list':
         if (this.$state.sells.length > 0) {
-          this.$state.sells.forEach((item: any) => {
+          this.$state.sells.forEach((item: CategoryListItemProps) => {
             const $item = document.createElement('div');
             $wrapper?.append($item);
             new CategoryListItem($item as Element, item);
@@ -151,7 +127,7 @@ export default class Menu extends Component {
 
       case 'like-list':
         if (this.$state.interests.length > 0) {
-          this.$state.interests.forEach((item: any) => {
+          this.$state.interests.forEach((item: CategoryListItemProps) => {
             const $item = document.createElement('div');
             $wrapper?.append($item);
             new CategoryListItem($item as Element, item);

@@ -10,19 +10,50 @@ import Menu from '../Menu';
 import Button from '../Shared/Button';
 import Auth from './../Auth/index';
 import Dropdown from './../Shared/Dropdown/index';
+import { token } from '../../lib/util';
 
 export default class Home extends Component {
   setup() {
     this.$state = {
-      categories: [],
+      items: [],
+      locationId: 0,
+      locationName: '',
     };
-    fetch('/api/main/categories', {
-      method: 'GET',
-    })
-      .then((res) => res.json())
-      .then(({ result }) => {
-        this.setState({ cateries: result });
-      });
+    if (token()) {
+      var headers = new Headers();
+      headers.append('Authorization', token());
+
+      fetch('/api/me/locations', {
+        method: 'GET',
+        headers,
+      })
+        .then((res) => res.json())
+        .then(({ result }) => {
+          console.log(result);
+          this.setState({
+            locationId: result[0].id,
+            locationName: result[0].name,
+          });
+        })
+        .then(() => {
+          fetch(`/api/posts/location/${this.$state.locationId}/category/0`, {
+            method: 'GET',
+          })
+            .then((res) => res.json())
+            .then(({ result }) => {
+              this.setState({ items: result });
+            });
+        });
+    } else {
+      // 전체 글
+      fetch(`/api/posts/location/0/category/0`, {
+        method: 'GET',
+      })
+        .then((res) => res.json())
+        .then(({ result }) => {
+          this.setState({ items: result });
+        });
+    }
   }
   template() {
     return `
@@ -35,14 +66,16 @@ export default class Home extends Component {
     `;
   }
   mounted() {
+    const isLogin = token();
     const $header = this.$target.querySelector('header');
     new Header($header as Element, {
-      title: '역삼동',
+      title: isLogin ? this.$state.locationName : '로그인해주세요',
       headerType: 'main',
+      isLogin,
     });
 
     const $itemList = this.$target.querySelector('.item-list');
-    this.$state.categories.forEach((item: CategoryListItemProps) => {
+    this.$state.items.forEach((item: CategoryListItemProps) => {
       const $item = document.createElement('div');
       $itemList?.append($item);
       new CategoryListItem($item as Element, item);
@@ -52,6 +85,7 @@ export default class Home extends Component {
     const $postNewBtn = this.$target.querySelector('.post-new-btn');
     new Button($postNewBtn as Element, {
       buttonType: 'fab',
+      disabled: !isLogin,
       handleClick: () => {
         $router.push('/post/new');
       },
@@ -61,31 +95,33 @@ export default class Home extends Component {
     const $categoryModal =
       this.$target.querySelector('#category-modal') ||
       document.createElement('div');
-    new Category($categoryModal as Element);
 
     const $menuModal =
       this.$target.querySelector('#menu-modal') ||
       document.createElement('div');
-    new Menu($menuModal as Element);
 
     const $userModal =
       this.$target.querySelector('#user-modal') ||
       document.createElement('div');
-    new Auth($userModal as Element);
 
     // buttons
     const $categoryBtn = this.$target.querySelector('#category');
     $categoryBtn?.addEventListener('click', () => {
+      new Category($categoryModal as Element, {
+        locationId: this.$state.locationId,
+      });
       $categoryModal.className = 'modal-open';
     });
 
     const $menuBtn = this.$target.querySelector('#menu');
     $menuBtn?.addEventListener('click', () => {
+      new Menu($menuModal as Element);
       $menuModal.className = 'modal-open';
     });
 
     const $userBtn = this.$target.querySelector('#user');
     $userBtn?.addEventListener('click', () => {
+      new Auth($userModal as Element);
       $userModal.className = 'modal-open';
     });
 
@@ -95,7 +131,7 @@ export default class Home extends Component {
         {
           text: '역삼동',
           isWarning: false,
-          onclick: () => console.log('역삼동 설정 완료!!'),
+          // onclick: () => console.log('역삼동 설정 완료!!'),
         },
         {
           text: '내 동네 설정하기',
@@ -104,14 +140,6 @@ export default class Home extends Component {
         },
       ],
       offset: 'center',
-    });
-
-    const $backBtns = this.$target.querySelectorAll('#left');
-    $backBtns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const modal = btn.parentNode?.parentNode?.parentNode as Element;
-        modal.className = 'modal-close';
-      });
     });
   }
 }

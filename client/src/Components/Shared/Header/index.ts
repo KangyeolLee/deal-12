@@ -7,11 +7,12 @@ interface HeaderProps {
   headerType: HeaderType;
   title?: string;
   extraIconName?: string;
+  isLogin?: string;
 }
 
 export default class Header extends Component {
   template() {
-    const { headerType, title }: HeaderProps = this.$props;
+    const { headerType, title, isLogin }: HeaderProps = this.$props;
 
     switch (headerType) {
       case 'main':
@@ -23,8 +24,12 @@ export default class Header extends Component {
               <div>${title}</div>
             </div>
             <div class="header__right-icon" style="display: flex;">
-                <div id="user" style="margin-right: 1.6rem"></div>
-                <div id="menu"></div>
+                <div id="user"></div>
+                ${
+                  isLogin
+                    ? '<div id="menu"  style="margin-left: 1.6rem"></div>'
+                    : ''
+                }
             </div>
         </div>`;
 
@@ -69,9 +74,11 @@ export default class Header extends Component {
           name: 'user',
         });
         const $menu = this.$target.querySelector('#menu');
-        new IconButton($menu as Element, {
-          name: 'menu',
-        });
+        if ($menu) {
+          new IconButton($menu as Element, {
+            name: 'menu',
+          });
+        }
         const $loc = this.$target.querySelector('#loc');
         new IconButton($loc as Element, {
           name: 'pinmap-white',
