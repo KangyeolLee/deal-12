@@ -88,7 +88,6 @@ export default class ChatDetail extends Component {
 
     const $rightBtn = this.$target.querySelector('#right');
     $rightBtn?.addEventListener('click', () => {
-      console.log('asdf');
       ($modal as HTMLElement).classList.add('modal-open');
     });
   }

@@ -50,7 +50,6 @@ export default class Menu extends Component {
     })
       .then((res) => res.json())
       .then(({ result }) => {
-        console.log(result);
         this.setState({ sells: result });
       });
 

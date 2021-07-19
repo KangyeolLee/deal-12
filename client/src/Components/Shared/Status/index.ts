@@ -37,12 +37,12 @@ export default class Status extends Component {
         {
           text: '예약중으로 변경',
           isWarning: false,
-          onclick: () => console.log('예약중'),
+          // onclick: () => console.log('예약중'),
         },
         {
           text: '판매완료로 변경',
           isWarning: false,
-          onclick: () => console.log('판매완료'),
+          // onclick: () => console.log('판매완료'),
         },
       ],
       offset: 'left',

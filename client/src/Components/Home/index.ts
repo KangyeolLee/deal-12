@@ -30,7 +30,6 @@ export default class Home extends Component {
         })
           .then((res) => res.json())
           .then(({ result }) => {
-            console.log(result);
             this.setState({ items: result });
           });
       });
@@ -106,7 +105,7 @@ export default class Home extends Component {
         {
           text: '역삼동',
           isWarning: false,
-          onclick: () => console.log('역삼동 설정 완료!!'),
+          // onclick: () => console.log('역삼동 설정 완료!!'),
         },
         {
           text: '내 동네 설정하기',

@@ -128,7 +128,6 @@ export default class CategoryListItem extends Component {
       'click',
       '.item-box',
       ({ target }: { target: HTMLElement }) => {
-        console.log(target.className);
         if (target.className === 'icon-btn') {
           this.setState({ isLiked: !this.$state.isLiked });
         } else {

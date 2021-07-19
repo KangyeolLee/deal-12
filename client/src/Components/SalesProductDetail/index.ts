@@ -88,12 +88,12 @@ export default class SalesProductDetail extends Component {
         {
           text: '수정하기',
           isWarning: false,
-          onclick: () => console.log('수정이벤트 발생'),
+          // onclick: () => console.log('수정이벤트 발생'),
         },
         {
           text: '삭제하기',
           isWarning: true,
-          onclick: () => console.log('삭제이벤트 발생'),
+          // onclick: () => console.log('삭제이벤트 발생'),
         },
       ],
       offset: 'right',
