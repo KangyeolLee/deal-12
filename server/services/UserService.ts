@@ -18,16 +18,14 @@ export const UserService = {
 
   updateUser: async ({ nickname, location1_id, location2_id }: UserType) => {
     const connection = await mysql.createConnection(config);
-    const { err, results } = await connection.query(
+    const results = await connection.query(
       `UPDATE post SET location1_id=${location1_id} location2_id=${location2_id} WHERE nickname=${nickname};`
     );
-    if (err) throw Error;
-    connection.end();
-    return results;
+    return results[0];
   },
 
-  findUserByUsername: async ({ nickname }: { nickname: string }) => {
+  findUserByNickname: async ({ nickname }: { nickname: string }) => {
     const result = await execQuery(FIND_BY_USER_NICKNAME({ nickname }));
-    return result[0];
+    return result;
   },
 };

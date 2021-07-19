@@ -12,11 +12,21 @@ import express from 'express';
 import { LocationController } from '../controllers/LocationController';
 import { PostController } from '../controllers/PostController';
 import { UserController } from '../controllers/UserController';
+import { authenticateAccessToken } from '../middlewares/authenticate';
 
 const usersRouter = express.Router();
 
-usersRouter.get('/me/like/posts', PostController.getPostLikesByUserId);
-usersRouter.get('/me/locations', LocationController.getLocationsByUserId);
-usersRouter.put('/me/locations', UserController.updateUser);
+usersRouter.get(
+  '/like/posts',
+  authenticateAccessToken,
+  PostController.getPostInterestsByUserNickname
+);
+usersRouter.get(
+  '/posts',
+  authenticateAccessToken,
+  PostController.getPostBySellerNickname
+);
+usersRouter.get('/locations', LocationController.getLocationsByUserId);
+usersRouter.put('/locations', UserController.updateUser);
 
 export default usersRouter;

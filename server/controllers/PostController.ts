@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { PostService, PostType } from '../services/post/PostService';
-import { PostLikeService } from '../services/post/PostLikeService';
+import { PostInterestService } from '../services/post/PostInterestService';
 import { UserType } from '../services/UserService';
 
 const createPost = (req: Request, res: Response) => {
@@ -22,16 +22,33 @@ const getPosts = (req: Request, res: Response) => {
   }
 };
 
-const getPostByUserId = (req: Request, res: Response) => {
-  const { user_id } = req.body;
+const getPostBySellerNickname = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    PostService.findPostByUserId(user_id);
-    return res.status(200).json({
-      message: 'OK',
+    const result = await PostService.findPostBySellerNickname({
+      nickname: req.user.id,
     });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json(err);
+    res.status(200).json({ result });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getPostInterestsByUserNickname = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const result = await PostInterestService.findPostInterestsByUserNickname({
+      nickname: req.user.id,
+    });
+    res.status(200).json({ result });
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -54,27 +71,23 @@ const updatePostState = () => {
   PostService.updatePostState();
 };
 
-const creatPostLike = () => {
-  PostLikeService.createPostLikeService();
+const creatPostInterest = () => {
+  PostInterestService.createPostInterest();
 };
 
-const deletePostLike = () => {
-  PostLikeService.deletePostLikeService();
-};
-
-const getPostLikesByUserId = () => {
-  PostLikeService.findPostLikesByUserIdService();
+const deletePostInterest = () => {
+  PostInterestService.deletePostInterest();
 };
 
 export const PostController = {
   createPost,
   getPosts,
-  getPostByUserId,
+  getPostBySellerNickname,
   deletePost,
   getPostById,
   updatePost,
   updatePostState,
-  creatPostLike,
-  deletePostLike,
-  getPostLikesByUserId,
+  creatPostInterest,
+  deletePostInterest,
+  getPostInterestsByUserNickname,
 };

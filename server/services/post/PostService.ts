@@ -1,3 +1,5 @@
+import { execQuery } from '../../database/database';
+import { FIND_POST_BY_USER_NICKNAME } from '../../queries/post';
 import { UserType } from '../UserService';
 
 export type PostType = {
@@ -35,8 +37,9 @@ export const PostService = {
     return `SELECT * FROM post limit 25 offset 1;`;
   },
 
-  findPostByUserId: (user_id: number) => {
-    return `SELECT * FROM post WHERE user_id=${user_id};`;
+  findPostBySellerNickname: async ({ nickname }: { nickname: string }) => {
+    const data = await execQuery(FIND_POST_BY_USER_NICKNAME({ nickname }));
+    return data;
   },
 
   findPostById: (post_id: number) => {
