@@ -1,14 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import { PostService, PostType } from '../services/post/PostService';
 import { PostInterestService } from '../services/post/PostInterestService';
-import { UserType } from '../services/UserService';
 
 const createPost = (req: Request, res: Response) => {
   const post = req.body;
   try {
     PostService.cratePost(post);
   } catch (err) {
-    console.error(err);
     res.status(500).json(err);
   }
 };

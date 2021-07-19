@@ -19,6 +19,16 @@ html {
   display: none !important;
 }
 
+.no-data {
+  @include text-small;
+  color: $grey3;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .iphone {
   width: 39rem;
   height: 84.4rem;

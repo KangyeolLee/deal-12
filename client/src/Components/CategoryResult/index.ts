@@ -27,21 +27,25 @@ export default class CategoryResult extends Component {
     `;
   }
   mounted() {
-    const { category }: { category: { id: number; name: string } } =
-      this.$props;
-
     const $header = this.$target.querySelector('header');
     new Header($header as Element, {
-      title: category.name,
+      title: this.$props.category.name,
       headerType: 'menu-off-white',
     });
 
-    const $itemList = this.$target.querySelector('#result-item-list');
-    this.$state.list.forEach((item: CategoryListItemProps) => {
-      const $item = document.createElement('div');
-      $itemList?.append($item);
-      new CategoryListItem($item as Element, item);
-    });
+    const $itemList = this.$target.querySelector(
+      '#result-item-list'
+    ) as Element;
+    if (this.$state.items.length > 0) {
+      this.$state.items.forEach((item: CategoryListItemProps) => {
+        const $item = document.createElement('div');
+        $itemList?.append($item);
+        new CategoryListItem($item, item);
+      });
+    } else {
+      $itemList.innerHTML = '해당 카테고리에 대한 상품이 없습니다.';
+      $itemList.className = 'no-data';
+    }
 
     const $backBtn = this.$target.querySelector('#left');
     $backBtn?.addEventListener('click', () => {

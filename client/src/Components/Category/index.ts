@@ -59,12 +59,12 @@ export default class Category extends Component {
 
     const wrapper = this.$target.querySelector('.category-wrapper');
     this.$state.categories.forEach((category: any) => {
-      console.log(this.$state.categories, category);
       const $button = document.createElement('div');
       new CategoryBtn($button as Element, {
         category,
         handleCategory: (category: string) => {
           this.setState({ category: category });
+          const $result = this.$target.querySelector('#category-result-modal');
           new CategoryResult($result as Element, {
             category: this.$state.category,
             locationId: this.$props.locationId,
@@ -76,12 +76,6 @@ export default class Category extends Component {
       });
       wrapper?.append($button);
     });
-
-    const $result = this.$target.querySelector('#category-result-modal');
-    // new CategoryResult($result as Element, {
-    //   category: this.$state.category,
-    //   locationId: this.$state.locationId,
-    // });
 
     const $backBtn = this.$target.querySelector('#left');
     $backBtn?.addEventListener('click', () => {

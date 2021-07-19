@@ -42,7 +42,6 @@ class LikeBtn extends Component {
 
 export default class CategoryListItem extends Component {
   template() {
-    // console.log(this.$props);
     const {
       title,
       price,
