@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { PostService, PostType } from '../services/post/PostService';
 import { PostInterestService } from '../services/post/PostInterestService';
 import { UserType } from '../services/UserService';
@@ -13,12 +13,15 @@ const createPost = (req: Request, res: Response) => {
   }
 };
 
-const getPosts = (req: Request, res: Response) => {
+const getPosts = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    PostService.findPosts();
+    const { locationId, categoryId } = req.params;
+    const result = await PostService.findPosts({ location_id: +locationId , category_id: +categoryId});
+    res.status(200).json({
+      result,
+    })
   } catch (err) {
-    console.error(err);
-    return res.status(500).json(err);
+    next(err)
   }
 };
 
@@ -58,19 +61,57 @@ const deletePost = () => {
   } catch (error) {}
 };
 
-const getPostById = () => {
-  PostService.findPostById;
-  PostService.updatePostViewCount();
+const getPostById = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { postId } = req.params;
+    const result = await PostService.findPostById(+postId);
+    await PostService.updatePostViewCount(+postId);
+    res.status(200).json({
+      result,
+    })
+  } catch (error) {
+    next(error);
+  }
 };
 
 const updatePost = () => {
-  PostService.updatePost();
+  // PostService.updatePost();
 };
 
 const updatePostState = () => {
   PostService.updatePostState();
 };
 
+const creatPostLike = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const { postId } = req.params;
+    const user_id = req.user.id || 1;  // user_id 받아와야 함미다
+    // const result = await PostInterestService.createPostLikeService({post_id: +postId, user_id});  
+    // console.log(result);
+    res.status(200).json({
+      message: 'success create like',
+    })
+  } catch (error) {
+    next(error); 
+  }
+};
+
+const deletePostLike =  async (req: Request, res: Response, next: NextFunction) => {
+  
+};
+
+const getPostLikesByUserId = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const { postId } = req.params;
+    const user_id = 1;
+    // const result = await PostInterestService.findPostLikesByUserIdService({ post_id: +postId, user_id });
+    res.status(200).json({
+      // result,
+    })
+  } catch (error) {
+    next(error)
+  }
+}
 const creatPostInterest = () => {
   PostInterestService.createPostInterest();
 };
@@ -90,4 +131,4 @@ export const PostController = {
   creatPostInterest,
   deletePostInterest,
   getPostInterestsByUserNickname,
-};
+}
