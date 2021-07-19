@@ -2,7 +2,7 @@
 2주차 3조 팀 12 - [이정민](https://github.com/danmin20) [이강열](https://github.com/KangyeolLee)
 
 ## Tect Stack
-`Typescript` `Webpack` `Babel` `Node.js` `Express` `SCSS`
+`Typescript` `Webpack` `Babel` `Node.js` `Express` `SCSS` `JWT` `MySQL` 
 
 ## Wiki
 - [Convention](https://github.com/woowa-techcamp-2021/deal-12/wiki)
