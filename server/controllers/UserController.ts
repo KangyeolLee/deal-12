@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { UserService, UserType } from '../services/UserService';
+import jwt, { Secret } from 'jsonwebtoken';
 
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -38,10 +39,25 @@ const getUserById = () => {
 };
 
 const login = async (req: Request, res: Response) => {
-  const { user_id } = req.body;
+  const { nickname } = req.body;
+
   try {
-    UserService.findUserByUsername(user_id);
-    return res.status(200).json({ message: 'OK' });
+    UserService.findUserByUsername(nickname);
+
+    // access token을 secret key 기반으로 생성
+    const generateAccessToken = (nickname: string) => {
+      return jwt.sign(
+        { id: nickname },
+        process.env.ACCESS_TOKEN_SECRET as Secret,
+        {
+          expiresIn: '15m',
+        }
+      );
+    };
+
+    let accessToken = generateAccessToken(nickname);
+
+    return res.status(200).json({ accessToken });
   } catch (err) {
     return res.status(403).json(err);
   }
