@@ -4,8 +4,10 @@
 import express from 'express';
 import { UserController } from '../controllers/UserController';
 
-export const router = express.Router();
+const authRouter = express.Router();
 
-router.post('/login', UserController.login);
-router.get('/register', UserController.createUser);
-router.get('/logout', UserController.logout);
+authRouter.post('/login', UserController.login);
+authRouter.post('/register', UserController.createUser);
+authRouter.get('/logout', UserController.logout);
+
+export default authRouter;

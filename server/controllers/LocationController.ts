@@ -1,14 +1,33 @@
+import { Request, Response, NextFunction } from 'express';
 import { LocationService } from '../services/LocationService';
 
-const getLocations = () => {
+const getLocations = async (req: Request, res: Response) => {
   try {
-    LocationService.findLocations;
-  } catch (error) {}
+    const result = await LocationService.findLocations();
+    res.status(200).json({
+      message: 'ok',
+      result,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 };
-const getLocationsByUserId = () => {
+
+const getLocationsByUserId = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    LocationService.findLocationsByUserId;
-  } catch (error) {}
+    const nickname = req.body.nickname || '우아한나그네';
+    const result = await LocationService.findLocationsByUserId({ nickname });
+    res.status(200).json({
+      message: 'ok',
+      result,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const LocationController = {
