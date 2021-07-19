@@ -6,7 +6,10 @@ dayjs.locale('ko');
 dayjs.extend(relativeTime);
 
 export const token = () => {
-  return `Bearer ${localStorage.getItem('token')}`;
+  if (localStorage.getItem('token')) {
+    return `Bearer ${localStorage.getItem('token')}`;
+  }
+  return '';
 };
 
 const isToday = (date: Date) => {

@@ -1,7 +1,6 @@
 import './styles';
 import Component from '../../core/Component';
 import Button from './../Shared/Button/index';
-import { $router } from '../../lib/router';
 
 export default class Logout extends Component {
   setup() {
@@ -24,12 +23,15 @@ export default class Logout extends Component {
     new Button($logoutBtn as HTMLElement, {
       buttonType: 'large',
       title: '로그아웃',
-      // handleClick: () => console.log('로그아웃 폼 제출!'),
+      handleClick: () => {
+        localStorage.clear();
+        (this.$target.parentNode as Element).className = 'modal-close';
+      },
     });
 
     const $backBtn = this.$target.querySelector('#left');
     $backBtn?.addEventListener('click', () => {
-      $router.push('/home');
+      this.$target.className = 'modal-close';
     });
   }
 }
