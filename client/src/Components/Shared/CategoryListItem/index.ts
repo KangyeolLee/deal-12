@@ -6,6 +6,7 @@ import './styles.scss';
 import { getTimestamp } from '../../../lib/util';
 
 export interface CategoryListItemProps {
+  id: number;
   title: string;
   thumbnail: string;
   price: number;
@@ -19,8 +20,15 @@ export interface CategoryListItemProps {
 class LikeBtn extends Component {
   setup() {
     this.$state = {
-      isLiked: false, // getLikes 해서 현재 postId와 비교
+      isLiked: false,
     };
+    fetch(`/api/posts/${this.$props.postId}/interest`, {
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then(({ result }) => {
+        console.log('asdfasdf', result);
+      });
   }
   template() {
     return `<div></div>`;
@@ -102,7 +110,9 @@ export default class CategoryListItem extends Component {
         pageName,
       });
     } else {
-      new LikeBtn($iconBtn as Element);
+      new LikeBtn($iconBtn as Element, {
+        postId: this.$props.id,
+      });
     }
 
     // small icons
@@ -127,9 +137,7 @@ export default class CategoryListItem extends Component {
       'click',
       '.item-box',
       ({ target }: { target: HTMLElement }) => {
-        if (target.className === 'icon-btn') {
-          this.setState({ isLiked: !this.$state.isLiked });
-        } else {
+        if (target.className !== 'icon-btn') {
           $router.push('/post/1');
         }
       }

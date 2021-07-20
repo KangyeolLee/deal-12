@@ -1,4 +1,3 @@
-
 import express from 'express';
 import { PostController } from '../controllers/PostController';
 
@@ -14,6 +13,7 @@ postsRouter.get('/:postId', PostController.getPostById);
 postsRouter.put('/:postId', PostController.updatePost);
 postsRouter.put('/:postId/state', PostController.updatePostState);
 postsRouter.delete('/:postId', PostController.deletePost);
+postsRouter.get('/:postId/interest', PostController.getPostInterestByUserId);
 postsRouter.post('/:postId/interest', PostController.creatPostInterest);
 postsRouter.delete('/:postId/interest', PostController.deletePostInterest);
 

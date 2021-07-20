@@ -1,6 +1,16 @@
 import { execQuery } from '../../database/database';
-import { CREATE_POST, DELETE_POST, FIND_POST_BY_USER_NICKNAME, UPDATE_POST, UPDATE_POST_STATE_BY_POSTID } from '../../queries/post';
-import { FIND_ALL_POSTS, FIND_POST_BY_POSTID, UPDATE_POST_VIEWCOUNT } from '../../queries/post';
+import {
+  CREATE_POST,
+  DELETE_POST,
+  FIND_POST_BY_USER_NICKNAME,
+  UPDATE_POST,
+  UPDATE_POST_STATE_BY_POSTID,
+} from '../../queries/post';
+import {
+  FIND_ALL_POSTS,
+  FIND_POST_BY_POSTID,
+  UPDATE_POST_VIEWCOUNT,
+} from '../../queries/post';
 
 export type PostType = {
   title: string;
@@ -15,7 +25,7 @@ export type PostType = {
   interest_count: number;
 };
 
-export type PostUpdateTYpe = {
+export type PostUpdateType = {
   post_id: number;
   title?: string;
   location_id?: number;
@@ -27,7 +37,7 @@ export type PostUpdateTYpe = {
   state?: string;
   thumbnail?: string;
   interest_count?: number;
-}
+};
 
 export const PostService = {
   cratePost: async ({
@@ -42,11 +52,30 @@ export const PostService = {
     state,
     thumbnail,
   }: PostType) => {
-    const data = await execQuery(CREATE_POST({ title, location_id, category_id, view_count, content, price, seller_id, state, thumbnail, interest_count }));
+    const data = await execQuery(
+      CREATE_POST({
+        title,
+        location_id,
+        category_id,
+        view_count,
+        content,
+        price,
+        seller_id,
+        state,
+        thumbnail,
+        interest_count,
+      })
+    );
     return data;
   },
 
-  findPosts: async ({ location_id, category_id }: { location_id : number, category_id?: number }) => {
+  findPosts: async ({
+    location_id,
+    category_id,
+  }: {
+    location_id: number;
+    category_id?: number;
+  }) => {
     const data = await execQuery(FIND_ALL_POSTS({ location_id, category_id }));
     return data;
   },
@@ -57,7 +86,7 @@ export const PostService = {
   },
 
   findPostById: async (post_id: number) => {
-    const data = await execQuery(FIND_POST_BY_POSTID({ post_id} ));
+    const data = await execQuery(FIND_POST_BY_POSTID({ post_id }));
     return data;
   },
 
@@ -65,16 +94,44 @@ export const PostService = {
     const data = await execQuery(UPDATE_POST_VIEWCOUNT({ post_id }));
     return data;
   },
-  updatePost: async ({post_id, title, price, content, location_id, category_id, state, thumbnail}: PostUpdateTYpe) => {
-    const data = await execQuery(UPDATE_POST({post_id, title, price, content, location_id, category_id, state, thumbnail}));
+  updatePost: async ({
+    post_id,
+    title,
+    price,
+    content,
+    location_id,
+    category_id,
+    state,
+    thumbnail,
+  }: PostUpdateType) => {
+    const data = await execQuery(
+      UPDATE_POST({
+        post_id,
+        title,
+        price,
+        content,
+        location_id,
+        category_id,
+        state,
+        thumbnail,
+      })
+    );
     return data;
   },
-  updatePostState: async ({ post_id, state }: { post_id: number, state: string}) => {
-    const data = await execQuery(UPDATE_POST_STATE_BY_POSTID({ post_id, state }));
+  updatePostState: async ({
+    post_id,
+    state,
+  }: {
+    post_id: number;
+    state: string;
+  }) => {
+    const data = await execQuery(
+      UPDATE_POST_STATE_BY_POSTID({ post_id, state })
+    );
     return data;
   },
   deletePost: async (post_id: number) => {
-    const data = await execQuery(DELETE_POST({post_id}));
+    const data = await execQuery(DELETE_POST({ post_id }));
     return data;
   },
 };
