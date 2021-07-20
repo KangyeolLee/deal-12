@@ -6,6 +6,8 @@ import ChatBubble from '../Shared/ChatBubble';
 import ChatBar from '../Shared/ChatBar/index';
 import { $router } from '../../lib/router';
 import InputPopup from './../Shared/InputPopup/indext';
+import { socket } from '../../main';
+import { token } from '../../lib/util';
 
 interface ChatBubbleType {
   userId: string;
@@ -15,32 +17,23 @@ interface ChatBubbleType {
 }
 
 // UI 확인용 임시 더미데이터
-const dummyChatBubblesData: ChatBubbleType[] = [
-  {
-    userId: 'userE',
-    message: '안녕하세요! 궁금한게 있는데요',
-    checked: true,
-    roomId: 1,
-  },
-  { userId: 'userA', message: '네 안녕하세요!', checked: true, roomId: 1 },
-  { userId: 'userE', message: '혹시', checked: true, roomId: 1 },
-  {
-    userId: 'userE',
-    message: '실제로 신어볼 수 있는건가요??',
-    checked: false,
-    roomId: 1,
-  },
-];
 
 export default class ChatDetail extends Component {
   setup() {
-    // UI 확인용 임시 더미데이터
     this.$state = {
-      title: '우아한 옷 팔아요',
-      image:
-        'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
-      price: '169,000원',
+      me: {},
     };
+    fetch('/api/me', {
+      method: 'GET',
+      headers: {
+        Authorization: token(),
+      },
+    })
+      .then((res) => res.json())
+      .then(({ user }) => {
+        console.log(user);
+        this.setState({ me: user });
+      });
   }
 
   template() {
@@ -57,7 +50,6 @@ export default class ChatDetail extends Component {
 
   mounted() {
     const $header = this.$target.querySelector('header');
-    const $chatBubbles = this.$target.querySelector('.chat-bubbles');
     const $chatbar = this.$target.querySelector('.chatbar');
     const $productInfo = this.$target.querySelector('.product-info');
     const $modal = this.$target.querySelector('.chat-modal');
@@ -77,11 +69,24 @@ export default class ChatDetail extends Component {
       inputType: 'alert',
     });
 
-    dummyChatBubblesData.forEach((chat: ChatBubbleType) => {
+    const $chatBubbles = this.$target.querySelector('.chat-bubbles');
+    socket.on('server', (id, message) => {
+      console.log(id, message); // x8WIv7-mJelg7on_ALbx
       const $chatItem = document.createElement('div');
       $chatBubbles?.append($chatItem);
-      new ChatBubble($chatItem as HTMLElement, chat);
+      new ChatBubble($chatItem as HTMLElement, {
+        myId: this.$state.me.id,
+        fromId: id,
+        message,
+      });
+      (this.$target.querySelector('input') as HTMLInputElement).value = '';
     });
+
+    // dummyChatBubblesData.forEach((chat: ChatBubbleType) => {
+    //   const $chatItem = document.createElement('div');
+    //   $chatBubbles?.append($chatItem);
+    //   new ChatBubble($chatItem as HTMLElement, chat);
+    // });
 
     const $backBtn = $header?.querySelector('#left');
     $backBtn?.addEventListener('click', () => $router.push('/chat'));
@@ -89,6 +94,17 @@ export default class ChatDetail extends Component {
     const $rightBtn = this.$target.querySelector('#right');
     $rightBtn?.addEventListener('click', () => {
       ($modal as HTMLElement).classList.add('modal-open');
+    });
+  }
+
+  setEvent() {
+    this.addEvent('click', '.send-button', () => {
+      console.log('asdf');
+      socket.emit(
+        'client',
+        this.$state.me.id,
+        this.$target.querySelector('input')?.value
+      );
     });
   }
 }

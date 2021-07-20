@@ -55,7 +55,7 @@ export default class InputPopup extends Component {
   setEvent() {
     const { inputType } = this.$props;
     const $modal = this.$target;
-    const $input = this.$target.querySelector('input');
+    const error = document.querySelector('.error')?.innerHTML;
 
     this.addEvent('click', '.close-btn', turnOffModal);
 
@@ -64,30 +64,42 @@ export default class InputPopup extends Component {
     }
 
     if (inputType === 'location') {
-      this.addEvent('input', 'input', () => {
-        const $confirmBtn = this.$target.querySelector('.confirm-btn');
+      this.addEvent(
+        'input',
+        'input',
+        ({ target }: { target: HTMLInputElement }) => {
+          const $confirmBtn = this.$target.querySelector('.confirm-btn');
 
-        if ($input?.value) {
-          $confirmBtn?.classList.add('on');
-          return;
+          if (target.value && !error) {
+            $confirmBtn?.classList.add('on');
+            return;
+          }
+
+          $confirmBtn?.classList.remove('on');
         }
+      );
 
-        $confirmBtn?.classList.remove('on');
-      });
+      this.addEvent('click', '.confirm-btn', () => {
+        const $input = this.$target.querySelector('input');
 
-      this.addEvent('#confirm-btn', 'click', () => {
-        fetch('/api/me/locations', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token(),
-          },
-          body: JSON.stringify({
-            user: {
-              location2_id: $input?.value,
+        if ($input?.value && !error) {
+          const locId = this.$state.locations.find(
+            (loc: any) => loc.name === $input.value
+          ).id;
+
+          fetch('/api/me/locations', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': token(),
             },
-          }),
-        }).then((r) => console.log(r));
+            body: JSON.stringify({
+              user: {
+                location2_id: locId,
+              },
+            }),
+          }).then((r) => console.log(r));
+        }
       });
     }
   }

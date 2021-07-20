@@ -135,12 +135,10 @@ export default class Home extends Component {
     if (this.$state.isLogin) {
       new Dropdown($locationBtn as HTMLElement, {
         lists:
-          this.$state.locations.length > 0
+          this.$state.locations.length > 1
             ? [
                 {
-                  text: this.$state.locations.find(
-                    (loc: any) => loc.name !== this.$state.locationName
-                  ).name,
+                  text: this.$state.locations[1].name,
                   isWarning: false,
                   onclick: () => {
                     // update하고 새로고침
