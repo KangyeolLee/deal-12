@@ -14,33 +14,32 @@ export default class SalesProductDetail extends Component {
     this.$state = {
       isLogin: false,
       isMine: false,
-    }
+    };
     const postId = location.href.split('post/')[1];
 
     fetch(`/api/posts/${postId}`)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         const { result } = data;
         const postDetail = result[0];
-        this.setState(postDetail)
+        this.setState(postDetail);
       });
 
-    if(token()) {
+    if (token()) {
       const headers = new Headers();
       headers.append('Authorization', token());
 
-      const isLogin = { isLogin: true }
+      const isLogin = { isLogin: true };
 
       fetch(`/api/posts/${postId}/check`, {
         method: 'GET',
-        headers
+        headers,
       })
-        .then(res => res.json())
-        .then(data => {
-          this.setState({...data, ...isLogin});
+        .then((res) => res.json())
+        .then((data) => {
+          this.setState({ ...data, ...isLogin });
         });
     }
-
   }
 
   template() {
@@ -86,14 +85,14 @@ export default class SalesProductDetail extends Component {
     new ProductBar($productDetail as Element, {
       price: translatePriceToTrimmed(price),
       isMine,
-      isLogin
+      isLogin,
     });
 
     new ImgNavigation($imageWrapper as HTMLElement, {
       images: this.$state.images,
     });
 
-    new InfoSaler($userSpecification as HTMLLIElement, {nickname, name});
+    new InfoSaler($userSpecification as HTMLLIElement, { nickname, name });
 
     if (isMine) {
       new Status($status as Element, {
