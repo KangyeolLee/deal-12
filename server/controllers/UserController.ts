@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { UserService, UserType } from '../services/UserService';
+import { UserService } from '../services/UserService';
 import jwt, { Secret } from 'jsonwebtoken';
 
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
@@ -23,10 +23,11 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const updateUser = async (req: Request, res: Response, next: NextFunction) => {
+const updateUser = async (req: any, res: Response, next: NextFunction) => {
   try {
+    const { nickname } = req.user;
     const user = req.body;
-    const result = await UserService.updateUser(user);
+    const result = await UserService.updateUserLocation({ ...user, nickname });
     return res.status(200).json({
       message: 'success update locations',
       result,

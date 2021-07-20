@@ -31,11 +31,10 @@ export default class Home extends Component {
       })
         .then((res) => res.json())
         .then(({ result }) => {
-          console.log(result);
           this.setState({
             locationId: result[0].location1_id,
             locationName: result[0].name,
-            locations: result[0],
+            locations: result,
           });
         })
         .then(() => {
@@ -141,9 +140,24 @@ export default class Home extends Component {
                 {
                   text: this.$state.locations.find(
                     (loc: any) => loc.name !== this.$state.locationName
-                  ),
+                  ).name,
                   isWarning: false,
-                  // onclick: () => console.log('역삼동 설정 완료!!'),
+                  onclick: () => {
+                    // update하고 새로고침
+                    fetch('/api/me/locations', {
+                      method: 'PUT',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token(),
+                      },
+                      body: JSON.stringify({
+                        user: {
+                          location1_id: this.$state.locations[1],
+                          location2_id: this.$state.locations[0],
+                        },
+                      }),
+                    }).then((r) => console.log(r));
+                  },
                 },
                 {
                   text: '내 동네 설정하기',

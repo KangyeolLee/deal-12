@@ -2,6 +2,7 @@ import './styles';
 import Component from '../../../core/Component';
 import TextInput from './../TextInput/index';
 import LocationInput from '../LocationInput';
+import { token } from '../../../lib/util';
 
 export default class InputPopup extends Component {
   setup() {
@@ -54,6 +55,8 @@ export default class InputPopup extends Component {
   setEvent() {
     const { inputType } = this.$props;
     const $modal = this.$target;
+    const $input = this.$target.querySelector('input');
+
     this.addEvent('click', '.close-btn', turnOffModal);
 
     function turnOffModal() {
@@ -63,7 +66,6 @@ export default class InputPopup extends Component {
     if (inputType === 'location') {
       this.addEvent('input', 'input', () => {
         const $confirmBtn = this.$target.querySelector('.confirm-btn');
-        const $input = this.$target.querySelector('input');
 
         if ($input?.value) {
           $confirmBtn?.classList.add('on');
@@ -71,6 +73,21 @@ export default class InputPopup extends Component {
         }
 
         $confirmBtn?.classList.remove('on');
+      });
+
+      this.addEvent('#confirm-btn', 'click', () => {
+        fetch('/api/me/locations', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token(),
+          },
+          body: JSON.stringify({
+            user: {
+              location2_id: $input?.value,
+            },
+          }),
+        }).then((r) => console.log(r));
       });
     }
   }
