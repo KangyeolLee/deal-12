@@ -19,8 +19,10 @@ export default class Header extends Component {
       case 'main':
         return `
         <div class="header main">
-            <div class="header__left-icon" id="category"></div>
-            <div class="location">
+            <div class="header__left-icon ${
+              !isLogin ? 'not-clickable' : ''
+            }" id="category"></div>
+            <div class="location ${!isLogin ? 'not-clickable' : ''}">
               <div id="loc" style="width: 1.6rem; height: 1.6rem; overflow: hidden; margin-right: 0.4rem;"></div>
               <div>${title}</div>
             </div>
