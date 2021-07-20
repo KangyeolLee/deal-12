@@ -146,7 +146,7 @@ const updatePost = async (req: any, res: Response, next: NextFunction) => {
 const updatePostState = async (req: any, res: Response, next: NextFunction) => {
   try {
     const { postId } = req.params;
-    const state = '수정할 상태값';
+    const { state } = req.body;
     const result = await PostService.updatePostState({
       post_id: +postId,
       state,
