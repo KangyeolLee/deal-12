@@ -16,6 +16,8 @@ import { authenticateAccessToken } from '../middlewares/authenticate';
 
 const usersRouter = express.Router();
 
+usersRouter.get('/', authenticateAccessToken, UserController.getUserByNickname);
+
 // @ GET 요청
 // 로그인 한 유저의 관심 포스트 목록
 usersRouter.get(

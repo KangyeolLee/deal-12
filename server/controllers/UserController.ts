@@ -21,10 +21,7 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     const result = await UserService.createUser(user);
-    res.status(200).json({
-      message: 'ok',
-      result,
-    });
+    res.status(200).json({ result });
   } catch (error) {
     next(error);
   }
@@ -43,14 +40,29 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const getUserByNickname = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
+  const { nickname } = req.user;
+
+  try {
+    const result = await UserService.findUserByNickname({ nickname });
+    const user = result[0];
+
+    res.status(200).json({ user });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const login = async (req: any, res: Response, next: NextFunction) => {
   const { nickname } = req.body;
 
   try {
     const result = await UserService.findUserByNickname({ nickname });
     const user = result[0];
-
-    console.log(user);
 
     if (result.length > 0) {
       // access token을 secret key 기반으로 생성
@@ -79,12 +91,9 @@ const login = async (req: any, res: Response, next: NextFunction) => {
 
 const logout = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    res
-      .status(200)
-      .json({
-        message: 'user logout',
-      })
-      .redirect('/'); // 추후 배포시 서버에서 첫 화면을 배포하는 주소로 재지정 필요
+    res.status(200).json({
+      message: 'user logout',
+    });
   } catch (error) {
     next(error);
   }
@@ -95,4 +104,5 @@ export const UserController = {
   updateUser,
   login,
   logout,
+  getUserByNickname,
 };
