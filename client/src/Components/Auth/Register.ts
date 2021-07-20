@@ -26,13 +26,16 @@ export default class Register extends Component {
       <form id="register-form">
         <label for="userId">아이디
           <div class="user-email"></div>
+          <div style="position: relative;">
+            <div id="nickname-error" class="error"></div>
+          </div>
         </label>
 
         <label for="userLoc">우리 동네
           <div class="user-location"></div>
           <div style="position: relative;">
             <div id="autocomplete"></div>
-            <div class="error"></div>
+            <div id="loc-error" class="error"></div>
           </div>
         </label>
 
@@ -50,7 +53,12 @@ export default class Register extends Component {
     const $registerBtn = this.$target.querySelector(
       '.register-btn'
     ) as HTMLElement;
-    const $error = this.$target.querySelector('.error') as HTMLDivElement;
+    const $locError = this.$target.querySelector(
+      '#loc-error'
+    ) as HTMLDivElement;
+    const $nicknameError = this.$target.querySelector(
+      '#nickname-error'
+    ) as HTMLDivElement;
 
     new Header($header, {
       title: '회원가입',
@@ -90,7 +98,11 @@ export default class Register extends Component {
               location1_id: id,
             },
           }),
-        }).then((r) => console.log(r));
+        }).then((res) => {
+          if (res.status === 300) {
+            $nicknameError.innerText = '이미 존재하는 닉네임입니다.';
+          }
+        });
       },
     });
 
@@ -101,8 +113,9 @@ export default class Register extends Component {
     this.$target.addEventListener('input', () => {
       const $inputs = this.$target.querySelectorAll('input');
       const isActivated = [...$inputs].every((input) => input.value);
+      $nicknameError.innerText = '';
 
-      if (isActivated && !$error.innerText) {
+      if (isActivated && !$locError.innerText && !$nicknameError.innerText) {
         $button.disabled = false;
       } else {
         $button.disabled = true;
@@ -130,9 +143,9 @@ export default class Register extends Component {
         $autocomplete.className = 'autocomplete';
         errorMessage = '';
       } else {
-        errorMessage = '존재하지 않는 주소입니다.';
+        errorMessage = '올바른 주소를 입력해주세요.';
       }
-      $error.innerText = errorMessage;
+      $locError.innerText = errorMessage;
 
       // 자동완성 template
       let autocomplete = '';
