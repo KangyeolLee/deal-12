@@ -48,8 +48,8 @@ export const DELETE_CHATJOINED = ({
     WHERE chatJoined.room_id = ${room_id} AND chatJoined.user_id = ${user_id};
 `;
 
-// 다른 사용자가 채팅방을 나갔는지 확인
-export const GET_OTHER_CHATJOINED_BY_ROOM_ID = ({
+// 다른 사용자가 채팅방을 나갔는지 확인하기 위함 (상대방에 대한 joined 새로 생성위함)
+export const GET_CHATJOINED_BY_ROOM_ID = ({
   room_id,
   user_id,
 }: {
@@ -75,15 +75,27 @@ export const CREATE_CHAT = ({
     VALUES (${room_id}, '${text}', ${user_id});
 `;
 
+// 메세지 생성되면 last_text 업데이트
+export const UPDATE_LAST_TEXT = ({
+  room_id,
+  text,
+}: {
+  room_id: number;
+  text: string;
+}) => `
+    UPDATE chatRoom SET last_text = '${text}'
+    WHERE id = ${room_id}
+`;
+
 // 내가 참여한 채팅목록 확인 -> 제일 최근 채팅 가져와야 함
-export const GET_CHATROOM_BY_CHATJOINED = ({
+export const GET_CHATROOMS_BY_CHATJOINED = ({
   room_id,
   user_id,
 }: {
   room_id: number;
   user_id: number;
 }) => `
-    SELECT post.thumbnail, seller_id, buyer_id FROM chatJoined
+    SELECT post.thumbnail, seller_id, buyer_id chatRoom.last_text FROM chatJoined
     JOIN chatRoom ON chatRoom.id = ${room_id}
     JOIN post ON post.post_id = chatRoom.id
     WHERE chatJoined.room_id = ${room_id} chatJoined.user_id = ${user_id};
@@ -96,14 +108,14 @@ export const GET_CHATS_BY_CHATROOM_ID = ({ room_id }: { room_id: number }) => `
 `;
 
 // 내가 쓴 포스트에 대한 채팅목록 확인 -> 제일 최근 채팅 가져와야 함
-export const GET_CHATROOM_BY_POST_ID = ({
+export const GET_CHATROOMS_BY_POST_ID = ({
   post_id,
   user_id,
 }: {
   post_id: number;
   user_id: number;
 }) => `
-    SELECT post.thumbnail, buyer_id FROM chatRoom
+    SELECT post.thumbnail, buyer_id last_text FROM chatRoom
     JOIN post ON post.post_id = ${post_id}
     WHERE chatRoom.post_id = ${post_id} AND chatRoom.seller_id = ${user_id};
 `;
