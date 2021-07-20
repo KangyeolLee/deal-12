@@ -15,7 +15,7 @@ export default class TextInput extends Component {
     return `
       <input id="${
         id ? id : ''
-      }" class="text-input size-${size}" placeholder="${placeholder}" type="${type}" />
+      }" autocomplete="off" class="text-input size-${size}" placeholder="${placeholder}" type="${type}" />
     `;
   }
 }

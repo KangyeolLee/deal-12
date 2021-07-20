@@ -16,12 +16,13 @@ export default class Home extends Component {
   setup() {
     this.$state = {
       items: [],
+      locations: [],
       locationId: 0,
       locationName: '',
       isLogin: false,
     };
     if (token()) {
-      var headers = new Headers();
+      const headers = new Headers();
       headers.append('Authorization', token());
 
       fetch('/api/me/locations', {
@@ -34,6 +35,7 @@ export default class Home extends Component {
           this.setState({
             locationId: result[0].id,
             locationName: result[0].name,
+            locations: result[0],
           });
         })
         .then(() => {
@@ -128,18 +130,29 @@ export default class Home extends Component {
 
     const $locationBtn = this.$target.querySelector('.location');
     new Dropdown($locationBtn as HTMLElement, {
-      lists: [
-        {
-          text: '역삼동',
-          isWarning: false,
-          // onclick: () => console.log('역삼동 설정 완료!!'),
-        },
-        {
-          text: '내 동네 설정하기',
-          isWarning: false,
-          onclick: () => $router.push('/location'),
-        },
-      ],
+      lists:
+        this.$state.locations.length > 0
+          ? [
+              {
+                text: this.$state.locations.find(
+                  (loc: any) => loc.name !== this.$state.locationName
+                ),
+                isWarning: false,
+                // onclick: () => console.log('역삼동 설정 완료!!'),
+              },
+              {
+                text: '내 동네 설정하기',
+                isWarning: false,
+                onclick: () => $router.push('/location'),
+              },
+            ]
+          : [
+              {
+                text: '내 동네 설정하기',
+                isWarning: false,
+                onclick: () => $router.push('/location'),
+              },
+            ],
       offset: 'center',
     });
   }

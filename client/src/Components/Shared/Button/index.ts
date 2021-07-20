@@ -21,7 +21,7 @@ export default class Button extends Component {
     }: HeaderProps = this.$props;
 
     return `
-    <button id="button" ${disabled && 'disabled'} class="${buttonType} ${
+    <button id="button" ${disabled ? 'disabled' : ''} class="${buttonType} ${
       isClicked ? 'active' : ''
     }">
         ${title ? title : ''}
