@@ -5,13 +5,11 @@ import './styles';
 export default class LocationInput extends Component {
   template() {
     return `
-    <label for="userLoc">${this.$props.label}
-        <div class="user-location"></div>
-        <div style="position: relative;">
-            <div id="autocomplete"></div>
-            <div id="loc-error" class="error"></div>
-        </div>
-    </label>
+    <div class="user-location"></div>
+    <div style="position: relative;">
+        <div id="autocomplete"></div>
+        <div id="loc-error" class="error"></div>
+    </div>
     `;
   }
 
@@ -51,6 +49,7 @@ export default class LocationInput extends Component {
         $autocomplete.className = 'autocomplete';
         errorMessage = '';
       } else {
+        $autocomplete.className = '';
         errorMessage = '올바른 주소를 입력해주세요.';
       }
       $locError.innerText = errorMessage;

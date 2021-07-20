@@ -74,7 +74,7 @@ export default class ChatDetail extends Component {
     new InputPopup($modal as HTMLElement, {
       message: '정말로 이 채팅방을 나가시겠습니까?',
       btnText: '나기기',
-      isAlert: true,
+      inputType: 'alert',
     });
 
     dummyChatBubblesData.forEach((chat: ChatBubbleType) => {

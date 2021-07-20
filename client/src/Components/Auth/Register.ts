@@ -30,7 +30,10 @@ export default class Register extends Component {
           </div>
         </label>
 
-        <div id="location-input" style="width: 100%"></div>
+        <label for="userLoc">우리 동네
+          <div id="location-input" style="width: 100%">
+          </div>
+        </label>
 
         <div class="register-btn"></div>
       </form>
@@ -63,7 +66,6 @@ export default class Register extends Component {
     });
 
     new LocationInput($locationInput, {
-      label: '우리 동네',
       locations: this.$state.locations,
     });
 

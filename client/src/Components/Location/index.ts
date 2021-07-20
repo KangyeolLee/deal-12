@@ -70,8 +70,8 @@ export default class Location extends Component {
     const $modal = this.$target.querySelector('.location-modal');
     new InputPopup($modal as HTMLElement, {
       message: '우리 동네를 입력하세요.',
+      inputType: 'location',
       btnText: '확인',
-      isAlert: false,
     });
 
     const $backBtn = $header?.querySelector('#left');
