@@ -124,3 +124,9 @@ export const FIND_POST_BY_USER_NICKNAME = ({
       JOIN location ON location.id = post.location_id
     WHERE seller_id=user.id
   `;
+
+  // 내가 작성한 포스트가 맞는지 아닌지 체크하는 쿼리
+  export const FIND_POST_WHETHER_BELONG_TO_ME = ({ post_id, user_id }: {post_id: number, user_id: number }) => `
+    SELECT * FROM post
+    WHERE post.id = ${post_id} AND post.seller_id = ${user_id}
+  `

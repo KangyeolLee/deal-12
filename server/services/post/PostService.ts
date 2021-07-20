@@ -3,6 +3,7 @@ import {
   CREATE_POST,
   DELETE_POST,
   FIND_POST_BY_USER_NICKNAME,
+  FIND_POST_WHETHER_BELONG_TO_ME,
   UPDATE_POST,
   UPDATE_POST_STATE_BY_POSTID,
 } from '../../queries/post';
@@ -134,4 +135,9 @@ export const PostService = {
     const data = await execQuery(DELETE_POST({ post_id }));
     return data;
   },
+  checkMyPost: async ({ post_id, user_id }: { post_id: number, user_id: number }) => {
+    const data = await execQuery(FIND_POST_WHETHER_BELONG_TO_ME({post_id, user_id}));
+    if (data.length) return true;
+    return false;
+  }
 };

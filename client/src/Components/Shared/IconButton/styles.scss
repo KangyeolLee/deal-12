@@ -7,3 +7,10 @@
   width: 1.6rem;
   height: 1.6rem;
 }
+.disabled {
+  opacity: 0.2;
+  cursor: default;
+}
+.hidden {
+  display: none;
+}

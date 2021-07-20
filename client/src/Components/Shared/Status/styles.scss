@@ -10,6 +10,10 @@
   gap: 1rem;
   cursor: pointer;
 
+  &.hidden {
+    display: none;
+  }
+
   @include link-small;
 
   .icon-button {

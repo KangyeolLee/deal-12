@@ -19,6 +19,7 @@ export default class Home extends Component {
       locations: [],
       locationId: 0,
       locationName: '',
+      isLogin: false,
     };
     if (token()) {
       const headers = new Headers();
@@ -43,7 +44,7 @@ export default class Home extends Component {
           })
             .then((res) => res.json())
             .then(({ result }) => {
-              this.setState({ items: result });
+              this.setState({ items: result, isLogin:true });
             });
         });
     } else {
@@ -80,7 +81,7 @@ export default class Home extends Component {
     this.$state.items.forEach((item: CategoryListItemProps) => {
       const $item = document.createElement('div');
       $itemList?.append($item);
-      new CategoryListItem($item as Element, item);
+      new CategoryListItem($item as Element, {...item, isLogin: this.$state.isLogin });
     });
 
     // post new btn

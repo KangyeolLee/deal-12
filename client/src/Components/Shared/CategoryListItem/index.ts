@@ -3,7 +3,7 @@ import Component from '../../../core/Component';
 import IconButton from '../IconButton';
 import ImgBox from '../ImgBox';
 import './styles.scss';
-import { getTimestamp, token } from '../../../lib/util';
+import { getTimestamp, translatePriceToTrimmed, token } from '../../../lib/util';
 
 export interface CategoryListItemProps {
   id: number;
@@ -45,6 +45,7 @@ class LikeBtn extends Component {
 
     new IconButton($iconBtn as Element, {
       name: isLiked ? 'heart-fill' : 'heart',
+      disabled: !this.$props.isLogin
     });
 
     const headers = new Headers();
@@ -98,9 +99,7 @@ export default class CategoryListItem extends Component {
                 <div class="info__location">${name} ∙ ${getTimestamp(
       createdAt
     )}</div>
-                <div class="info__price">${price
-                  .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</div>
+                <div class="info__price">${translatePriceToTrimmed(price)}원</div>
             </div>
             <div class="info__counts">
                 ${
@@ -141,6 +140,7 @@ export default class CategoryListItem extends Component {
     } else {
       new LikeBtn($iconBtn as Element, {
         postId: this.$props.id,
+        isLogin: this.$props.isLogin
       });
     }
 

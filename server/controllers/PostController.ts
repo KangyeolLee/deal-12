@@ -80,6 +80,7 @@ const getPostInterestsByUserNickname = async (
 
 const deletePost = async (req: Request, res: Response, next: NextFunction) => {
   try {
+
     const { postId } = req.params;
     const result = await PostService.deletePost(+postId);
 
@@ -90,6 +91,19 @@ const deletePost = async (req: Request, res: Response, next: NextFunction) => {
     next(error);
   }
 };
+
+const checkPostBelongToMe = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const { postId } = req.params;
+    const { user } = req;
+    const isMine = await PostService.checkMyPost({ post_id: +postId, user_id: user.id });
+    res.status(200).json({
+      isMine,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
 
 const getPostById = async (req: any, res: Response, next: NextFunction) => {
   try {
@@ -133,7 +147,7 @@ const updatePost = async (req: any, res: Response, next: NextFunction) => {
 const updatePostState = async (req: any, res: Response, next: NextFunction) => {
   try {
     const { postId } = req.params;
-    const state = '수정할 상태값';
+    const { state } = req.body;
     const result = await PostService.updatePostState({
       post_id: +postId,
       state,
@@ -231,4 +245,5 @@ export const PostController = {
   creatPostInterest,
   deletePostInterest,
   getPostInterestsByUserNickname,
+  checkPostBelongToMe
 };
