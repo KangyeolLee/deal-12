@@ -17,7 +17,6 @@ export default class Logout extends Component {
     })
       .then((res) => res.json())
       .then(({ user }) => {
-        console.log(user);
         this.setState({
           username: user.nickname,
         });

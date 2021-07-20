@@ -36,7 +36,6 @@ class LikeBtn extends Component {
     })
       .then((res) => res.json())
       .then(({ result }) => {
-        console.log(result);
         if (result) this.setState({ isLiked: true });
       });
   }

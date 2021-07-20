@@ -90,7 +90,7 @@ export default class Register extends Component {
               location1_id: id,
             },
           }),
-        }).then((r) => console.log('asdfsaf', r));
+        }).then((r) => console.log(r));
       },
     });
 
