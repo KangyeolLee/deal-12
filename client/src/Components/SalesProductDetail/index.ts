@@ -7,31 +7,44 @@ import Status from './../Shared/Status/index';
 import { $router } from '../../lib/router';
 import Dropdown from '../Shared/Dropdown';
 import ImgNavigation from './../Shared/ImgNavigation/index';
+import { token, translatePriceToTrimmed } from '../../lib/util';
 
 export default class SalesProductDetail extends Component {
   setup() {
-    // 추후 getProductById(id)와 같은 API를 통해 값을 가져오고
-    // 이를 this.$state 에 할당하는 것으로 변경
-
     this.$state = {
-      title: '우아한 옷 팔아요',
-      images: [
-        'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
-        'https://user-images.githubusercontent.com/48883344/125383566-8c373e00-e3d2-11eb-82c3-565a0f5da5f6.png',
-        'https://ae01.alicdn.com/kf/HTB1Voc0XnjxK1Rjy0Fnq6yBaFXaC/Kpop.jpg',
-      ],
-      content: `이 옷 입으시면 우아한 사람이 될 수 있습니다. 몇 번 안 입어서 저는 우아한 사람이 되지 못한 것 같습니다. 네고 가능해요. 프리사이즈로 남녀노소 모두 입으실 수 있습니다. 연락주세용 제에바알
-        이 옷 입으시면 우아한 사람이 될 수 있습니다. 몇 번 안 입어서 저는 우아한 사람이 되지 못한 것 같습니다. 네고 가능해요. 프리사이즈로 남녀노소 모두 입으실 수 있습니다. 연락주세용 제에바알`,
-      price: '69,000원',
-      users: {
-        name: '우아해지고 싶은 사람',
-        location: '역삼동',
-      },
-    };
+      isLogin: false,
+      isMine: false,
+    }
+    const postId = location.href.split('post/')[1];
+
+    fetch(`/api/posts/${postId}`)
+      .then(res => res.json())
+      .then(data => {
+        const { result } = data;
+        const postDetail = result[0];
+        this.setState(postDetail)
+      });
+
+    if(token()) {
+      const headers = new Headers();
+      headers.append('Authorization', token());
+
+      const isLogin = { isLogin: true }
+
+      fetch(`/api/posts/${postId}/check`, {
+        method: 'GET',
+        headers
+      })
+        .then(res => res.json())
+        .then(data => {
+          this.setState({...data, ...isLogin});
+        });
+    }
+
   }
 
   template() {
-    const { title, content } = this.$state;
+    const { isMine, title, content, interest_count, view_count } = this.$state;
 
     return `
       <div class="product-wrapper">
@@ -39,12 +52,12 @@ export default class SalesProductDetail extends Component {
         <div class="product-detail">
           <div class="image-slider"></div>
           <div class="content">
-            <div class="status-button"></div>
+            <div class="status-button ${isMine ? '' : 'hidden'}"></div>
             <div class="product-description">
               <h1 class="product-title">${title}</h1>
               <p class="category">기타 중고물품 · 3시간 전</p>
               <p class="desc">${content}</p>
-              <p class="more-info"> 채팅 0 · 관심 0 · 조회 1 </p>
+              <p class="more-info"> 채팅 0 · 관심 ${interest_count} · 조회 ${view_count} </p>
             </div>
             <div class="user-specification"></div>
           </div>
@@ -56,7 +69,7 @@ export default class SalesProductDetail extends Component {
   }
 
   mounted() {
-    const { price, image } = this.$state;
+    const { id, isMine, isLogin, price, state, nickname, name } = this.$state;
     const $productDetail = this.$target.querySelector('.product-bar');
     const $header = this.$target.querySelector('header');
     const $userSpecification = this.$target.querySelector(
@@ -67,20 +80,27 @@ export default class SalesProductDetail extends Component {
 
     new Header($header as Element, {
       headerType: 'menu-invisible',
+      isMine,
     });
 
     new ProductBar($productDetail as Element, {
-      price,
+      price: translatePriceToTrimmed(price),
+      isMine,
+      isLogin
     });
 
     new ImgNavigation($imageWrapper as HTMLElement, {
       images: this.$state.images,
     });
 
-    new InfoSaler($userSpecification as HTMLLIElement, this.$state.users);
-    new Status($status as Element, {
-      text: '판매중',
-    });
+    new InfoSaler($userSpecification as HTMLLIElement, {nickname, name});
+
+    if (isMine) {
+      new Status($status as Element, {
+        id,
+        text: state,
+      });
+    }
 
     const $moreBtn = $header?.querySelector('#right');
     new Dropdown($moreBtn as HTMLElement, {
@@ -88,7 +108,7 @@ export default class SalesProductDetail extends Component {
         {
           text: '수정하기',
           isWarning: false,
-          // onclick: () => console.log('수정이벤트 발생'),
+          onclick: () => console.log(1),
         },
         {
           text: '삭제하기',

@@ -31,12 +31,20 @@ class LikeBtn extends Component {
 
     new IconButton($iconBtn as Element, {
       name: isLiked ? 'heart-fill' : 'heart',
+      disabled: !this.$props.isLogin
     });
   }
+
   setEvent() {
-    this.addEvent('click', '#icon-btn', () => {
-      this.setState({ isLiked: !this.$state.isLiked });
-    });
+    this.addEvent(
+      'click',
+      '.icon-btn',
+      ({ target }: { target: HTMLElement }) => {
+        if (target.className === 'icon-btn') {
+          this.setState({ isLiked: !this.$state.isLiked });
+        }
+      }
+    );
   }
 }
 
@@ -100,7 +108,9 @@ export default class CategoryListItem extends Component {
         pageName,
       });
     } else {
-      new LikeBtn($iconBtn as Element);
+      new LikeBtn($iconBtn as Element,{
+        isLogin: this.$props.isLogin
+      });
     }
 
     // small icons
