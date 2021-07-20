@@ -20,7 +20,7 @@ export default class Home extends Component {
       locationName: '',
     };
     if (token()) {
-      var headers = new Headers();
+      const headers = new Headers();
       headers.append('Authorization', token());
 
       fetch('/api/me/locations', {

@@ -55,14 +55,14 @@ postsRouter.delete(
 postsRouter.get(
   '/:postId/check',
   authenticateAccessToken,
-  PostController.getPostInterestByUserId
+  PostController.checkPostInterestByUserId
 );
 
 // 유저의 관심글인지 확인
 postsRouter.get(
   '/:postId/interest/check',
   authenticateAccessToken,
-  PostController.getPostInterestByUserId
+  PostController.checkPostInterestByUserId
 );
 
 export default postsRouter;

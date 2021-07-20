@@ -50,6 +50,8 @@ const login = async (req: any, res: Response, next: NextFunction) => {
     const result = await UserService.findUserByNickname({ nickname });
     const user = result[0];
 
+    console.log(user);
+
     if (result.length > 0) {
       // access token을 secret key 기반으로 생성
       const generateAccessToken = (nickname: string) => {

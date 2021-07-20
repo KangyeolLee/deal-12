@@ -3,7 +3,7 @@ import Component from '../../../core/Component';
 import IconButton from '../IconButton';
 import ImgBox from '../ImgBox';
 import './styles.scss';
-import { getTimestamp } from '../../../lib/util';
+import { getTimestamp, token } from '../../../lib/util';
 
 export interface CategoryListItemProps {
   id: number;
@@ -22,12 +22,17 @@ class LikeBtn extends Component {
     this.$state = {
       isLiked: false,
     };
-    fetch(`/api/posts/${this.$props.postId}/interest`, {
+
+    const headers = new Headers();
+    headers.append('Authorization', token());
+
+    fetch(`/api/posts/${this.$props.postId}/interest/check`, {
       method: 'GET',
+      headers,
     })
       .then((res) => res.json())
       .then(({ result }) => {
-        console.log('asdfasdf', result);
+        if (result) this.setState({ isLiked: true });
       });
   }
   template() {
@@ -42,8 +47,24 @@ class LikeBtn extends Component {
     });
   }
   setEvent() {
+    const headers = new Headers();
+    headers.append('Authorization', token());
+
     this.addEvent('click', '#icon-btn', () => {
       this.setState({ isLiked: !this.$state.isLiked });
+      if (this.$state.isLiked) {
+        // create postinterest
+        fetch(`/api/posts/${this.$props.postId}/interest`, {
+          method: 'POST',
+          headers,
+        }).then((r) => console.log(r));
+      } else {
+        // delete postinterest
+        fetch(`/api/posts/${this.$props.postId}/interest`, {
+          method: 'DELETE',
+          headers,
+        }).then((r) => console.log(r));
+      }
     });
   }
 }
