@@ -69,10 +69,9 @@ export const CREATE_POST = ({
   seller_id,
   state,
   thumbnail,
-  interest_count,
 }: PostType) => `
-  INSERT INTO post (title, location_id, category_id, content, view_count, price, seller_id, state, thumbnail, interest_count)
-  VALUES ('${title}', ${location_id}, ${category_id}, '${content}', ${view_count}, ${price}, ${seller_id}, '${state}', '${thumbnail}', ${interest_count})
+  INSERT INTO post (title, location_id, category_id, content, price, seller_id, state, thumbnail)
+  VALUES ('${title}', ${location_id}, ${category_id}, '${content}', ${price}, ${seller_id}, '${state}', '${thumbnail}')
 `;
 
 // 기존 포스트 내용 수정하는 쿼리
@@ -91,10 +90,12 @@ export const UPDATE_POST = ({
   WHERE post.id = ${post_id}
 `;
 
+// 해당 포스트를 삭제하는 쿼리
 export const DELETE_POST = ({ post_id }: { post_id: number }) => `
   DELETE FROM post WHERE post.id = ${post_id}
 `;
 
+// 포스트번호에 해당하는 포스트의 상태를 변경하는 쿼리
 export const UPDATE_POST_STATE_BY_POSTID = ({
   post_id,
   state,

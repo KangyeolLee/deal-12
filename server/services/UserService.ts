@@ -1,13 +1,11 @@
-import { config } from 'dotenv';
 import { execQuery } from '../database/database';
 import { CREATE_USER, FIND_BY_USER_NICKNAME } from '../queries/user';
-
-const mysql = require('mysql2');
+import { UPDATE_USER_LOCATION } from './../queries/user';
 
 export type UserType = {
   nickname: string;
   location1_id: number;
-  location2_id?: number;
+  location2_id?: number | null;
 };
 
 export const UserService = {
@@ -17,11 +15,10 @@ export const UserService = {
   },
 
   updateUser: async ({ nickname, location1_id, location2_id }: UserType) => {
-    const connection = await mysql.createConnection(config);
-    const results = await connection.query(
-      `UPDATE post SET location1_id=${location1_id} location2_id=${location2_id} WHERE nickname=${nickname};`
+    const result = await execQuery(
+      UPDATE_USER_LOCATION({ nickname, location1_id, location2_id })
     );
-    return results[0];
+    return result;
   },
 
   findUserByNickname: async ({ nickname }: { nickname: string }) => {

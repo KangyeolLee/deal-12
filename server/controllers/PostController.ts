@@ -3,6 +3,7 @@ import { PostService, PostType } from '../services/post/PostService';
 import { PostInterestService } from '../services/post/PostInterestService';
 
 const createPost = async (req: Request, res: Response, next: NextFunction) => {
+  // 더미데이터 - 실제 프론트에서 받아오는 구조로 재설계 필요
   const post: PostType = {
     title: '테스트',
     content: '테스트내용',
@@ -28,6 +29,7 @@ const createPost = async (req: Request, res: Response, next: NextFunction) => {
 
 const getPosts = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    // 로그인 유저 정보 필요 X
     const { locationId, categoryId } = req.params;
     const result = await PostService.findPosts({
       location_id: +locationId,
@@ -47,8 +49,10 @@ const getPostBySellerNickname = async (
   next: NextFunction
 ) => {
   try {
+    // 로그인 된 유저 정보 필요
+    const { user } = req;
     const result = await PostService.findPostBySellerNickname({
-      nickname: req.user.id,
+      nickname: user.nickname,
     });
     res.status(200).json({ result });
   } catch (error) {
@@ -63,8 +67,10 @@ const getPostInterestsByUserNickname = async (
   next: NextFunction
 ) => {
   try {
+    // 로그인 된 유저 정보 필요
+    const { user } = req;
     const result = await PostInterestService.findPostInterestsByUserNickname({
-      nickname: req.user.id,
+      nickname: user.nickname,
     });
     res.status(200).json({ result });
   } catch (error) {
@@ -76,6 +82,7 @@ const deletePost = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { postId } = req.params;
     const result = await PostService.deletePost(+postId);
+
     res.status(200).json({
       result,
     });
@@ -84,11 +91,12 @@ const deletePost = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const getPostById = async (req: Request, res: Response, next: NextFunction) => {
+const getPostById = async (req: any, res: Response, next: NextFunction) => {
   try {
     const { postId } = req.params;
     const result = await PostService.findPostById(+postId);
     await PostService.updatePostViewCount(+postId);
+
     res.status(200).json({
       result,
     });
@@ -100,6 +108,7 @@ const getPostById = async (req: Request, res: Response, next: NextFunction) => {
 const updatePost = async (req: any, res: Response, next: NextFunction) => {
   try {
     const { postId } = req.params;
+    // 더미데이터 -> 실제 프론트에서 데이터 받아오는 구조로 수정 필요
     const updates = {
       title: '수정된 제목입니다..',
       price: 999999,
@@ -143,6 +152,11 @@ const getPostInterestByUserId = async (
   res: Response,
   next: NextFunction
 ) => {
+const creatPostInterest = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { postId } = req.params;
     const user_id = 1;
@@ -158,15 +172,7 @@ const getPostInterestByUserId = async (
     next(error);
   }
 };
-
-const creatPostInterest = async (
-  req: any,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const { postId } = req.params;
-    const user_id = 1; // user_id 받아와야 함미다
+    const user_id = 1; // user_id 받아와야 함미다 (닉네임이 아님 --> 제거될 수 있음)
     const user =
       await PostInterestService.findPostAlreadyInterestedByUserAndPostId({
         post_id: +postId,
@@ -199,7 +205,7 @@ const deletePostInterest = async (
 ) => {
   try {
     const { postId } = req.params;
-    const user_id = 1;
+    const user_id = 1; // 제거될 수 있음
     const user =
       await PostInterestService.findPostAlreadyInterestedByUserAndPostId({
         post_id: +postId,
@@ -234,5 +240,4 @@ export const PostController = {
   creatPostInterest,
   deletePostInterest,
   getPostInterestsByUserNickname,
-  getPostInterestByUserId,
 };
