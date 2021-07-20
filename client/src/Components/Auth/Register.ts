@@ -16,7 +16,6 @@ export default class Register extends Component {
     })
       .then((res) => res.json())
       .then(({ result }) => {
-        console.log(result);
         this.setState({ locations: result });
       });
   }
@@ -76,10 +75,22 @@ export default class Register extends Component {
       buttonType: 'large',
       title: '회원가입',
       handleClick: () => {
-        console.log(
-          $userEmail?.querySelector('input')?.value,
-          $userLocation?.querySelector('input')?.value
+        const { id } = this.$state.locations.find(
+          (loc: any) =>
+            loc.name === $userLocation?.querySelector('input')?.value
         );
+        fetch('/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userdata: {
+              nickname: $userEmail?.querySelector('input')?.value,
+              location1_id: id,
+            },
+          }),
+        }).then((r) => console.log('asdfsaf', r));
       },
     });
 

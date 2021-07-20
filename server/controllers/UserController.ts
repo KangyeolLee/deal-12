@@ -4,17 +4,13 @@ import jwt, { Secret } from 'jsonwebtoken';
 
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    // 실제 req.body 에서 회원가입 관련 정보 받아오는 로직 필요
-    const user = req.body.userdata || {
-      nickname: '우아한런닝맨',
-      location1_id: 2,
-    };
+    const user = req.body.userdata;
 
     const isAlreadyExist = await UserService.findUserByNickname({
       nickname: user.nickname,
     });
 
-    if (isAlreadyExist) {
+    if (isAlreadyExist.length) {
       res.status(300).json({
         message: '이미 존재하는 아이디 입니다...',
       });
