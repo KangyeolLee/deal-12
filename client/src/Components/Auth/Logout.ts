@@ -38,9 +38,6 @@ export default class Logout extends Component {
       buttonType: 'large',
       title: '로그아웃',
       handleClick: () => {
-        fetch('/logout', {
-          method: 'GET',
-        });
         localStorage.clear();
         $router.push('/#');
         (this.$target.parentNode as Element).className = 'modal-close';

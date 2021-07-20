@@ -11,13 +11,13 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
     });
 
     if (isAlreadyExist.length) {
-      res.status(300).json({
+      return res.status(300).json({
         message: '이미 존재하는 아이디 입니다...',
       });
     }
 
     const result = await UserService.createUser(user);
-    res.status(200).json({ result });
+    return res.status(200).json({ result });
   } catch (error) {
     next(error);
   }
@@ -27,7 +27,7 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const user = req.body;
     const result = await UserService.updateUser(user);
-    res.status(200).json({
+    return res.status(200).json({
       message: 'success update locations',
       result,
     });
@@ -47,7 +47,7 @@ const getUserByNickname = async (
     const result = await UserService.findUserByNickname({ nickname });
     const user = result[0];
 
-    res.status(200).json({ user });
+    return res.status(200).json({ user });
   } catch (error) {
     next(error);
   }
@@ -74,24 +74,13 @@ const login = async (req: any, res: Response, next: NextFunction) => {
 
       const accessToken = generateAccessToken(nickname);
 
-      res.status(200).json({ accessToken });
-    } else {
-      res.status(300).json({
-        message: 'not exist',
-      });
+      return res.status(200).json({ accessToken });
     }
+    return res.status(300).json({
+      message: 'not exist',
+    });
   } catch (err) {
     next(err);
-  }
-};
-
-const logout = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    res.status(200).json({
-      message: 'user logout',
-    });
-  } catch (error) {
-    next(error);
   }
 };
 
@@ -99,6 +88,5 @@ export const UserController = {
   createUser,
   updateUser,
   login,
-  logout,
   getUserByNickname,
 };
