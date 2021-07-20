@@ -40,7 +40,7 @@ export default class Menu extends Component {
   setup() {
     this.$state = { menu: 'sell-list', sells: [], interests: [] };
 
-    var headers = new Headers();
+    const headers = new Headers();
     headers.append('Authorization', token());
 
     // 판매목록

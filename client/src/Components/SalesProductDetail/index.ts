@@ -42,7 +42,7 @@ export default class SalesProductDetail extends Component {
             <div class="status-button"></div>
             <div class="product-description">
               <h1 class="product-title">${title}</h1>
-              <p class="category">기타 중고물품 · 3시간 전</p>
+              <p class="product-category">기타 중고물품 · 3시간 전</p>
               <p class="desc">${content}</p>
               <p class="more-info"> 채팅 0 · 관심 0 · 조회 1 </p>
             </div>

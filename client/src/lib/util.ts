@@ -27,7 +27,5 @@ const checkToday = (createdAt: string): boolean => {
 };
 
 export const getTimestamp = (date: string) => {
-  const isWriteToday = checkToday(date);
-  if (isWriteToday) return dayjs(date).fromNow();
-  else return dayjs(date).format('YYYY.MM.DD HH:mm');
+  return dayjs(date).fromNow();
 };

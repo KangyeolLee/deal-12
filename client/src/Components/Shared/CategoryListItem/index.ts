@@ -3,9 +3,10 @@ import Component from '../../../core/Component';
 import IconButton from '../IconButton';
 import ImgBox from '../ImgBox';
 import './styles.scss';
-import { getTimestamp } from '../../../lib/util';
+import { getTimestamp, token } from '../../../lib/util';
 
 export interface CategoryListItemProps {
+  id: number;
   title: string;
   thumbnail: string;
   price: number;
@@ -19,8 +20,21 @@ export interface CategoryListItemProps {
 class LikeBtn extends Component {
   setup() {
     this.$state = {
-      isLiked: false, // getLikes 해서 현재 postId와 비교
+      isLiked: false,
     };
+
+    const headers = new Headers();
+    headers.append('Authorization', token());
+
+    fetch(`/api/posts/${this.$props.postId}/interest/check`, {
+      method: 'GET',
+      headers,
+    })
+      .then((res) => res.json())
+      .then(({ result }) => {
+        console.log(result);
+        if (result) this.setState({ isLiked: true });
+      });
   }
   template() {
     return `<div></div>`;
@@ -32,11 +46,34 @@ class LikeBtn extends Component {
     new IconButton($iconBtn as Element, {
       name: isLiked ? 'heart-fill' : 'heart',
     });
-  }
-  setEvent() {
-    this.addEvent('click', '#icon-btn', () => {
-      this.setState({ isLiked: !this.$state.isLiked });
-    });
+
+    const headers = new Headers();
+    headers.append('Authorization', token());
+
+    const btn = this.$target.parentNode?.querySelector(
+      '#icon-btn'
+    ) as HTMLButtonElement;
+
+    const handleBtnClick = () => {
+      if (!this.$state.isLiked) {
+        // create postinterest
+        fetch(`/api/posts/${this.$props.postId}/interest`, {
+          method: 'POST',
+          headers,
+        }).then(() => {
+          this.setState({ isLiked: true });
+        });
+      } else {
+        // delete postinterest
+        fetch(`/api/posts/${this.$props.postId}/interest`, {
+          method: 'DELETE',
+          headers,
+        }).then(() => {
+          this.setState({ isLiked: false });
+        });
+      }
+    };
+    btn.onclick = handleBtnClick;
   }
 }
 
@@ -102,7 +139,9 @@ export default class CategoryListItem extends Component {
         pageName,
       });
     } else {
-      new LikeBtn($iconBtn as Element);
+      new LikeBtn($iconBtn as Element, {
+        postId: this.$props.id,
+      });
     }
 
     // small icons
@@ -123,14 +162,13 @@ export default class CategoryListItem extends Component {
   }
 
   setEvent() {
+    const { id } = this.$props;
     this.addEvent(
       'click',
       '.item-box',
       ({ target }: { target: HTMLElement }) => {
-        if (target.className === 'icon-btn') {
-          this.setState({ isLiked: !this.$state.isLiked });
-        } else {
-          $router.push('/post/1');
+        if (target.className !== 'icon-btn') {
+          $router.push(`/post/${id}`);
         }
       }
     );

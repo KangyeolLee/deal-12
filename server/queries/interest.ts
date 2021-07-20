@@ -1,11 +1,12 @@
-export const FIND_POST_INTERESTS_BY_USER_NICKNAME = ({
-  nickname,
+export const FIND_POST_INTERESTS_BY_USERID = ({
+  user_id,
 }: {
-  nickname: string;
+  user_id: number;
 }) => `
-  SELECT * FROM interest
+  SELECT post.id AS id, interest.id AS interest_id, location.id AS location_id, interest_count,  
+  thumbnail, name, title, location_id, category_id, post.createdAt, post.updatedAt, 
+  view_count, price, seller_id, state FROM interest
     JOIN post ON post.id = interest.post_id
     JOIN location ON location.id = post.location_id
-    JOIN user ON user.nickname = '${nickname}'
-  WHERE user_id=user.id
+  WHERE user_id=${user_id}
 `;

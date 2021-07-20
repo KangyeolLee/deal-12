@@ -60,6 +60,7 @@ const getPostBySellerNickname = async (
   }
 };
 
+// 관심목록
 const getPostInterestsByUserNickname = async (
   req: any,
   res: Response,
@@ -68,8 +69,8 @@ const getPostInterestsByUserNickname = async (
   try {
     // 로그인 된 유저 정보 필요
     const { user } = req;
-    const result = await PostInterestService.findPostInterestsByUserNickname({
-      nickname: user.nickname,
+    const result = await PostInterestService.findPostInterestsByUserId({
+      user_id: user.id,
     });
     res.status(200).json({ result });
   } catch (error) {
@@ -145,6 +146,36 @@ const updatePostState = async (req: any, res: Response, next: NextFunction) => {
   }
 };
 
+// 좋아요 눌렀는지
+const checkPostInterestByUserId = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.user;
+    const { postId } = req.params;
+
+    const user =
+      await PostInterestService.findPostAlreadyInterestedByUserAndPostId({
+        post_id: +postId,
+        user_id: id,
+      });
+
+    if (!user.length) {
+      res.status(200).json({
+        result: false,
+      });
+    } else {
+      res.status(200).json({
+        result: true,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 const creatPostInterest = async (
   req: any,
   res: Response,
@@ -152,26 +183,15 @@ const creatPostInterest = async (
 ) => {
   try {
     const { postId } = req.params;
-    const user_id = 1; // user_id 받아와야 함미다 (닉네임이 아님 --> 제거될 수 있음)
-    const user =
-      await PostInterestService.findPostAlreadyInterestedByUserAndPostId({
-        post_id: +postId,
-        user_id,
-      });
+    const { id: user_id } = req.user;
 
-    if (!user.length) {
-      const result = await PostInterestService.createPostInterest({
-        post_id: +postId,
-        user_id,
-      });
-      await PostInterestService.updatePostInterestCount({ post_id: +postId });
-      res.status(200).json({
-        message: 'success create like',
-      });
-    }
-
+    await PostInterestService.createPostInterest({
+      post_id: +postId,
+      user_id,
+    });
+    await PostInterestService.updatePostInterestCount({ post_id: +postId });
     res.status(200).json({
-      message: '이미 좋아요를 누른 게시물입니다...',
+      message: 'success create like',
     });
   } catch (error) {
     next(error);
@@ -185,19 +205,9 @@ const deletePostInterest = async (
 ) => {
   try {
     const { postId } = req.params;
-    const user_id = 1; // 제거될 수 있음
-    const user =
-      await PostInterestService.findPostAlreadyInterestedByUserAndPostId({
-        post_id: +postId,
-        user_id,
-      });
+    const { id: user_id } = req.user;
 
-    if (!user.length) {
-      res.status(300).json({
-        message: '좋아요를 누르지 않은 게시물입니다...',
-      });
-    }
-    const result = await PostInterestService.deletePostInterest({
+    await PostInterestService.deletePostInterest({
       post_id: +postId,
       user_id,
     });
@@ -217,6 +227,7 @@ export const PostController = {
   getPostById,
   updatePost,
   updatePostState,
+  checkPostInterestByUserId,
   creatPostInterest,
   deletePostInterest,
   getPostInterestsByUserNickname,

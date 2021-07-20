@@ -2,6 +2,7 @@ import Component from '../../core/Component';
 import TextInput from './../Shared/TextInput/index';
 import Button from './../Shared/Button/index';
 import Register from './Register';
+import { $router } from '../../lib/router';
 
 export default class Login extends Component {
   template() {
@@ -41,6 +42,7 @@ export default class Login extends Component {
         .then((res) => res.json())
         .then(({ accessToken }) => {
           localStorage.setItem('token', accessToken);
+          $router.push('/#');
         });
     };
 

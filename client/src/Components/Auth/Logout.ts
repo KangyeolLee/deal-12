@@ -1,12 +1,27 @@
 import './styles';
 import Component from '../../core/Component';
 import Button from './../Shared/Button/index';
+import { token } from '../../lib/util';
+import { $router } from '../../lib/router';
 
 export default class Logout extends Component {
   setup() {
     this.$state = {
-      username: '우아해지고 싶은 사람',
+      username: '',
     };
+    const headers = new Headers();
+    headers.append('Authorization', token());
+    fetch('/api/me/', {
+      method: 'GET',
+      headers,
+    })
+      .then((res) => res.json())
+      .then(({ user }) => {
+        console.log(user);
+        this.setState({
+          username: user.nickname,
+        });
+      });
   }
   template() {
     return `
@@ -24,7 +39,11 @@ export default class Logout extends Component {
       buttonType: 'large',
       title: '로그아웃',
       handleClick: () => {
+        fetch('/logout', {
+          method: 'GET',
+        });
         localStorage.clear();
+        $router.push('/#');
         (this.$target.parentNode as Element).className = 'modal-close';
       },
     });
