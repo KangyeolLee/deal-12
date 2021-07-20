@@ -31,3 +31,7 @@ export const getTimestamp = (date: string) => {
   if (isWriteToday) return dayjs(date).fromNow();
   else return dayjs(date).format('YYYY.MM.DD HH:mm');
 };
+
+export const translatePriceToTrimmed = (price: number) => {
+  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}
