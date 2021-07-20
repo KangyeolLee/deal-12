@@ -32,6 +32,7 @@ class LikeBtn extends Component {
     })
       .then((res) => res.json())
       .then(({ result }) => {
+        console.log(result);
         if (result) this.setState({ isLiked: true });
       });
   }
@@ -45,27 +46,34 @@ class LikeBtn extends Component {
     new IconButton($iconBtn as Element, {
       name: isLiked ? 'heart-fill' : 'heart',
     });
-  }
-  setEvent() {
+
     const headers = new Headers();
     headers.append('Authorization', token());
 
-    this.addEvent('click', '#icon-btn', () => {
-      this.setState({ isLiked: !this.$state.isLiked });
-      if (this.$state.isLiked) {
+    const btn = this.$target.parentNode?.querySelector(
+      '#icon-btn'
+    ) as HTMLButtonElement;
+
+    const handleBtnClick = () => {
+      if (!this.$state.isLiked) {
         // create postinterest
         fetch(`/api/posts/${this.$props.postId}/interest`, {
           method: 'POST',
           headers,
-        }).then((r) => console.log(r));
+        }).then(() => {
+          this.setState({ isLiked: true });
+        });
       } else {
         // delete postinterest
         fetch(`/api/posts/${this.$props.postId}/interest`, {
           method: 'DELETE',
           headers,
-        }).then((r) => console.log(r));
+        }).then(() => {
+          this.setState({ isLiked: false });
+        });
       }
-    });
+    };
+    btn.onclick = handleBtnClick;
   }
 }
 
@@ -154,12 +162,13 @@ export default class CategoryListItem extends Component {
   }
 
   setEvent() {
+    const { id } = this.$props;
     this.addEvent(
       'click',
       '.item-box',
       ({ target }: { target: HTMLElement }) => {
         if (target.className !== 'icon-btn') {
-          $router.push('/post/1');
+          $router.push(`/post/${id}`);
         }
       }
     );

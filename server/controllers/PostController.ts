@@ -69,8 +69,8 @@ const getPostInterestsByUserNickname = async (
   try {
     // 로그인 된 유저 정보 필요
     const { user } = req;
-    const result = await PostInterestService.findPostInterestsByUserNickname({
-      nickname: user.nickname,
+    const result = await PostInterestService.findPostInterestsByUserId({
+      user_id: user.id,
     });
     res.status(200).json({ result });
   } catch (error) {
