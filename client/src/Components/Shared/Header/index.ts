@@ -8,6 +8,7 @@ interface HeaderProps {
   title?: string;
   extraIconName?: string;
   isLogin?: string;
+  isMine?: boolean;
 }
 
 export default class Header extends Component {
@@ -61,7 +62,7 @@ export default class Header extends Component {
   }
 
   mounted() {
-    const { headerType, extraIconName }: HeaderProps = this.$props;
+    const { headerType, extraIconName, isMine }: HeaderProps = this.$props;
 
     switch (headerType) {
       case 'main':
@@ -108,6 +109,7 @@ export default class Header extends Component {
 
         new IconButton(this.$target.querySelector('#right') as Element, {
           name: 'more-white',
+          hidden: !isMine,
         });
 
         break;
