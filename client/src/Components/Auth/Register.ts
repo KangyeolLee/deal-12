@@ -4,7 +4,6 @@ import TextInput from './../Shared/TextInput/index';
 import Button from './../Shared/Button/index';
 import Header from './../Shared/Header/index';
 import { $router } from '../../lib/router';
-import Dropdown from '../Shared/Dropdown';
 
 export default class Register extends Component {
   setup() {
@@ -155,7 +154,7 @@ export default class Register extends Component {
 
     const $backBtn = this.$target.querySelector('#left');
     $backBtn?.addEventListener('click', () => {
-      $router.push('/home');
+      this.$target.className = 'modal-close';
     });
   }
 }
