@@ -3,7 +3,7 @@ import Component from '../../../core/Component';
 import IconButton from '../IconButton';
 import ImgBox from '../ImgBox';
 import './styles.scss';
-import { getTimestamp } from '../../../lib/util';
+import { getTimestamp, translatePriceToTrimmed } from '../../../lib/util';
 
 export interface CategoryListItemProps {
   title: string;
@@ -61,9 +61,7 @@ export default class CategoryListItem extends Component {
                 <div class="info__location">${name} ∙ ${getTimestamp(
       createdAt
     )}</div>
-                <div class="info__price">${price
-                  .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</div>
+                <div class="info__price">${translatePriceToTrimmed(price)}원</div>
             </div>
             <div class="info__counts">
                 ${
