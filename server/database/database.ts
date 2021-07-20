@@ -1,7 +1,14 @@
 import { readFileSync } from 'fs';
 import mysql, { RowDataPacket } from 'mysql2/promise';
 import path from 'path';
-import config from './config';
+
+const config = {
+  host: process.env.DB_HOST as string,
+  port: +process.env.DB_PORT! as number,
+  user: process.env.DB_USER as string,
+  password: process.env.DB_PASSWORD as string,
+  database: process.env.DATABASE as string,
+};
 
 const getConnection = async () => {
   return await mysql.createConnection(config);
