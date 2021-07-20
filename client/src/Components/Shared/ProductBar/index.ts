@@ -13,28 +13,30 @@ export default class ProductBar extends Component {
 
   template() {
     const { price } = this.$props;
-
     return `
       <div class="product-bar-details">
         <div class="image-wrapper"></div>
-        <span class="product-price">${price}</span>
+        <span class="product-price">${price}원</span>
       </div>
       <div class="button"></div>
     `;
   }
 
   mounted() {
+    const { isLogin, isMine } = this.$props;
     const { isLiked } = this.$state;
     const $imageWrapper = this.$target.querySelector('.image-wrapper');
     const $button = this.$target.querySelector('.button');
 
     new IconButton($imageWrapper as HTMLElement, {
       name: isLiked ? 'heart-fill' : 'heart',
+      disabled: !isLogin,
     });
 
     new Button($button as HTMLElement, {
       buttonType: 'medium',
-      title: '채팅 목록 보기',
+      title: isMine ? '채팅 목록 보기' : '문의하기',
+      disabled: !isLogin,
       handleClick: () => $router.push('/chat'),
     });
   }
