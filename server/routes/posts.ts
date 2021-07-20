@@ -1,5 +1,6 @@
 import express from 'express';
 import { PostController } from '../controllers/PostController';
+import { authenticateAccessToken } from '../middlewares/authenticate';
 
 const postsRouter = express.Router();
 
@@ -9,25 +10,28 @@ postsRouter.get(
   '/location/:locationId/category/:categoryId',
   PostController.getPosts
 );
-// 포스트번호에 해당하는 포스트 디테일 조회
+// 포스트번호에 해당하는 포스트 디테일 조회 
 postsRouter.get('/:postId', PostController.getPostById);
 
 // @ POST 요청
 // 제출된 데이터에 맞는 포스트를 생성
-postsRouter.post('/', PostController.createPost);
-// 포스트번호에 해당하는 포스트에 로그인 된 유저의 관심 생성
-postsRouter.post('/:postId/interest', PostController.creatPostInterest);
+postsRouter.post('/', authenticateAccessToken, PostController.createPost);
 
 // @ PUT 요청
 // 포스트번호에 맞는 포스트의 내용을 수정
-postsRouter.put('/:postId', PostController.updatePost);
+postsRouter.put('/:postId', authenticateAccessToken, PostController.updatePost);
 // 포스트 번호에 해당하는 포스트 상태만 수정
-postsRouter.put('/:postId/state', PostController.updatePostState);
+postsRouter.put('/:postId/state', authenticateAccessToken, PostController.updatePostState);
 
 // @ DELETE 요청
 // 포스트번호에 해당하는 포스트를 삭제
-postsRouter.delete('/:postId', PostController.deletePost);
+postsRouter.delete('/:postId', authenticateAccessToken, PostController.deletePost);
+
+// 포스트번호에 해당하는 포스트에 로그인 된 유저의 관심 생성
+postsRouter.post('/:postId/interest', authenticateAccessToken, PostController.creatPostInterest);
 // 포스트번호에 해당하는 관심내용 삭제
-postsRouter.delete('/:postId/interest', PostController.deletePostInterest);
+postsRouter.delete('/:postId/interest', authenticateAccessToken, PostController.deletePostInterest);
+
+
 
 export default postsRouter;

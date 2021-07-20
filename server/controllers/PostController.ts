@@ -49,8 +49,10 @@ const getPostBySellerNickname = async (
   next: NextFunction
 ) => {
   try {
+    // 로그인 된 유저 정보 필요
+    const { user } = req;
     const result = await PostService.findPostBySellerNickname({
-      nickname: req.user.id,
+      nickname: user.nickname,
     });
     res.status(200).json({ result });
   } catch (error) {
@@ -64,8 +66,10 @@ const getPostInterestsByUserNickname = async (
   next: NextFunction
 ) => {
   try {
+    // 로그인 된 유저 정보 필요
+    const { user } = req;
     const result = await PostInterestService.findPostInterestsByUserNickname({
-      nickname: req.user.id,
+      nickname: user.nickname,
     });
     res.status(200).json({ result });
   } catch (error) {
@@ -86,30 +90,14 @@ const deletePost = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const getPostById = async (req: Request, res: Response, next: NextFunction) => {
+const getPostById = async (req: any, res: Response, next: NextFunction) => {
   try {
     const { postId } = req.params;
-    const user_id = /*req.user.id ||*/ 4;
     const result = await PostService.findPostById(+postId);
     await PostService.updatePostViewCount(+postId);
 
-    if (!user_id) {
-      res.status(200).json({
-        result,
-      });
-    }
-
-    const interest =
-      await PostInterestService.findPostAlreadyInterestedByUserAndPostId({
-        post_id: +postId,
-        user_id,
-      });
-
-    const checked = interest.length ? true : false;
-    const data = { ...result[0], checked };
-
     res.status(200).json({
-      result: data,
+      result,
     });
   } catch (error) {
     next(error);

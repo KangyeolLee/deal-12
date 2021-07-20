@@ -6,7 +6,7 @@ export const CREATE_USER = ({ nickname, location1_id }: UserType) => `
 `;
 
 export const FIND_BY_USER_NICKNAME = ({ nickname }: { nickname: string }) => `
-  SELECT nickname, location1_id, location2_id FROM user
+  SELECT id, nickname, location1_id, location2_id FROM user
   WHERE nickname = '${nickname}';
 `;
 
