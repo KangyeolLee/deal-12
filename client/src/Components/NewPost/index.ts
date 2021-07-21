@@ -28,7 +28,9 @@ export default class NewPost extends Component {
       },
     })
       .then((res) => res.json())
-      .then((data) => this.setState({ loc: data.result[0].name }));
+      .then((data) => {
+        this.setState({ loc: data.result.loc1[0].name });
+      });
   }
 
   template() {
