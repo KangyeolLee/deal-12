@@ -1,6 +1,7 @@
 import express from 'express';
 import { PostController } from '../controllers/PostController';
 import { authenticateAccessToken } from '../middlewares/authenticate';
+import { upload } from '../middlewares/multerupload';
 
 const postsRouter = express.Router();
 
@@ -22,7 +23,13 @@ postsRouter.get(
 
 // @ POST 요청
 // 제출된 데이터에 맞는 포스트를 생성
-postsRouter.post('/', authenticateAccessToken, PostController.createPost);
+
+postsRouter.post(
+  '/',
+  upload.any(),
+  authenticateAccessToken,
+  PostController.createPost
+);
 
 // @ PUT 요청
 // 포스트번호에 맞는 포스트의 내용을 수정

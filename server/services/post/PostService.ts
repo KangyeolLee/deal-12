@@ -1,4 +1,5 @@
-import { execQuery } from '../database/database';
+import { execQuery } from '../../database/database';
+import { CREATE_IMAGES } from '../../queries/image';
 import {
   CREATE_POST,
   DELETE_POST,
@@ -6,24 +7,22 @@ import {
   FIND_POST_WHETHER_BELONG_TO_ME,
   UPDATE_POST,
   UPDATE_POST_STATE_BY_POSTID,
-} from '../queries/post';
+} from '../../queries/post';
 import {
   FIND_ALL_POSTS,
   FIND_POST_BY_POSTID,
   UPDATE_POST_VIEWCOUNT,
-} from '../queries/post';
+} from '../../queries/post';
 
 export type PostType = {
   title: string;
   location_id: number;
   category_id: number;
   content: string;
-  view_count: number;
   price?: number;
   seller_id: number;
   state: string;
   thumbnail: string;
-  interest_count: number;
 };
 
 export type PostUpdateType = {
@@ -45,9 +44,7 @@ export const PostService = {
     title,
     location_id,
     category_id,
-    view_count,
     seller_id,
-    interest_count,
     content,
     price,
     state,
@@ -58,15 +55,18 @@ export const PostService = {
         title,
         location_id,
         category_id,
-        view_count,
         content,
         price,
         seller_id,
         state,
         thumbnail,
-        interest_count,
       })
     );
+    return data;
+  },
+
+  createPostImage: async (post_id: number, files: Express.Multer.File[]) => {
+    const data = await execQuery(CREATE_IMAGES(post_id, files));
     return data;
   },
 

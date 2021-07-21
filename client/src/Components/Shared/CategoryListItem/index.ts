@@ -13,6 +13,7 @@ export interface CategoryListItemProps {
   id: number;
   title: string;
   thumbnail: string;
+  blob?: Blob;
   price: number;
   name: string;
   createdAt: string;
@@ -109,20 +110,16 @@ export default class CategoryListItem extends Component {
                 )}원</div>
             </div>
             <div class="info__counts">
-                ${
-                  chat_count !== 0 &&
-                  `<div class="info__counts--count">
-                      <div id="chat-icon"></div>
-                      <div>${chat_count}</div>
-                  </div>`
-                }
-                ${
-                  interest_count !== 0 &&
-                  `<div class="info__counts--count">
-                      <div id="heart-icon"></div>
-                      <div>${interest_count}</div>
-                  </div>`
-                }
+              <div class="info__counts--count ${chat_count ? '' : 'hidden'}">
+                  <div id="chat-icon"></div>
+                  <div>${chat_count}</div>
+              </div>
+              <div class="info__counts--count ${
+                interest_count ? '' : 'hidden'
+              }">
+                  <div id="heart-icon"></div>
+                  <div>${interest_count}</div>
+              </div>              
             </div>
         </div>
     </div>
@@ -131,7 +128,13 @@ export default class CategoryListItem extends Component {
   }
 
   mounted() {
-    const { pageName, thumbnail, chat_count = 3, interest_count } = this.$props;
+    const {
+      pageName,
+      blob,
+      thumbnail,
+      chat_count = 3,
+      interest_count,
+    } = this.$props;
 
     const $img = this.$target.querySelector('#img-box');
     new ImgBox($img as Element, {

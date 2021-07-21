@@ -34,6 +34,7 @@
     &__counts {
       display: flex;
       justify-content: flex-end;
+
       #chat-icon,
       #heart-icon {
         margin-right: 0.4rem;
@@ -43,6 +44,9 @@
         align-items: center;
         &:last-child {
           margin-left: 1.6rem;
+        }
+        &.hidden {
+          display: none !important;
         }
       }
     }

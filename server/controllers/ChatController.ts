@@ -1,6 +1,6 @@
 import { Response, NextFunction } from 'express';
 import { ChatService } from '../services/ChatService';
-import { PostService } from '../services/PostService';
+import { PostService } from '../services/post/PostService';
 
 // 문의하기
 const getChatRoom = async (req: any, res: Response, next: NextFunction) => {
