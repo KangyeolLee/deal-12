@@ -5,7 +5,7 @@ import { authenticateAccessToken } from '../middlewares/authenticate';
 const chatRouter = express.Router();
 
 // 채팅룸 가져오기 (문의하기)
-chatRouter.get(
+chatRouter.post(
   '/chatroom',
   authenticateAccessToken,
   ChatController.getChatRoom
@@ -19,7 +19,7 @@ chatRouter.get(
 );
 
 // 채팅내용 가져오기
-chatRouter.get(
+chatRouter.post(
   '/chatroom/:chatroomId',
   authenticateAccessToken,
   ChatController.getChatsByChatRoomId

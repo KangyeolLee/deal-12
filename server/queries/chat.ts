@@ -1,13 +1,15 @@
 // 문의하기 눌렀을 때 존재하는 채팅방인지
-export const FIND_CHATROOM_BY_BUYER_ID_SELLER_ID = ({
+export const FIND_CHATROOM_BY_BUYER_ID_SELLER_ID_POST_ID = ({
   buyer_id,
   seller_id,
+  post_id,
 }: {
   buyer_id: number;
   seller_id: number;
+  post_id: number;
 }) => `
-    SELECT * FROM chatRoom
-    WHERE chatRoom.buyer_id = ${buyer_id} AND chatRoom.seller_id = ${seller_id};
+    SELECT * FROM chatRoom 
+    WHERE buyer_id = ${buyer_id} AND seller_id = ${seller_id} AND post_id = ${post_id};
 `;
 
 // 없으면 새로운 룸 생성
@@ -20,8 +22,8 @@ export const CREATE_CHATROOM = ({
   buyer_id: number;
   seller_id: number;
 }) => `
-    INSERT INTO chatRoom(post_id, seller_id, buyer_id)
-    VALUES(${post_id}, ${buyer_id}, ${seller_id});
+    INSERT INTO chatRoom(post_id, seller_id, buyer_id) 
+    VALUES(${post_id}, ${seller_id}, ${buyer_id});
 `;
 
 // 룸 생성과 동시에 생성

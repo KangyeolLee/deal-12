@@ -3,7 +3,7 @@ import {
   CREATE_CHAT,
   CREATE_CHATJOINED,
   CREATE_CHATROOM,
-  FIND_CHATROOM_BY_BUYER_ID_SELLER_ID,
+  FIND_CHATROOM_BY_BUYER_ID_SELLER_ID_POST_ID,
   GET_CHATJOINED_BY_ROOM_ID,
   GET_CHATROOMS_BY_CHATJOINED,
   GET_CHATROOMS_BY_POST_ID,
@@ -24,23 +24,31 @@ export const ChatService = {
     seller_id: number;
   }) => {
     const data = await execQuery(
-      FIND_CHATROOM_BY_BUYER_ID_SELLER_ID({ buyer_id, seller_id })
+      FIND_CHATROOM_BY_BUYER_ID_SELLER_ID_POST_ID({
+        buyer_id,
+        seller_id,
+        post_id,
+      })
     );
 
-    if (data) {
-      return data;
+    if (data.length) {
+      return data[0];
     } else {
       // 새로 만들고
       await execQuery(CREATE_CHATROOM({ post_id, buyer_id, seller_id }));
       // 새로 만든 채팅방 id 가져와서
-      const data = await execQuery(
-        FIND_CHATROOM_BY_BUYER_ID_SELLER_ID({ buyer_id, seller_id })
+      const chatroom = await execQuery(
+        FIND_CHATROOM_BY_BUYER_ID_SELLER_ID_POST_ID({
+          buyer_id,
+          seller_id,
+          post_id,
+        })
       );
       // 연결 생성
       await execQuery(
-        CREATE_CHATJOINED({ room_id: data[0].id, user_id: buyer_id })
+        CREATE_CHATJOINED({ room_id: chatroom[0].id, user_id: buyer_id })
       );
-      return data;
+      return chatroom[0];
     }
   },
 

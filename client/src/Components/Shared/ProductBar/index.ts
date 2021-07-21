@@ -43,9 +43,10 @@ export default class ProductBar extends Component {
           $router.push(`/chat/post/${post_id}`);
         } else {
           fetch('/api/chat/chatroom', {
-            method: 'GET',
+            method: 'POST',
             headers: {
-              Authorization: token(),
+              'Content-Type': 'application/json',
+              'Authorization': token(),
             },
             body: JSON.stringify({
               seller_id,
@@ -53,7 +54,10 @@ export default class ProductBar extends Component {
             }),
           })
             .then((r) => r.json())
-            .then((result) => console.log(result));
+            .then(({ result }) => {
+              console.log(result);
+              $router.push(`/chatroom/${result.id}`);
+            });
         }
       },
     });
