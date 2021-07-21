@@ -4,8 +4,12 @@ import './styles.scss';
 import ImgButton from '../Shared/ImgButton';
 import IconButton from '../Shared/IconButton';
 import Button from '../Shared/Button';
+import { token } from '../../lib/util';
+import { $router } from '../../lib/router';
 
 export default class NewPost extends Component {
+  blobs: Blob[] = [];
+
   setup() {
     this.$state = {
       title: null,
@@ -15,9 +19,20 @@ export default class NewPost extends Component {
       imgs: [],
       category: '',
     };
+
+    fetch('/api/me/locations', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token(),
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => this.setState({ loc: data.result[0].name }));
   }
 
   template() {
+    const { loc } = this.$state;
     const line = `
     <div style="padding: 0 1.6rem; box-sizing: border-box;">
         <div class="line"></div>
@@ -26,25 +41,28 @@ export default class NewPost extends Component {
     return `
     <header></header>
     <div class="new-post-wrapper">
-        <div class="img-list"></div>
+        <div class="img-list-wrapper"></div>
         ${line}
         <div class="post-container">
-            <input id="title" placeholder="글 제목" />
+            <input autocomplete="off" id="title" placeholder="글 제목" />
             <div class="categories-wrapper"></div>
             ${line}
-            <input id="price" placeholder="₩ 가격(선택사항)"/>
+            <input autocomplete="off" id="price" placeholder="₩ 가격(선택사항)"/>
             ${line}
-            <textarea id="content" rows=8 placeholder="게시글 내용을 작성해주세요."></textarea>
+            <textarea autocomplete="off" id="content" rows=8 placeholder="게시글 내용을 작성해주세요."></textarea>
         </div>
     </div>
 
     <div class="loc-footer">
         <div id="loc" style="width: 1.6rem; height: 1.6rem; overflow: hidden; margin-right: 0.4rem;"></div>
-        <div>역삼동</div>
+        <div class="user-current-location">${loc}</div>
     </div>
     `;
   }
   mounted() {
+    const headers = new Headers();
+    headers.append('Authorization', token());
+
     const $header = this.$target.querySelector('header');
     new Header($header as Element, {
       title: '글쓰기',
@@ -58,35 +76,9 @@ export default class NewPost extends Component {
     });
 
     // 사진 선택
-    const selectImg = (e: any) => {
-      const reader = new FileReader();
-      const targetFile = e.target.files[0];
-      reader.onloadend = () => {
-        this.setState({
-          files: [...this.$state.files, targetFile],
-          imgs: [...this.$state.imgs, reader.result],
-        });
-      };
-
-      reader.readAsDataURL(targetFile);
-    };
-
-    const $imgList = this.$target.querySelector('.img-list');
-    new ImgButton($imgList as Element, {
-      btnType: 'add',
-      imgNum: this.$state.imgs.length,
-      addImg: selectImg,
-    });
-
-    this.$state.imgs.forEach((url: string, idx: number) => {
-      const $img = document.createElement('div');
-      $img.id = `img-del-${idx}`;
-      $img.className = 'img-del';
-      new ImgButton($img as Element, {
-        btnType: 'delete',
-        img: url,
-      });
-      $imgList?.append($img);
+    const $imgListWrapper = this.$target.querySelector('.img-list-wrapper');
+    new FileUploader($imgListWrapper as HTMLElement, {
+      setBlobs: (blob: Blob) => this.insertBlobs(blob),
     });
 
     const $categoriesWrapper = this.$target.querySelector(
@@ -96,17 +88,51 @@ export default class NewPost extends Component {
 
     const $backBtn = $header?.querySelector('#left');
     $backBtn?.addEventListener('click', () => history.back());
+
+    const $submitBtn = $header?.querySelector('#right');
+    $submitBtn?.addEventListener('click', () => {
+      const title = (<HTMLInputElement>this.$target.querySelector('#title'))
+        .value;
+      const price = (<HTMLInputElement>this.$target.querySelector('#price'))
+        .value;
+      const content = (<HTMLInputElement>this.$target.querySelector('#content'))
+        .value;
+      const cateogory_number = (<HTMLElement>(
+        this.$target.querySelector('#button.category.active')
+      )).parentElement?.parentElement?.id;
+      const category_id = cateogory_number?.split('-')[1]!;
+      const state = '판매중';
+
+      if (!title || !content || !this.blobs.length) {
+        alert('입력하지 않은 사항이 있습니다...!');
+        return;
+      }
+
+      const formData = new FormData();
+      this.blobs.forEach((blob) => {
+        formData.append('blob', blob);
+      });
+      formData.append('title', title);
+      formData.append('content', content);
+      formData.append('price', price);
+      formData.append('category_id', category_id);
+      formData.append('state', state);
+
+      fetch('/api/posts', {
+        method: 'POST',
+        headers,
+        body: formData,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          $router.push('/home');
+        });
+    });
   }
 
   setEvent() {
     this.$target.addEventListener('input', () => {
-      //   if (e.target.id === 'title') {
-      //     this.setState({ title: e.target.value });
-      //   } else if (e.target.id === 'price') {
-      //     this.setState({ price: e.target.value });
-      //   } else {
-      //     this.setState({ content: e.target.value });
-      //   }
       const $title = (this.$target.querySelector('#title') as HTMLInputElement)
         .value;
       const $content = (
@@ -125,7 +151,67 @@ export default class NewPost extends Component {
         });
       }
     });
+  }
 
+  insertBlobs(blob: Blob) {
+    this.blobs.push(blob);
+  }
+}
+
+class FileUploader extends Component {
+  setup() {
+    this.$state = {
+      files: [],
+      imgs: [],
+    };
+  }
+
+  template() {
+    return `<div class="img-list"></div>`;
+  }
+
+  mounted() {
+    const $imgList = this.$target.querySelector('.img-list');
+
+    const selectImg = (e: any) => {
+      const reader = new FileReader();
+      const targetFile = e.target.files[0];
+      reader.onloadend = () => {
+        const blob = new Blob([reader.result as ArrayBuffer], {
+          type: 'image/*',
+        });
+        const url = URL.createObjectURL(blob);
+
+        this.setState({
+          files: [...this.$state.files, blob],
+          imgs: [...this.$state.imgs, url],
+        });
+
+        this.$props.setBlobs(targetFile);
+      };
+
+      reader.readAsArrayBuffer(targetFile);
+    };
+
+    new ImgButton($imgList as Element, {
+      btnType: 'add',
+      imgNum: this.$state.imgs.length,
+      addImg: selectImg,
+    });
+
+    this.$state.imgs.forEach((url: string, idx: number) => {
+      const $img = document.createElement('div');
+      $img.id = `img-del-${idx}`;
+      $img.className = 'img-del';
+      new ImgButton($img as Element, {
+        btnType: 'delete',
+        img: url,
+      });
+      $imgList?.append($img);
+    });
+  }
+
+  setEvent() {
     this.addEvent('click', '.del-btn', ({ target }: { target: Element }) => {
       const idx = (
         target.parentNode?.parentNode?.parentNode as Element
