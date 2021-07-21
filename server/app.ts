@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
-// const path = require('path');
 import morgan from 'morgan';
+import path from 'path';
 import 'dotenv/config';
 import { initDatabase } from './database/database';
 import router from './routes';
@@ -16,6 +16,7 @@ app.set('port', process.env.PORT || 3000);
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api', router);
 
