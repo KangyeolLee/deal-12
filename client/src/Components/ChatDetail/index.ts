@@ -5,7 +5,7 @@ import InfoProduct from '../Shared/InfoProduct';
 import ChatBubble from '../Shared/ChatBubble';
 import ChatBar from '../Shared/ChatBar/index';
 import { $router } from '../../lib/router';
-import InputPopup from './../Shared/InputPopup/indext';
+import InputPopup from '../Shared/InputPopup';
 import { socket } from '../../main';
 import { token } from '../../lib/util';
 
@@ -31,7 +31,6 @@ export default class ChatDetail extends Component {
     })
       .then((res) => res.json())
       .then(({ user }) => {
-        console.log(user);
         this.setState({ me: user });
       });
   }

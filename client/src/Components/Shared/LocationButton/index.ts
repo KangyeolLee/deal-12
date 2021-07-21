@@ -26,7 +26,6 @@ export default class LocationButton extends Component {
     const { type } = this.$props;
     const $wrapper = this.$target.querySelector('.image-wrapper');
 
-    console.log(type);
     if (type === 'add') {
       new IconButton($wrapper as HTMLElement, {
         name: 'add-mint',

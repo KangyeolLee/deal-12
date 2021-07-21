@@ -137,8 +137,8 @@ export default class Home extends Component {
               {
                 text: this.$state.location2.name,
                 isWarning: false,
+                // 동네 변경
                 onclick: () => {
-                  // update하고 새로고침
                   fetch('/api/me/locations', {
                     method: 'PUT',
                     headers: {

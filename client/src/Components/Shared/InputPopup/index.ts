@@ -1,8 +1,9 @@
 import './styles';
 import Component from '../../../core/Component';
-import TextInput from './../TextInput/index';
+import TextInput from '../TextInput/index';
 import LocationInput from '../LocationInput';
 import { token } from '../../../lib/util';
+import { $router } from '../../../lib/router';
 
 export default class InputPopup extends Component {
   setup() {
@@ -95,10 +96,13 @@ export default class InputPopup extends Component {
             },
             body: JSON.stringify({
               user: {
+                location1_id: -1,
                 location2_id: locId,
               },
             }),
-          }).then((r) => console.log(r));
+          }).then(() => {
+            location.href = '/#/location';
+          });
         }
       });
     }

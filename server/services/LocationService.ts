@@ -13,7 +13,6 @@ export const LocationService = {
 
   findLocationsByUserNickname: async ({ nickname }: { nickname: string }) => {
     const user = await execQuery(FIND_BY_USER_NICKNAME({ nickname }));
-    console.log('asdf', user);
     const loc1 = await execQuery(
       FIND_LOCATION_BY_LOCATION_ID({ location_id: user[0].location1_id })
     );

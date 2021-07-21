@@ -3,7 +3,7 @@ import Component from '../../core/Component';
 import Header from './../Shared/Header/index';
 import { $router } from '../../lib/router';
 import LocationButton from './../Shared/LocationButton/index';
-import InputPopup from './../Shared/InputPopup/indext';
+import InputPopup from '../Shared/InputPopup';
 import { token } from '../../lib/util';
 
 export default class Location extends Component {
@@ -20,7 +20,6 @@ export default class Location extends Component {
     })
       .then((res) => res.json())
       .then(({ result }) => {
-        console.log(result);
         this.setState({
           location1: result.loc1[0],
           location2: result.loc2[0],
@@ -34,6 +33,7 @@ export default class Location extends Component {
         const $addLocation = document.createElement('div');
 
         $buttonArea?.append($location);
+        $location.id = 'loc1';
         new LocationButton($location as HTMLElement, {
           locId: location1.id,
           type: 'loc1',
@@ -41,20 +41,59 @@ export default class Location extends Component {
         });
 
         if (location2?.id) {
-          console.log('a');
           $buttonArea?.append($addLocation);
+          $addLocation.id = 'loc2';
           new LocationButton($addLocation as HTMLElement, {
             locId: location2.id,
             type: 'loc2',
             name: location2.name,
           });
         } else {
-          console.log('b');
+          $addLocation.id = 'add';
           $buttonArea?.append($addLocation);
           new LocationButton($addLocation as HTMLElement, {
             type: 'add',
           });
         }
+
+        const $loc1 = this.$target.querySelector('#loc1');
+        const $loc2 = this.$target.querySelector('#loc2');
+
+        // loc1 삭제
+        $loc1?.addEventListener('click', () => {
+          if (location2?.id) {
+            fetch('/api/me/locations', {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token(),
+              },
+              body: JSON.stringify({
+                user: {
+                  location1_id: this.$state.location2.id,
+                  location2_id: null,
+                },
+              }),
+            }).then(() => (location.href = '/#/location'));
+          }
+        });
+
+        // loc2 삭제
+        $loc2?.addEventListener('click', () => {
+          fetch('/api/me/locations', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': token(),
+            },
+            body: JSON.stringify({
+              user: {
+                location1_id: -1,
+                location2_id: null,
+              },
+            }),
+          }).then(() => (location.href = '/#/location'));
+        });
       });
   }
 
