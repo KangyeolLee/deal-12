@@ -1,5 +1,6 @@
 import { Response, NextFunction } from 'express';
 import { ChatService } from '../services/ChatService';
+import { PostService } from '../services/PostService';
 
 // 문의하기
 const getChatRoom = async (req: any, res: Response, next: NextFunction) => {
@@ -7,7 +8,7 @@ const getChatRoom = async (req: any, res: Response, next: NextFunction) => {
   const { seller_id, post_id } = req.body;
   console.log(req.user, req.body);
   try {
-    const result = await ChatService.getChatRoom({
+    const result = await ChatService.findChatRoom({
       buyer_id,
       seller_id,
       post_id,
@@ -29,7 +30,7 @@ const getChatRoomByPostId = async (
   const { id: user_id } = req.user;
   const { postId: post_id } = req.params;
   try {
-    const result = await ChatService.getChatroomsByPostId({
+    const result = await ChatService.findChatroomsByPostId({
       post_id,
       user_id,
     });
@@ -47,9 +48,11 @@ const getChatsByChatRoomId = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { room_id } = req.body;
+  const { chatroomId } = req.params;
   try {
-    const result = await ChatService.getChatsByChatroomId({ room_id });
+    const result = await ChatService.findChatsByChatroomId({
+      room_id: chatroomId,
+    });
     return res.status(200).json({
       result,
     });

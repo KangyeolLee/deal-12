@@ -19,7 +19,7 @@ chatRouter.get(
 );
 
 // 채팅내용 가져오기
-chatRouter.post(
+chatRouter.get(
   '/chatroom/:chatroomId',
   authenticateAccessToken,
   ChatController.getChatsByChatRoomId

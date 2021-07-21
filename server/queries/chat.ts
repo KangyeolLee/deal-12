@@ -26,6 +26,14 @@ export const CREATE_CHATROOM = ({
     VALUES(${post_id}, ${seller_id}, ${buyer_id});
 `;
 
+// 채팅방에 대한 포스트
+export const FIND_CHATROOM_POST = ({ room_id }: { room_id: number }) =>
+  `
+  SELECT * FROM post
+  JOIN chatRoom ON chatRoom.post_id = post.id
+  WHERE chatRoom.id = ${room_id}
+  `;
+
 // 룸 생성과 동시에 생성
 export const CREATE_CHATJOINED = ({
   room_id,
@@ -51,7 +59,7 @@ export const DELETE_CHATJOINED = ({
 `;
 
 // 다른 사용자가 채팅방을 나갔는지 확인하기 위함 (상대방에 대한 joined 새로 생성위함)
-export const GET_CHATJOINED_BY_ROOM_ID = ({
+export const FIND_CHATJOINED_BY_ROOM_ID = ({
   room_id,
   user_id,
 }: {
@@ -90,7 +98,7 @@ export const UPDATE_LAST_TEXT = ({
 `;
 
 // 내가 참여한 채팅목록 확인 -> 제일 최근 채팅 가져와야 함
-export const GET_CHATROOMS_BY_CHATJOINED = ({
+export const FIND_CHATROOMS_BY_CHATJOINED = ({
   room_id,
   user_id,
 }: {
@@ -104,13 +112,13 @@ export const GET_CHATROOMS_BY_CHATJOINED = ({
 `;
 
 // 해당 room에 대한 채팅들
-export const GET_CHATS_BY_CHATROOM_ID = ({ room_id }: { room_id: number }) => `
+export const FIND_CHATS_BY_CHATROOM_ID = ({ room_id }: { room_id: number }) => `
     SELECT * FROM chat
     WHERE chat.room_id = ${room_id};
 `;
 
 // 내가 쓴 포스트에 대한 채팅목록 확인 -> 제일 최근 채팅 가져와야 함
-export const GET_CHATROOMS_BY_POST_ID = ({
+export const FIND_CHATROOMS_BY_POST_ID = ({
   post_id,
   user_id,
 }: {

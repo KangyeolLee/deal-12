@@ -21,9 +21,13 @@ interface ChatBubbleType {
 export default class ChatDetail extends Component {
   setup() {
     this.$state = {
+      chats: [],
       me: {},
+      post: {},
     };
-    fetch('/api/me', {
+
+    // 내 정보
+    fetch(`/api/me/`, {
       method: 'GET',
       headers: {
         Authorization: token(),
@@ -32,6 +36,19 @@ export default class ChatDetail extends Component {
       .then((res) => res.json())
       .then(({ user }) => {
         this.setState({ me: user });
+      });
+
+    // 채팅내역
+    const chatroomId = location.href.split('chatroom/')[1];
+    fetch(`/api/chat/chatroom/${chatroomId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: token(),
+      },
+    })
+      .then((res) => res.json())
+      .then(({ result }) => {
+        this.setState({ chats: result.data, post: result.post });
       });
   }
 
@@ -60,7 +77,7 @@ export default class ChatDetail extends Component {
 
     new ChatBar($chatbar as HTMLElement);
 
-    new InfoProduct($productInfo as HTMLLIElement, this.$state);
+    new InfoProduct($productInfo as HTMLLIElement, this.$state.post);
 
     new InputPopup($modal as HTMLElement, {
       message: '정말로 이 채팅방을 나가시겠습니까?',

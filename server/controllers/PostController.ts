@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { PostService, PostType } from '../services/post/PostService';
+import { PostService, PostType } from '../services/PostService';
 import { PostInterestService } from '../services/post/PostInterestService';
 
 const createPost = async (req: Request, res: Response, next: NextFunction) => {
@@ -79,7 +79,7 @@ const getPostInterestsByUserNickname = async (
 const deletePost = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { postId } = req.params;
-    const result = await PostService.deletePost(+postId);
+    const result = await PostService.deletePost({ post_id: +postId });
 
     return res.status(200).json({
       result,
@@ -112,8 +112,8 @@ const checkPostBelongToMe = async (
 const getPostById = async (req: any, res: Response, next: NextFunction) => {
   try {
     const { postId } = req.params;
-    const result = await PostService.findPostById(+postId);
-    await PostService.updatePostViewCount(+postId);
+    const result = await PostService.findPostById({ post_id: +postId });
+    await PostService.updatePostViewCount({ post_id: +postId });
 
     return res.status(200).json({
       result,
