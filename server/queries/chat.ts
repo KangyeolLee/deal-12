@@ -105,10 +105,11 @@ export const FIND_CHATROOMS_BY_CHATJOINED = ({
   room_id: number;
   user_id: number;
 }) => `
-    SELECT post.thumbnail, seller_id, buyer_id chatRoom.last_text FROM chatJoined
-    JOIN chatRoom ON chatRoom.id = ${room_id}
-    JOIN post ON post.id = chatRoom.post_id
-    WHERE chatJoined.room_id = ${room_id} chatJoined.user_id = ${user_id};
+    SELECT chatRoom.id AS id, thumbnail, chatRoom.seller_id AS seller_id, chatRoom.updatedAt AS timestamp,
+    post.seller_id AS my_id, buyer_id, last_text FROM chatJoined 
+    JOIN chatRoom ON chatRoom.id = ${room_id} 
+    JOIN post ON post.id = chatRoom.post_id 
+    WHERE chatJoined.room_id = ${room_id} AND chatJoined.user_id = ${user_id};
 `;
 
 // 해당 room에 대한 채팅들
@@ -125,7 +126,8 @@ export const FIND_CHATROOMS_BY_POST_ID = ({
   post_id: number;
   user_id: number;
 }) => `
-    SELECT post.thumbnail, buyer_id last_text FROM chatRoom
+    SELECT chatRoom.id AS id, thumbnail, chatRoom.seller_id AS seller_id, chatRoom.updatedAt AS timestamp,
+    post.seller_id AS my_id, buyer_id, last_text FROM chatRoom
     JOIN post ON post.id = ${post_id}
     WHERE chatRoom.post_id = ${post_id} AND chatRoom.seller_id = ${user_id};
 `;

@@ -108,7 +108,7 @@ export default class ChatDetail extends Component {
     });
 
     const $backBtn = $header?.querySelector('#left');
-    $backBtn?.addEventListener('click', () => $router.push('/chat'));
+    $backBtn?.addEventListener('click', () => history.back());
 
     const $rightBtn = this.$target.querySelector('#right');
     $rightBtn?.addEventListener('click', () => {

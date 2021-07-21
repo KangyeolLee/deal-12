@@ -33,6 +33,7 @@ const getChatRoomByPostId = async (
       post_id,
       user_id,
     });
+    console.log(result);
     return res.status(200).json({
       result,
     });

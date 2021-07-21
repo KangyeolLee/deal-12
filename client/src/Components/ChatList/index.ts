@@ -42,7 +42,6 @@ export default class Chatlist extends Component {
   mounted() {
     const $header = this.$target.querySelector('header');
     const $chatList = this.$target.querySelector('.chat-lists');
-    const chatData = this.$state;
 
     new Header($header as HTMLElement, {
       headerType: 'menu-off-white',
@@ -53,6 +52,7 @@ export default class Chatlist extends Component {
       this.$state.chats.forEach((chat: ChatType) => {
         const $list = document.createElement('div');
         $chatList?.append($list);
+        console.log(chat);
         new ChatListItem($list as Element, chat);
       });
     } else {
@@ -63,6 +63,6 @@ export default class Chatlist extends Component {
 
     const $backBtn = $header?.querySelector('#left');
     const postId = location.href.split('post/')[1];
-    $backBtn?.addEventListener('click', () => $router.push(`/post/${postId}`));
+    $backBtn?.addEventListener('click', () => history.back());
   }
 }
