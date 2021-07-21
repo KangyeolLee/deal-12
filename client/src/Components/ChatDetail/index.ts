@@ -140,7 +140,8 @@ export default class ChatDetail extends Component {
           this.$state.me.id,
           this.$state.other.id,
           this.$target.querySelector('input')?.value,
-          chatroomId
+          chatroomId,
+          this.$state.post
         );
       });
   }

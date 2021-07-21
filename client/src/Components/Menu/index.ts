@@ -7,6 +7,8 @@ import CategoryListItem, {
 } from '../Shared/CategoryListItem';
 import ChatListItem from '../Shared/ChatListItem';
 import { token } from '../../lib/util';
+import { socket } from '../../main';
+import dayjs from 'dayjs';
 
 const tapList = [
   { id: 'sell-list', title: '판매목록' },
@@ -22,10 +24,29 @@ const noData = [
 
 export default class Menu extends Component {
   setup() {
-    this.$state = { menu: 'sell-list', sells: [], chats: [], interests: [] };
+    this.$state = {
+      menu: 'sell-list',
+      sells: [],
+      chats: [],
+      interests: [],
+      myId: '',
+    };
 
     const headers = new Headers();
     headers.append('Authorization', token());
+
+    fetch('/api/me/', {
+      method: 'GET',
+      headers: {
+        Authorization: token(),
+      },
+    })
+      .then((res) => res.json())
+      .then(({ user }) => {
+        this.setState({
+          myId: user.id,
+        });
+      });
 
     // 판매목록
     fetch('/api/me/posts', {
@@ -107,6 +128,35 @@ export default class Menu extends Component {
         break;
 
       case 'chat-list':
+        // 새로운 채팅방 생성 감지
+        socket.on(
+          `user-${this.$state.myId}`,
+          (fromId: number, chatroomId: number, message: string, post: any) => {
+            const isExist = this.$state.chats.find(
+              (chat: any) => chat.id === chatroomId
+            );
+
+            if (!isExist) {
+              const $list = document.createElement('div');
+              $wrapper?.append($list);
+              const newChatroom = {
+                id: chatroomId,
+                buyer_id: fromId,
+                seller_id: this.$state.myId,
+                my_id: this.$state.myId,
+                thumbnail: post.thumbnail,
+                last_text: message,
+                timestamp: dayjs(new Date()),
+              };
+              new ChatListItem($list as Element, newChatroom);
+
+              this.setState({
+                chats: [...this.$state.chats, newChatroom],
+              });
+            }
+          }
+        );
+
         if (this.$state.chats.length > 0) {
           this.$state.chats.forEach((item: any) => {
             const $item = document.createElement('div');

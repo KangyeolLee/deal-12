@@ -4,6 +4,7 @@ import Component from '../../../core/Component';
 import ImgBox from './../ImgBox/index';
 import { $router } from '../../../lib/router';
 import { getTimestamp } from '../../../lib/util';
+import { socket } from '../../../main';
 
 interface ParamsType {
   buyer_id: number;
@@ -47,6 +48,12 @@ export default class ChatListItem extends Component {
     const { id } = this.$props;
     const $imageWrapper = this.$target.querySelector('.image-wrapper');
     const $list = this.$target.querySelector('.chat-list__item');
+
+    socket.on(`server-${id}`, (id: number, message: string) => {
+      (
+        this.$target.querySelector('.content') as HTMLParagraphElement
+      ).innerText = message;
+    });
 
     new ImgBox($imageWrapper as HTMLElement, {
       imgType: 'small',

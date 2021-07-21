@@ -69,7 +69,6 @@ export const ChatService = {
     const data = await execQuery(
       FIND_CHATROOMS_BY_POST_ID({ post_id, user_id })
     );
-    console.log(data);
     return data;
   },
 
