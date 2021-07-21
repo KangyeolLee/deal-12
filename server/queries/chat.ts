@@ -97,22 +97,24 @@ export const UPDATE_LAST_TEXT = ({
     WHERE id = ${room_id}
 `;
 
-// 내가 참여한 채팅목록 확인 -> 제일 최근 채팅 가져와야 함
-export const FIND_CHATROOMS_BY_USERID = ({ user_id }: { user_id: number }) => `
-    SELECT chatJoined.user_id as my_id, chatRoom.id AS id, thumbnail, chatRoom.seller_id AS seller_id, chatRoom.updatedAt AS timestamp,
-    buyer_id, last_text FROM chatJoined
-    JOIN chatRoom ON chatRoom.id = chatJoined.room_id AND (chatRoom.seller_id = ${user_id} OR chatRoom.buyer_id = ${user_id})
-    JOIN post ON post.id = chatRoom.post_id
-    WHERE chatJoined.user_id = ${user_id}
-`;
-
 // 해당 room에 대한 채팅들
 export const FIND_CHATS_BY_CHATROOM_ID = ({ room_id }: { room_id: number }) => `
     SELECT * FROM chat
     WHERE chat.room_id = ${room_id};
 `;
 
-// 내가 쓴 포스트에 대한 채팅목록 확인 -> 제일 최근 채팅 가져와야 함
+// 내가 참여한 채팅목록 확인 (join 생성된 것)
+export const FIND_CHATROOMS_BY_USERID = ({ user_id }: { user_id: number }) => `
+    SELECT chatJoined.user_id as my_id, chatRoom.id AS id, thumbnail, 
+    chatRoom.seller_id AS seller_id, chatRoom.updatedAt AS timestamp,
+    buyer_id, last_text FROM chatJoined
+    JOIN chatRoom ON chatRoom.id = chatJoined.room_id 
+      AND (chatRoom.seller_id = ${user_id} OR chatRoom.buyer_id = ${user_id})
+    JOIN post ON post.id = chatRoom.post_id
+    WHERE chatJoined.user_id = ${user_id}
+`;
+
+// 내가 쓴 포스트에 대한 채팅목록 확인 (join 생성된 것)
 export const FIND_CHATROOMS_BY_POST_ID = ({
   post_id,
   user_id,
@@ -120,8 +122,10 @@ export const FIND_CHATROOMS_BY_POST_ID = ({
   post_id: number;
   user_id: number;
 }) => `
-    SELECT chatRoom.id AS id, thumbnail, chatRoom.seller_id AS seller_id, chatRoom.updatedAt AS timestamp,
-    post.seller_id AS my_id, buyer_id, last_text FROM chatRoom
-    JOIN post ON post.id = ${post_id}
-    WHERE chatRoom.post_id = ${post_id} AND chatRoom.seller_id = ${user_id};
+    SELECT chatJoined.user_id as my_id, chatRoom.id AS id, thumbnail, 
+    chatRoom.seller_id AS seller_id, chatRoom.updatedAt AS timestamp,
+    buyer_id, last_text FROM chatJoined
+    JOIN chatRoom ON chatRoom.id = chatJoined.room_id
+    JOIN post ON post.seller_id = ${user_id} AND post.id = chatRoom.post_id
+    WHERE chatJoined.user_id = ${user_id};
 `;

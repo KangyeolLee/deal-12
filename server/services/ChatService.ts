@@ -45,10 +45,6 @@ export const ChatService = {
           post_id,
         })
       );
-      // 연결 생성
-      await execQuery(
-        CREATE_CHATJOINED({ room_id: chatroom[0].id, user_id: buyer_id })
-      );
       return chatroom[0];
     }
   },
@@ -73,6 +69,7 @@ export const ChatService = {
     const data = await execQuery(
       FIND_CHATROOMS_BY_POST_ID({ post_id, user_id })
     );
+    console.log(data);
     return data;
   },
 
@@ -98,8 +95,10 @@ export const ChatService = {
     const data = await execQuery(
       FIND_CHATJOINED_BY_ROOM_ID_USERID({ room_id, user_id: other_id })
     );
-    if (!data) {
+    if (!data.length) {
       // 상대방에 대한 joined 생성
+      // 연결 생성
+      await execQuery(CREATE_CHATJOINED({ room_id, user_id }));
       await execQuery(CREATE_CHATJOINED({ room_id, user_id: other_id }));
     }
     await execQuery(CREATE_CHAT({ room_id, text, user_id }));
