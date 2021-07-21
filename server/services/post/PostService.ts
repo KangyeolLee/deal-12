@@ -7,11 +7,10 @@ import {
   FIND_POST_WHETHER_BELONG_TO_ME,
   UPDATE_POST,
   UPDATE_POST_STATE_BY_POSTID,
-} from '../../queries/post';
-import {
   FIND_ALL_POSTS,
   FIND_POST_BY_POSTID,
   UPDATE_POST_VIEWCOUNT,
+  DELETE_POST_IMAGE_BY_URL,
 } from '../../queries/post';
 
 export type PostType = {
@@ -134,6 +133,23 @@ export const PostService = {
   deletePost: async ({ post_id }: { post_id: number }) => {
     const data = await execQuery(DELETE_POST({ post_id }));
     return data;
+  },
+  deletePostImages: async ({
+    post_id,
+    urls = [],
+  }: {
+    post_id: number;
+    urls: string[];
+  }) => {
+    if (typeof urls === 'string') {
+      const url = urls as string;
+      await execQuery(DELETE_POST_IMAGE_BY_URL({ post_id, url }));
+    } else {
+      for (const url of urls) {
+        await execQuery(DELETE_POST_IMAGE_BY_URL({ post_id, url }));
+      }
+    }
+    return true;
   },
   checkMyPost: async ({
     post_id,

@@ -82,17 +82,27 @@ export const UPDATE_POST = ({
   category_id,
   content,
   price,
-  state,
   thumbnail,
 }: PostUpdateType) => `
   UPDATE post SET title='${title}', location_id=${location_id}, category_id=${category_id}, content='${content}',
-  price=${price}, state='${state}', thumbnail='${thumbnail}' 
+  price=${price}, thumbnail='${thumbnail}' 
   WHERE post.id = ${post_id}
 `;
 
 // 해당 포스트를 삭제하는 쿼리
 export const DELETE_POST = ({ post_id }: { post_id: number }) => `
   DELETE FROM post WHERE post.id = ${post_id}
+`;
+
+// 해당 포스트의 이미지 중 일치하는 번호의 이미지를 삭제하는 쿼리
+export const DELETE_POST_IMAGE_BY_URL = ({
+  post_id,
+  url,
+}: {
+  post_id: number;
+  url: string;
+}) => `
+  DELETE FROM image WHERE image.url = '${url}' AND image.post_id = ${post_id}
 `;
 
 // 포스트번호에 해당하는 포스트의 상태를 변경하는 쿼리
