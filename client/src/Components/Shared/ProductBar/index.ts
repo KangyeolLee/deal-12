@@ -55,7 +55,6 @@ export default class ProductBar extends Component {
           })
             .then((r) => r.json())
             .then(({ result }) => {
-              console.log(result);
               $router.push(`/chatroom/${result.id}`);
             });
         }

@@ -10,13 +10,10 @@ import { socket } from '../../main';
 import { token } from '../../lib/util';
 
 interface ChatBubbleType {
-  userId: string;
-  message: string;
-  checked: boolean;
-  roomId: number;
+  myId: number;
+  user_id: number;
+  text: string;
 }
-
-// UI 확인용 임시 더미데이터
 
 export default class ChatDetail extends Component {
   setup() {
@@ -49,6 +46,18 @@ export default class ChatDetail extends Component {
       .then((res) => res.json())
       .then(({ result }) => {
         this.setState({ chats: result.data, post: result.post });
+
+        const $chatBubbles = this.$target.querySelector('.chat-bubbles');
+
+        this.$state.chats.forEach((chat: ChatBubbleType) => {
+          const $chatItem = document.createElement('div');
+          $chatBubbles?.append($chatItem);
+          new ChatBubble($chatItem as HTMLElement, {
+            myId: this.$state.me.id,
+            user_id: chat.user_id,
+            text: chat.text,
+          });
+        });
       });
   }
 
@@ -86,23 +95,17 @@ export default class ChatDetail extends Component {
     });
 
     const $chatBubbles = this.$target.querySelector('.chat-bubbles');
-    // socket.on('server', (id, message) => {
-    //   console.log(id, message); // x8WIv7-mJelg7on_ALbx
-    //   const $chatItem = document.createElement('div');
-    //   $chatBubbles?.append($chatItem);
-    //   new ChatBubble($chatItem as HTMLElement, {
-    //     myId: this.$state.me.id,
-    //     fromId: id,
-    //     message,
-    //   });
-    //   (this.$target.querySelector('input') as HTMLInputElement).value = '';
-    // });
-
-    // dummyChatBubblesData.forEach((chat: ChatBubbleType) => {
-    //   const $chatItem = document.createElement('div');
-    //   $chatBubbles?.append($chatItem);
-    //   new ChatBubble($chatItem as HTMLElement, chat);
-    // });
+    const chatroomId = location.href.split('chatroom/')[1];
+    socket.on(`server-${chatroomId}`, (id, message) => {
+      const $chatItem = document.createElement('div');
+      $chatBubbles?.append($chatItem);
+      new ChatBubble($chatItem as HTMLElement, {
+        myId: this.$state.me.id,
+        fromId: id,
+        message,
+      });
+      (this.$target.querySelector('input') as HTMLInputElement).value = '';
+    });
 
     const $backBtn = $header?.querySelector('#left');
     $backBtn?.addEventListener('click', () => $router.push('/chat'));
@@ -114,13 +117,14 @@ export default class ChatDetail extends Component {
   }
 
   setEvent() {
-    // this.addEvent('click', '.send-button', () => {
-    //   console.log('asdf');
-    //   socket.emit(
-    //     'client',
-    //     this.$state.me.id,
-    //     this.$target.querySelector('input')?.value
-    //   );
-    // });
+    const chatroomId = location.href.split('chatroom/')[1];
+    this.addEvent('click', '.send-button', () => {
+      socket.emit(
+        'client',
+        this.$state.me.id,
+        this.$target.querySelector('input')?.value,
+        chatroomId
+      );
+    });
   }
 }

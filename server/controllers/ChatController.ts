@@ -6,7 +6,6 @@ import { PostService } from '../services/PostService';
 const getChatRoom = async (req: any, res: Response, next: NextFunction) => {
   const { id: buyer_id } = req.user;
   const { seller_id, post_id } = req.body;
-  console.log(req.user, req.body);
   try {
     const result = await ChatService.findChatRoom({
       buyer_id,

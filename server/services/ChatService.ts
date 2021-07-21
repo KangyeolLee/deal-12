@@ -80,22 +80,20 @@ export const ChatService = {
   // 채팅 생성
   createChat: async ({
     room_id,
-    seller_id,
     text,
     user_id,
   }: {
     room_id: number;
-    seller_id: number;
     text: string;
     user_id: number;
   }) => {
-    const data = await execQuery(
-      FIND_CHATJOINED_BY_ROOM_ID({ room_id, user_id: seller_id })
-    );
-    if (!data) {
-      // 상대방에 대한 joined 생성
-      await execQuery(CREATE_CHATJOINED({ room_id, user_id: seller_id }));
-    }
+    // const data = await execQuery(
+    //   FIND_CHATJOINED_BY_ROOM_ID({ room_id, user_id: seller_id })
+    // );
+    // if (!data) {
+    //   // 상대방에 대한 joined 생성
+    //   await execQuery(CREATE_CHATJOINED({ room_id, user_id: seller_id }));
+    // }
     await execQuery(CREATE_CHAT({ room_id, text, user_id }));
     await execQuery(UPDATE_LAST_TEXT({ room_id, text }));
   },

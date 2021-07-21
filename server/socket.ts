@@ -1,4 +1,5 @@
 import { Server } from 'socket.io';
+import { ChatService } from './services/ChatService';
 
 export const initSocket = (httpServer: any) => {
   const io = new Server(httpServer, {
@@ -10,9 +11,13 @@ export const initSocket = (httpServer: any) => {
   });
 
   io.on('connection', (socket) => {
-    socket.on('client', (id, message) => {
-      console.log(id, message);
-      io.emit('server', id, message);
+    socket.on('client', (id, message, chatroomId) => {
+      ChatService.createChat({
+        room_id: chatroomId,
+        text: message,
+        user_id: id,
+      });
+      io.emit(`server-${chatroomId}`, id, message);
     });
   });
 };
