@@ -1,4 +1,5 @@
 import express from 'express';
+import { ChatController } from '../controllers/ChatController';
 import { LocationController } from '../controllers/LocationController';
 import { PostController } from '../controllers/PostController';
 import { UserController } from '../controllers/UserController';
@@ -14,6 +15,12 @@ meRouter.get(
   '/like/posts',
   authenticateAccessToken,
   PostController.getPostInterestsByUserNickname
+);
+// 로그인 한 유저가 참여한 채팅 목록
+meRouter.get(
+  '/chatrooms',
+  authenticateAccessToken,
+  ChatController.getChatRoomsByUserId
 );
 // 로그인 한 유저가 작성한 포스트 목록
 meRouter.get(

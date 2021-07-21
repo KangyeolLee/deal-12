@@ -52,7 +52,6 @@ export default class Chatlist extends Component {
       this.$state.chats.forEach((chat: ChatType) => {
         const $list = document.createElement('div');
         $chatList?.append($list);
-        console.log(chat);
         new ChatListItem($list as Element, chat);
       });
     } else {

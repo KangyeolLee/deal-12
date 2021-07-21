@@ -26,8 +26,8 @@ export default class Dropdown extends Component {
     lists.filter((list: DropdownListType) => {
       const { currentState } = this.$props;
       const { isWarning, text, state, onclick } = list;
-      
-      if ( state && currentState === state ) {
+
+      if (state && currentState === state) {
         return;
       }
 
@@ -38,8 +38,6 @@ export default class Dropdown extends Component {
       $li.addEventListener('click', () => onclick());
       $dropdown.append($li);
     });
-
-    console.log($dropdown)
 
     const toggleDropdown = (e: MouseEvent) => {
       e.stopPropagation();

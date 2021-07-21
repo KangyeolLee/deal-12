@@ -20,25 +20,9 @@ const noData = [
   '관심을 표시한 상품이 없습니다.',
 ];
 
-const chatList = [
-  {
-    username: 'UserE',
-    timestamp: '1분 전',
-    content: '실제로 신어볼 수 있는 건가요?',
-    img: 'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
-    checked: true,
-  },
-  {
-    username: 'UserD',
-    timestamp: '1시간 전',
-    content: '감사합니다 :)',
-    img: 'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
-    checked: false,
-  },
-];
 export default class Menu extends Component {
   setup() {
-    this.$state = { menu: 'sell-list', sells: [], interests: [] };
+    this.$state = { menu: 'sell-list', sells: [], chats: [], interests: [] };
 
     const headers = new Headers();
     headers.append('Authorization', token());
@@ -51,6 +35,16 @@ export default class Menu extends Component {
       .then((res) => res.json())
       .then(({ result }) => {
         this.setState({ sells: result });
+      });
+
+    // 채팅목록
+    fetch('/api/me/chatrooms', {
+      method: 'GET',
+      headers,
+    })
+      .then((res) => res.json())
+      .then(({ result }) => {
+        this.setState({ chats: result });
       });
 
     // 관심목록
@@ -113,8 +107,8 @@ export default class Menu extends Component {
         break;
 
       case 'chat-list':
-        if (chatList.length > 0) {
-          chatList.forEach((item) => {
+        if (this.$state.chats.length > 0) {
+          this.$state.chats.forEach((item: any) => {
             const $item = document.createElement('div');
             $wrapper?.append($item);
             new ChatListItem($item as Element, item);

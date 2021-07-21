@@ -4,11 +4,11 @@ import {
   CREATE_CHATJOINED,
   CREATE_CHATROOM,
   FIND_CHATROOM_BY_BUYER_ID_SELLER_ID_POST_ID,
-  FIND_CHATROOMS_BY_CHATJOINED,
   FIND_CHATROOMS_BY_POST_ID,
   FIND_CHATS_BY_CHATROOM_ID,
   UPDATE_LAST_TEXT,
   FIND_CHATROOM_POST,
+  FIND_CHATROOMS_BY_USERID,
 } from '../queries/chat';
 
 export const ChatService = {
@@ -75,6 +75,12 @@ export const ChatService = {
     return data;
   },
 
+  // 내가 참여한 채팅목록
+  findChatfoomsByUserId: async ({ user_id }: { user_id: number }) => {
+    const data = await execQuery(FIND_CHATROOMS_BY_USERID({ user_id }));
+    return data;
+  },
+
   // 서버에서만 사용 (컨트롤러 필요없음)
   // 채팅 생성
   createChat: async ({
@@ -95,20 +101,5 @@ export const ChatService = {
     // }
     await execQuery(CREATE_CHAT({ room_id, text, user_id }));
     await execQuery(UPDATE_LAST_TEXT({ room_id, text }));
-  },
-
-  // api 필요
-  // 내가 참여한 채팅목록
-  findChatsByChatjoined: async ({
-    room_id,
-    user_id,
-  }: {
-    room_id: number;
-    user_id: number;
-  }) => {
-    const data = await execQuery(
-      FIND_CHATROOMS_BY_CHATJOINED({ room_id, user_id })
-    );
-    return data;
   },
 };
