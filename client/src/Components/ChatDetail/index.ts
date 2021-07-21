@@ -47,7 +47,9 @@ export default class ChatDetail extends Component {
         console.log(result);
         this.setState({ chats: result.data, post: result.post });
 
-        const $chatBubbles = this.$target.querySelector('.chat-bubbles');
+        const $chatBubbles = this.$target.querySelector(
+          '.chat-bubbles'
+        ) as Element;
 
         this.$state.chats.forEach((chat: ChatBubbleType) => {
           const $chatItem = document.createElement('div');
@@ -58,6 +60,10 @@ export default class ChatDetail extends Component {
             text: chat.text,
           });
         });
+
+        // 스크롤 하단으로
+        (this.$target.querySelector('input') as HTMLInputElement).value = '';
+        $chatBubbles.scrollTop = ($chatBubbles?.scrollHeight as number) + 40;
       });
   }
 
@@ -94,7 +100,7 @@ export default class ChatDetail extends Component {
       inputType: 'alert',
     });
 
-    const $chatBubbles = this.$target.querySelector('.chat-bubbles');
+    const $chatBubbles = this.$target.querySelector('.chat-bubbles') as Element;
     const chatroomId = location.href.split('chatroom/')[1];
     socket.on(`server-${chatroomId}`, (id, message) => {
       const $chatItem = document.createElement('div');
@@ -104,7 +110,10 @@ export default class ChatDetail extends Component {
         user_id: id,
         text: message,
       });
+
+      // 스크롤 하단으로
       (this.$target.querySelector('input') as HTMLInputElement).value = '';
+      $chatBubbles.scrollTop = ($chatBubbles?.scrollHeight as number) + 40;
     });
 
     const $backBtn = $header?.querySelector('#left');
@@ -114,17 +123,17 @@ export default class ChatDetail extends Component {
     $rightBtn?.addEventListener('click', () => {
       ($modal as HTMLElement).classList.add('modal-open');
     });
-  }
 
-  setEvent() {
-    const chatroomId = location.href.split('chatroom/')[1];
-    this.addEvent('click', '.send-button', () => {
-      socket.emit(
-        'client',
-        this.$state.me.id,
-        this.$target.querySelector('input')?.value,
-        chatroomId
-      );
-    });
+    // 전송
+    this.$target
+      .querySelector('.send-button')
+      ?.addEventListener('click', () => {
+        socket.emit(
+          'client',
+          this.$state.me.id,
+          this.$target.querySelector('input')?.value,
+          chatroomId
+        );
+      });
   }
 }
