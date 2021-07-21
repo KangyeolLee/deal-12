@@ -23,6 +23,7 @@ export default class ChatListItem extends Component {
     fetch(`/api/user/${buyer_id === my_id ? seller_id : buyer_id}`)
       .then((r) => r.json())
       .then(({ user }) => {
+        console.log(buyer_id, seller_id, my_id, user);
         this.setState({ otherName: user.nickname });
       });
   }

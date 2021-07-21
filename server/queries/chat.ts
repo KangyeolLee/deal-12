@@ -99,8 +99,10 @@ export const UPDATE_LAST_TEXT = ({
 
 // 내가 참여한 채팅목록 확인 -> 제일 최근 채팅 가져와야 함
 export const FIND_CHATROOMS_BY_USERID = ({ user_id }: { user_id: number }) => `
-    SELECT * FROM chatJoined
-    JOIN chatRoom ON chatRoom.id = chatJoined.room_id
+    SELECT chatRoom.id AS id, thumbnail, chatRoom.seller_id AS seller_id, chatRoom.updatedAt AS timestamp,
+    post.seller_id AS my_id, buyer_id, last_text FROM chatJoined
+    JOIN chatRoom ON chatRoom.id = chatJoined.room_id AND (chatRoom.seller_id = ${user_id} OR chatRoom.buyer_id = ${user_id})
+    JOIN post ON post.id = chatRoom.post_id
     WHERE chatJoined.user_id = ${user_id}
 `;
 
