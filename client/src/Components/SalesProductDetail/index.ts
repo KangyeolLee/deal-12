@@ -119,8 +119,22 @@ export default class SalesProductDetail extends Component {
       new InputPopup($modal as HTMLElement, {
         message: '정말로 이 게시글을 삭제하시겠습니까?',
         btnText: '삭제하기',
-        isAlert: true,
-        onclick: () => console.log('삭제 이벤트 발생!!'),
+        inputType: 'alert',
+        onclick: () => {
+          fetch(`/api/posts/${id}`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': token(),
+              'Content-Type': 'application/json',
+            },
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.result.affectedRows) {
+                $router.push('/home');
+              }
+            });
+        },
       });
     }
 
