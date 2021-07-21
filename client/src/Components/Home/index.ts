@@ -30,7 +30,6 @@ export default class Home extends Component {
       })
         .then((res) => res.json())
         .then(({ result }) => {
-          console.log(result);
           this.setState({
             location1: result.loc1[0],
             location2: result.loc2[0],

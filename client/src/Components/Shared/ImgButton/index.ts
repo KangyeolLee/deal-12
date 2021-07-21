@@ -50,7 +50,7 @@ export default class ImgButton extends Component {
       const $delBtn = document.createElement('div');
       $delBtn.className = 'del-btn';
       new IconButton($delBtn as Element, {
-        name: 'close-white',
+        name: 'close-white-small',
       });
       $button?.append($delBtn);
     }
