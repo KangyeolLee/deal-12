@@ -1,16 +1,9 @@
 import './styles';
 import Component from '../../core/Component';
-<<<<<<< HEAD
-import TextInput from './../Shared/TextInput/index';
-import Button from './../Shared/Button/index';
-import Header from './../Shared/Header/index';
-import { $router } from '../../lib/router';
-=======
 import TextInput from '../Shared/TextInput/index';
 import Button from '../Shared/Button/index';
 import Header from '../Shared/Header/index';
 import LocationInput from '../Shared/LocationInput';
->>>>>>> 5f6c66937ef8635ae38f4d4662bfe8a0580fa100
 
 export default class Register extends Component {
   setup() {
