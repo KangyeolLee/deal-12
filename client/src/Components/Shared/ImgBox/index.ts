@@ -13,4 +13,5 @@ export default class ImgBox extends Component {
 
     return `<div style="background-image: url('${img}')" class="imgbox-${imgType}"></div>`;
   }
+
 }

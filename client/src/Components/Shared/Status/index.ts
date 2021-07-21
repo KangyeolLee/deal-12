@@ -7,6 +7,7 @@ import { token } from './../../../lib/util';
 interface PropsType {
   id: number;
   text: string;
+  state: string;
   readonly?: boolean;
 }
 
@@ -47,7 +48,28 @@ export default class Status extends Component {
     new Dropdown($dropdown as HTMLElement, {
       lists: [
         {
+          text: '판매중으로 변경',
+          state: '판매중',
+          isWarning: false,
+          onclick: () => {
+            fetch(`/api/posts/${id}/state`, {
+              method: 'PUT',
+              headers,
+              body: JSON.stringify({
+                state: '판매중',
+              })
+            }).then(res => res.json())
+              .then(data => {
+                const { result: { affectedRows } } = data;
+                if (affectedRows) {
+                  this.setState({ text: '판매중' })
+                }
+              })
+          }
+        },
+        {
           text: '예약중으로 변경',
+          state: '예약중',
           isWarning: false,
           onclick: () => {
             fetch(`/api/posts/${id}/state`, {
@@ -68,6 +90,7 @@ export default class Status extends Component {
         },
         {
           text: '판매완료로 변경',
+          state: '판매완료',
           isWarning: false,
           onclick: () => {
             fetch(`/api/posts/${id}/state`, {
@@ -88,6 +111,7 @@ export default class Status extends Component {
         },
       ],
       offset: 'left',
+      currentState: this.$state.text,
     });
   }
 }
