@@ -5,7 +5,7 @@ import InfoProduct from '../Shared/InfoProduct';
 import ChatBubble from '../Shared/ChatBubble';
 import ChatBar from '../Shared/ChatBar/index';
 import { $router } from '../../lib/router';
-import InputPopup from './../Shared/InputPopup/indext';
+import InputPopup from '../Shared/InputPopup';
 import { socket } from '../../main';
 import { token } from '../../lib/util';
 
@@ -21,9 +21,13 @@ interface ChatBubbleType {
 export default class ChatDetail extends Component {
   setup() {
     this.$state = {
+      chats: [],
       me: {},
+      post: {},
     };
-    fetch('/api/me', {
+
+    // 내 정보
+    fetch(`/api/me/`, {
       method: 'GET',
       headers: {
         Authorization: token(),
@@ -31,8 +35,20 @@ export default class ChatDetail extends Component {
     })
       .then((res) => res.json())
       .then(({ user }) => {
-        console.log(user);
         this.setState({ me: user });
+      });
+
+    // 채팅내역
+    const chatroomId = location.href.split('chatroom/')[1];
+    fetch(`/api/chat/chatroom/${chatroomId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: token(),
+      },
+    })
+      .then((res) => res.json())
+      .then(({ result }) => {
+        this.setState({ chats: result.data, post: result.post });
       });
   }
 
@@ -61,7 +77,7 @@ export default class ChatDetail extends Component {
 
     new ChatBar($chatbar as HTMLElement);
 
-    new InfoProduct($productInfo as HTMLLIElement, this.$state);
+    new InfoProduct($productInfo as HTMLLIElement, this.$state.post);
 
     new InputPopup($modal as HTMLElement, {
       message: '정말로 이 채팅방을 나가시겠습니까?',
@@ -70,17 +86,17 @@ export default class ChatDetail extends Component {
     });
 
     const $chatBubbles = this.$target.querySelector('.chat-bubbles');
-    socket.on('server', (id, message) => {
-      console.log(id, message); // x8WIv7-mJelg7on_ALbx
-      const $chatItem = document.createElement('div');
-      $chatBubbles?.append($chatItem);
-      new ChatBubble($chatItem as HTMLElement, {
-        myId: this.$state.me.id,
-        fromId: id,
-        message,
-      });
-      (this.$target.querySelector('input') as HTMLInputElement).value = '';
-    });
+    // socket.on('server', (id, message) => {
+    //   console.log(id, message); // x8WIv7-mJelg7on_ALbx
+    //   const $chatItem = document.createElement('div');
+    //   $chatBubbles?.append($chatItem);
+    //   new ChatBubble($chatItem as HTMLElement, {
+    //     myId: this.$state.me.id,
+    //     fromId: id,
+    //     message,
+    //   });
+    //   (this.$target.querySelector('input') as HTMLInputElement).value = '';
+    // });
 
     // dummyChatBubblesData.forEach((chat: ChatBubbleType) => {
     //   const $chatItem = document.createElement('div');
@@ -98,13 +114,13 @@ export default class ChatDetail extends Component {
   }
 
   setEvent() {
-    this.addEvent('click', '.send-button', () => {
-      console.log('asdf');
-      socket.emit(
-        'client',
-        this.$state.me.id,
-        this.$target.querySelector('input')?.value
-      );
-    });
+    // this.addEvent('click', '.send-button', () => {
+    //   console.log('asdf');
+    //   socket.emit(
+    //     'client',
+    //     this.$state.me.id,
+    //     this.$target.querySelector('input')?.value
+    //   );
+    // });
   }
 }

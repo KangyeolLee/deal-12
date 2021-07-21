@@ -26,8 +26,12 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
 const updateUser = async (req: any, res: Response, next: NextFunction) => {
   try {
     const { nickname } = req.user;
-    const user = req.body;
-    const result = await UserService.updateUserLocation({ ...user, nickname });
+    const { location1_id, location2_id } = req.body.user;
+    const result = await UserService.updateUserLocation({
+      location1_id,
+      location2_id,
+      nickname,
+    });
     return res.status(200).json({
       message: 'success update locations',
       result,

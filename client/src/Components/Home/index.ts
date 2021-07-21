@@ -16,9 +16,8 @@ export default class Home extends Component {
   setup() {
     this.$state = {
       items: [],
-      locations: [],
-      locationId: 0,
-      locationName: '',
+      location1: {},
+      location2: {},
       isLogin: false,
     };
     if (token()) {
@@ -32,13 +31,12 @@ export default class Home extends Component {
         .then((res) => res.json())
         .then(({ result }) => {
           this.setState({
-            locationId: result[0].location1_id,
-            locationName: result[0].name,
-            locations: result,
+            location1: result.loc1[0],
+            location2: result.loc2[0],
           });
         })
         .then(() => {
-          fetch(`/api/posts/location/${this.$state.locationId}/category/0`, {
+          fetch(`/api/posts/location/${this.$state.location1.id}/category/0`, {
             method: 'GET',
           })
             .then((res) => res.json())
@@ -71,7 +69,7 @@ export default class Home extends Component {
     const isLogin = token();
     const $header = this.$target.querySelector('header');
     new Header($header as Element, {
-      title: isLogin ? this.$state.locationName : '로그인해주세요',
+      title: isLogin ? this.$state.location1.name : '로그인해주세요',
       headerType: 'main',
       isLogin,
     });
@@ -113,7 +111,7 @@ export default class Home extends Component {
     const $categoryBtn = this.$target.querySelector('#category');
     $categoryBtn?.addEventListener('click', () => {
       new Category($categoryModal as Element, {
-        locationId: this.$state.locationId,
+        locationId: this.$state.location1.id,
       });
       $categoryModal.className = 'modal-open';
     });
@@ -134,42 +132,41 @@ export default class Home extends Component {
 
     if (this.$state.isLogin) {
       new Dropdown($locationBtn as HTMLElement, {
-        lists:
-          this.$state.locations.length > 1
-            ? [
-                {
-                  text: this.$state.locations[1].name,
-                  isWarning: false,
-                  onclick: () => {
-                    // update하고 새로고침
-                    fetch('/api/me/locations', {
-                      method: 'PUT',
-                      headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': token(),
+        lists: this.$state.location2?.id
+          ? [
+              {
+                text: this.$state.location2.name,
+                isWarning: false,
+                // 동네 변경
+                onclick: () => {
+                  fetch('/api/me/locations', {
+                    method: 'PUT',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': token(),
+                    },
+                    body: JSON.stringify({
+                      user: {
+                        location1_id: this.$state.location2.id,
+                        location2_id: this.$state.location1.id,
                       },
-                      body: JSON.stringify({
-                        user: {
-                          location1_id: this.$state.locations[1],
-                          location2_id: this.$state.locations[0],
-                        },
-                      }),
-                    }).then((r) => console.log(r));
-                  },
+                    }),
+                  }).then(() => $router.push('/'));
                 },
-                {
-                  text: '내 동네 설정하기',
-                  isWarning: false,
-                  onclick: () => $router.push('/location'),
-                },
-              ]
-            : [
-                {
-                  text: '내 동네 설정하기',
-                  isWarning: false,
-                  onclick: () => $router.push('/location'),
-                },
-              ],
+              },
+              {
+                text: '내 동네 설정하기',
+                isWarning: false,
+                onclick: () => $router.push('/location'),
+              },
+            ]
+          : [
+              {
+                text: '내 동네 설정하기',
+                isWarning: false,
+                onclick: () => $router.push('/location'),
+              },
+            ],
         offset: 'center',
       });
     }

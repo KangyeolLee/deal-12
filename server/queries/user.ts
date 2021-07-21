@@ -10,19 +10,25 @@ export const FIND_BY_USER_NICKNAME = ({ nickname }: { nickname: string }) => `
   WHERE nickname = '${nickname}';
 `;
 
+// 바꿀때는 1,2 둘다 들어옴
+// 2 삭제할 때는 1 안들어오고 2는 Null
+// 1 삭제할 때는 1 들어오고 2는 Null
+// 2 들어올 때는 1 안들어오고 2 들어옴
 export const UPDATE_USER_LOCATION = ({
   nickname,
   location1_id,
-  location2_id,
+  location2_id = null,
 }: UserType) => {
-  // location2 추가되는 경우
-  // location1 location2 바뀌는 경우
-  // location1 삭제되는 경우 -> 프론트에서 location2로 보내줌
-  // location2 삭제되는 경우
-  location2_id = location2_id ? location2_id : null;
+  if (location1_id === -1) {
+    // 2 삭제 또는 2 새로 들어올 때
+    return `
+      UPDATE user SET location2_id = ${location2_id} 
+      WHERE nickname='${nickname}';
+    `;
+  }
   return `
-    UPDATE user SET location1_id = CASE WHEN ${location1_id} IS NULL THEN location1_id ELSE ${location1_id} END), 
+    UPDATE user SET location1_id = ${location1_id}, 
     location2_id = ${location2_id} 
-    WHERE nickname='${nickname}'
+    WHERE nickname='${nickname}';
   `;
 };

@@ -1,7 +1,7 @@
 // 지역넘버에 해당하는 모든 포스트 목록 가지고 오는 쿼리
 // 지역넘버는 항상 디폴트로 필수적이지만, 만약 0인 경우에는 로그인 되지 않은 유저(위치정보 없는 유저)에게 출력되는 포스트 목록을 가져옴
 
-import { PostType, PostUpdateType } from '../services/post/PostService';
+import { PostType, PostUpdateType } from '../services/PostService';
 
 // 카테고리 넘버 = 0 일때는 전체 포스트 목록, 카테고리 넘버가 1 ~ 14 일땐 각각 해당하는 카테고리 포스트 목록
 export const FIND_ALL_POSTS = ({

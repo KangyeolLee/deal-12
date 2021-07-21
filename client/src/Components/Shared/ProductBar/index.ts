@@ -3,6 +3,7 @@ import './styles';
 import IconButton from './../IconButton';
 import Button from '../Button/index';
 import { $router } from '../../../lib/router';
+import { token } from '../../../lib/util';
 
 export default class ProductBar extends Component {
   setup() {
@@ -23,7 +24,7 @@ export default class ProductBar extends Component {
   }
 
   mounted() {
-    const { isLogin, isMine } = this.$props;
+    const { isLogin, isMine, post_id, seller_id } = this.$props;
     const { isLiked } = this.$state;
     const $imageWrapper = this.$target.querySelector('.image-wrapper');
     const $button = this.$target.querySelector('.button');
@@ -37,7 +38,28 @@ export default class ProductBar extends Component {
       buttonType: 'medium',
       title: isMine ? '채팅 목록 보기' : '문의하기',
       disabled: !isLogin,
-      handleClick: () => $router.push(`/chat/1`),
+      handleClick: async () => {
+        if (isMine) {
+          $router.push(`/chat/post/${post_id}`);
+        } else {
+          fetch('/api/chat/chatroom', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': token(),
+            },
+            body: JSON.stringify({
+              seller_id,
+              post_id,
+            }),
+          })
+            .then((r) => r.json())
+            .then(({ result }) => {
+              console.log(result);
+              $router.push(`/chatroom/${result.id}`);
+            });
+        }
+      },
     });
   }
 

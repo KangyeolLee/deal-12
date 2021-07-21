@@ -8,7 +8,9 @@ import NewPost from './Components/NewPost';
 import Location from './Components/Location';
 import { io } from 'socket.io-client';
 
-export const socket = io('http://localhost:3000');
+export const socket = io('http://localhost:3000', {
+  withCredentials: true,
+});
 
 const $app = document.querySelector('#app');
 const routes = [
@@ -17,9 +19,9 @@ const routes = [
   { path: '/post', component: SalesProductDetail },
   { path: '/post/:id', component: SalesProductDetail },
   { path: '/post/new', component: NewPost },
-  { path: '/chat', component: Chatlist },
-  { path: '/chat/:id', component: ChatDetail },
   { path: '/location', component: Location },
+  { path: '/chat/post/:id', component: Chatlist }, // 판매글의 채팅목록
+  { path: '/chatroom/:id', component: ChatDetail }, // 채팅룸
 ];
 
 async function init() {

@@ -4,16 +4,18 @@ import IconButton from './../IconButton/index';
 
 export interface LocationButtonProps {
   locId: number;
-  idx: number;
+  type: string;
   name?: string;
 }
 
 export default class LocationButton extends Component {
   template() {
-    const { name, idx }: LocationButtonProps = this.$props;
+    const { name, type }: LocationButtonProps = this.$props;
 
     return `
-      <div class="location-button ${idx === 0 ? 'active' : 'add'}">
+      <div class="location-button ${
+        type !== 'add' ? (type === 'loc1' ? 'active' : 'inactive') : 'add'
+      }">
         <small class="text">${name}</small>
         <div class="image-wrapper"></div>
       </div>
@@ -21,23 +23,17 @@ export default class LocationButton extends Component {
   }
 
   mounted() {
-    const { idx } = this.$props;
+    const { type } = this.$props;
     const $wrapper = this.$target.querySelector('.image-wrapper');
 
-    switch (idx) {
-      case 0:
-        new IconButton($wrapper as HTMLElement, {
-          name: 'close-mint',
-        });
-        break;
-
-      case 1:
-        new IconButton($wrapper as HTMLElement, {
-          name: 'add-mint',
-        });
-
-      default:
-        break;
+    if (type === 'add') {
+      new IconButton($wrapper as HTMLElement, {
+        name: 'add-mint',
+      });
+    } else {
+      new IconButton($wrapper as HTMLElement, {
+        name: 'close-mint',
+      });
     }
   }
 

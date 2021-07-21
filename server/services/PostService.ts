@@ -1,4 +1,4 @@
-import { execQuery } from '../../database/database';
+import { execQuery } from '../database/database';
 import {
   CREATE_POST,
   DELETE_POST,
@@ -6,12 +6,12 @@ import {
   FIND_POST_WHETHER_BELONG_TO_ME,
   UPDATE_POST,
   UPDATE_POST_STATE_BY_POSTID,
-} from '../../queries/post';
+} from '../queries/post';
 import {
   FIND_ALL_POSTS,
   FIND_POST_BY_POSTID,
   UPDATE_POST_VIEWCOUNT,
-} from '../../queries/post';
+} from '../queries/post';
 
 export type PostType = {
   title: string;
@@ -86,12 +86,12 @@ export const PostService = {
     return data;
   },
 
-  findPostById: async (post_id: number) => {
+  findPostById: async ({ post_id }: { post_id: number }) => {
     const data = await execQuery(FIND_POST_BY_POSTID({ post_id }));
     return data;
   },
 
-  updatePostViewCount: async (post_id: number) => {
+  updatePostViewCount: async ({ post_id }: { post_id: number }) => {
     const data = await execQuery(UPDATE_POST_VIEWCOUNT({ post_id }));
     return data;
   },
@@ -131,7 +131,7 @@ export const PostService = {
     );
     return data;
   },
-  deletePost: async (post_id: number) => {
+  deletePost: async ({ post_id }: { post_id: number }) => {
     const data = await execQuery(DELETE_POST({ post_id }));
     return data;
   },

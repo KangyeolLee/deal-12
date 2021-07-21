@@ -3,14 +3,14 @@ import Component from '../../core/Component';
 import Header from './../Shared/Header/index';
 import { $router } from '../../lib/router';
 import LocationButton from './../Shared/LocationButton/index';
-import InputPopup from './../Shared/InputPopup/indext';
+import InputPopup from '../Shared/InputPopup';
 import { token } from '../../lib/util';
 
 export default class Location extends Component {
   setup() {
-    // 임시 유저 위치 정보
     this.$state = {
-      userLoc: [],
+      location1: {},
+      location2: {},
     };
     fetch('/api/me/locations', {
       method: 'GET',
@@ -20,9 +20,79 @@ export default class Location extends Component {
     })
       .then((res) => res.json())
       .then(({ result }) => {
-        console.log(result);
         this.setState({
-          userLoc: result,
+          location1: result.loc1[0],
+          location2: result.loc2[0],
+        });
+      })
+      .then(() => {
+        const $buttonArea = this.$target.querySelector('.button-area');
+        const { location1, location2 } = this.$state;
+
+        const $location = document.createElement('div');
+        const $addLocation = document.createElement('div');
+
+        $buttonArea?.append($location);
+        $location.id = 'loc1';
+        new LocationButton($location as HTMLElement, {
+          locId: location1.id,
+          type: 'loc1',
+          name: location1.name,
+        });
+
+        if (location2?.id) {
+          $buttonArea?.append($addLocation);
+          $addLocation.id = 'loc2';
+          new LocationButton($addLocation as HTMLElement, {
+            locId: location2.id,
+            type: 'loc2',
+            name: location2.name,
+          });
+        } else {
+          $addLocation.id = 'add';
+          $buttonArea?.append($addLocation);
+          new LocationButton($addLocation as HTMLElement, {
+            type: 'add',
+          });
+        }
+
+        const $loc1 = this.$target.querySelector('#loc1');
+        const $loc2 = this.$target.querySelector('#loc2');
+
+        // loc1 삭제
+        $loc1?.addEventListener('click', () => {
+          if (location2?.id) {
+            fetch('/api/me/locations', {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token(),
+              },
+              body: JSON.stringify({
+                user: {
+                  location1_id: this.$state.location2.id,
+                  location2_id: null,
+                },
+              }),
+            }).then(() => location.reload());
+          }
+        });
+
+        // loc2 삭제
+        $loc2?.addEventListener('click', () => {
+          fetch('/api/me/locations', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': token(),
+            },
+            body: JSON.stringify({
+              user: {
+                location1_id: -1,
+                location2_id: null,
+              },
+            }),
+          }).then(() => location.reload());
         });
       });
   }
@@ -47,35 +117,6 @@ export default class Location extends Component {
       title: '내 동네 설정하기',
       headerType: 'menu-off-white',
     });
-
-    const $buttonArea = this.$target.querySelector('.button-area');
-    const { userLoc } = this.$state;
-
-    if (userLoc.length === 1) {
-      const $location = document.createElement('div');
-      $buttonArea?.append($location);
-      new LocationButton($location as HTMLElement, {
-        locId: userLoc[0].id,
-        idx: 0,
-        name: userLoc[0].name,
-      });
-
-      const $addLocation = document.createElement('div');
-      $buttonArea?.append($addLocation);
-      new LocationButton($addLocation as HTMLElement, {
-        idx: 1,
-      });
-    } else {
-      userLoc.forEach((loc: any, idx: number) => {
-        const $location = document.createElement('div');
-        $buttonArea?.append($location);
-        new LocationButton($location as HTMLElement, {
-          locId: loc.id,
-          idx,
-          name: loc.name,
-        });
-      });
-    }
 
     const $modal = this.$target.querySelector('.location-modal');
     new InputPopup($modal as HTMLElement, {
