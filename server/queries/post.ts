@@ -119,7 +119,8 @@ export const FIND_POST_BY_USER_NICKNAME = ({
 }: {
   nickname: string;
 }) => `
-    SELECT * FROM post
+    SELECT post.id AS id, title, location_id, category_id, post.createdAt, post.updatedAt, content, view_count, price, seller_id, state,
+    thumbnail, interest_count, name FROM post
       JOIN user ON user.nickname = '${nickname}'
       JOIN location ON location.id = post.location_id
     WHERE seller_id=user.id
