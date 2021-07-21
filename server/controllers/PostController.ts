@@ -1,24 +1,27 @@
 import { Request, Response, NextFunction } from 'express';
-import { PostService, PostType } from '../services/PostService';
+import { PostService, PostType } from '../services/post/PostService';
 import { PostInterestService } from '../services/post/PostInterestService';
 
-const createPost = async (req: Request, res: Response, next: NextFunction) => {
-  // 더미데이터 - 실제 프론트에서 받아오는 구조로 재설계 필요
-  const post: PostType = {
-    title: '테스트',
-    content: '테스트내용',
-    location_id: 1,
-    category_id: 2,
-    view_count: 3,
-    price: 5000,
-    seller_id: 1,
-    state: '판매중',
-    thumbnail: 'test.url',
-    interest_count: 5,
-  };
+const HOST = 'http://localhost:3000/';
 
+const createPost = async (req: any, res: Response, next: NextFunction) => {
   try {
-    await PostService.cratePost(post);
+    const { title, content, price, category_id, state } = req.body;
+    const { id: seller_id, location1_id: location_id } = req.user;
+    const files = req.files as any;
+    const post = {
+      title,
+      content,
+      seller_id,
+      location_id,
+      price: +price,
+      category_id: +category_id,
+      state,
+      thumbnail: HOST + files[0].path,
+    };
+
+    const result = await PostService.cratePost(post);
+    const images = await PostService.createPostImage(result.insertId, files);
     return res.status(200).json({
       message: 'success create post!',
     });

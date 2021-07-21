@@ -1,7 +1,7 @@
 // 지역넘버에 해당하는 모든 포스트 목록 가지고 오는 쿼리
 // 지역넘버는 항상 디폴트로 필수적이지만, 만약 0인 경우에는 로그인 되지 않은 유저(위치정보 없는 유저)에게 출력되는 포스트 목록을 가져옴
 
-import { PostType, PostUpdateType } from '../services/PostService';
+import { PostType, PostUpdateType } from '../services/post/PostService';
 
 // 카테고리 넘버 = 0 일때는 전체 포스트 목록, 카테고리 넘버가 1 ~ 14 일땐 각각 해당하는 카테고리 포스트 목록
 export const FIND_ALL_POSTS = ({
@@ -40,7 +40,7 @@ export const FIND_ALL_POSTS = ({
 // 포스트넘버에 해당하는 하나의 포스트 디테일 가지고 오는 쿼리
 export const FIND_POST_BY_POSTID = ({ post_id }: { post_id: number }) => `
   SELECT post.id AS id, i.images, title, location1_id, location2_id, category_id, post.createdAt, post.updatedAt, content, view_count, price, seller_id, state, 
-  interest_count, name, user.nickname FROM post
+  interest_count, location.name as name, category.name as category, user.nickname, category.name as category FROM post
   INNER JOIN (
     SELECT post_id, JSON_ARRAYAGG(url) AS images
     FROM image
@@ -49,6 +49,7 @@ export const FIND_POST_BY_POSTID = ({ post_id }: { post_id: number }) => `
   ON i.post_id = post.id
   JOIN user ON user.id = post.seller_id
   JOIN location ON location.id = post.location_id
+  JOIN category ON category.id = post.category_id
   WHERE post.id = ${post_id}
 `;
 
@@ -64,7 +65,6 @@ export const CREATE_POST = ({
   location_id,
   category_id,
   content,
-  view_count,
   price,
   seller_id,
   state,

@@ -4,6 +4,7 @@ import Component from '../../../core/Component';
 interface DropdownListType {
   isWarning?: boolean;
   text: string;
+  state?: string;
   onclick: Function;
 }
 
@@ -13,7 +14,7 @@ export default class Dropdown extends Component {
     const $dropdown = document.createElement('ul');
     $dropdown.classList.add('dropdown', offset);
     this.$target.append($dropdown);
-    this.$target.style.position = 'relative';
+    (<HTMLElement>this.$target).style.position = 'relative';
   }
 
   mounted() {
@@ -22,21 +23,14 @@ export default class Dropdown extends Component {
 
     const dropdownOpener = $dropdown?.parentElement;
 
-    // const dropdownItems = lists
-    //   .map((list: DropdownListType) => {
-    //     return `
-    //     <li class="dropdown-item ${list.isWarning ? 'warning' : ''}">
-    //       ${list.text}
-    //     </li>
-    //   `;
-    //   })
-    //   .join('');
-    // $dropdown!.innerHTML = dropdownItems;
+    lists.filter((list: DropdownListType) => {
+      const { currentState } = this.$props;
+      const { isWarning, text, state, onclick } = list;
+      
+      if ( state && currentState === state ) {
+        return;
+      }
 
-    // template literal로 이벤트콜백 `<li onclick=${onclick}>...</li>` 를 넣는 방법이 있을까요오오?
-
-    lists.forEach((list: DropdownListType) => {
-      const { isWarning, text, onclick } = list;
       const $li = document.createElement('li');
       $li.classList.add('dropdown-item');
       if (isWarning) $li.classList.add('warning');
@@ -44,6 +38,8 @@ export default class Dropdown extends Component {
       $li.addEventListener('click', () => onclick());
       $dropdown.append($li);
     });
+
+    console.log($dropdown)
 
     const toggleDropdown = (e: MouseEvent) => {
       e.stopPropagation();
