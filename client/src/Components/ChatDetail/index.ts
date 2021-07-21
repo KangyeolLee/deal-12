@@ -20,6 +20,7 @@ export default class ChatDetail extends Component {
       chats: [],
       me: {},
       post: {},
+      otherName: '',
     };
 
     // 내 정보
@@ -46,6 +47,17 @@ export default class ChatDetail extends Component {
       .then(({ result }) => {
         console.log(result);
         this.setState({ chats: result.data, post: result.post });
+
+        // 다른 유저의 닉네임 가져오기
+        const seller_id = this.$state.post.seller_id;
+        const buyer_id = this.$state.post.buyer_id;
+        const my_id = this.$state.me.id;
+        fetch(`/api/user/${buyer_id === my_id ? seller_id : buyer_id}`)
+          .then((r) => r.json())
+          .then(({ user }) => {
+            console.log(buyer_id, seller_id, my_id, user);
+            this.setState({ otherName: user.nickname });
+          });
 
         const $chatBubbles = this.$target.querySelector(
           '.chat-bubbles'
@@ -87,7 +99,7 @@ export default class ChatDetail extends Component {
     new Header($header as HTMLElement, {
       headerType: 'menu-white',
       extraIconName: 'logout',
-      title: 'UserE',
+      title: this.$state.otherName,
     });
 
     new ChatBar($chatbar as HTMLElement);
