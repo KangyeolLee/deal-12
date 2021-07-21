@@ -3,12 +3,17 @@ import Component from '../../../core/Component';
 import IconButton from '../IconButton';
 import ImgBox from '../ImgBox';
 import './styles.scss';
-import { getTimestamp, translatePriceToTrimmed, token } from '../../../lib/util';
+import {
+  getTimestamp,
+  translatePriceToTrimmed,
+  token,
+} from '../../../lib/util';
 
 export interface CategoryListItemProps {
   id: number;
   title: string;
   thumbnail: string;
+  blob?: Blob;
   price: number;
   name: string;
   createdAt: string;
@@ -45,7 +50,7 @@ class LikeBtn extends Component {
 
     new IconButton($iconBtn as Element, {
       name: isLiked ? 'heart-fill' : 'heart',
-      disabled: !this.$props.isLogin
+      disabled: !this.$props.isLogin,
     });
 
     const headers = new Headers();
@@ -99,23 +104,21 @@ export default class CategoryListItem extends Component {
                 <div class="info__location">${name} ∙ ${getTimestamp(
       createdAt
     )}</div>
-                <div class="info__price">${translatePriceToTrimmed(price)}원</div>
+                <div class="info__price">${translatePriceToTrimmed(
+                  price
+                )}원</div>
             </div>
             <div class="info__counts">
-                ${
-                  chat_count !== 0 &&
-                  `<div class="info__counts--count">
-                      <div id="chat-icon"></div>
-                      <div>${chat_count}</div>
-                  </div>`
-                }
-                ${
-                  interest_count !== 0 &&
-                  `<div class="info__counts--count">
-                      <div id="heart-icon"></div>
-                      <div>${interest_count}</div>
-                  </div>`
-                }
+              <div class="info__counts--count ${chat_count ? '' : 'hidden'}">
+                  <div id="chat-icon"></div>
+                  <div>${chat_count}</div>
+              </div>
+              <div class="info__counts--count ${
+                interest_count ? '' : 'hidden'
+              }">
+                  <div id="heart-icon"></div>
+                  <div>${interest_count}</div>
+              </div>              
             </div>
         </div>
     </div>
@@ -124,7 +127,13 @@ export default class CategoryListItem extends Component {
   }
 
   mounted() {
-    const { pageName, thumbnail, chat_count = 3, interest_count } = this.$props;
+    const {
+      pageName,
+      blob,
+      thumbnail,
+      chat_count = 3,
+      interest_count,
+    } = this.$props;
 
     const $img = this.$target.querySelector('#img-box');
     new ImgBox($img as Element, {
@@ -140,7 +149,7 @@ export default class CategoryListItem extends Component {
     } else {
       new LikeBtn($iconBtn as Element, {
         postId: this.$props.id,
-        isLogin: this.$props.isLogin
+        isLogin: this.$props.isLogin,
       });
     }
 
