@@ -144,7 +144,7 @@ export default class SalesProductDetail extends Component {
         {
           text: '수정하기',
           isWarning: false,
-          onclick: () => console.log(1),
+          onclick: () => $router.push(`/post/update/${id}`),
         },
         {
           text: '삭제하기',
