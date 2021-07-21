@@ -7,6 +7,7 @@ import ChatDetail from './Components/ChatDetail';
 import NewPost from './Components/NewPost';
 import Location from './Components/Location';
 import { io } from 'socket.io-client';
+import UpdatePost from './Components/UpdatePost/index';
 
 export const socket = io('http://localhost:3000', {
   withCredentials: true,
@@ -19,6 +20,7 @@ const routes = [
   { path: '/post', component: SalesProductDetail },
   { path: '/post/:id', component: SalesProductDetail },
   { path: '/post/new', component: NewPost },
+  { path: '/post/update/:id', component: UpdatePost },
   { path: '/location', component: Location },
   { path: '/chat/post/:id', component: Chatlist }, // 판매글의 채팅목록
   { path: '/chatroom/:id', component: ChatDetail }, // 채팅룸
