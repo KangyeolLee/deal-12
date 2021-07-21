@@ -31,5 +31,5 @@ export const getTimestamp = (date: string) => {
 };
 
 export const translatePriceToTrimmed = (price: number) => {
-  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-}
+  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
