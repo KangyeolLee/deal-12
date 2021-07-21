@@ -11,14 +11,7 @@ export default class NewPost extends Component {
   blobs: Blob[] = [];
 
   setup() {
-    this.$state = {
-      title: null,
-      price: null,
-      content: null,
-      files: [],
-      imgs: [],
-      category: '',
-    };
+    this.$state = {};
 
     fetch('/api/me/locations', {
       method: 'GET',
