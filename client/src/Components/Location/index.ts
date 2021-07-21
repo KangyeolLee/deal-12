@@ -74,7 +74,7 @@ export default class Location extends Component {
                   location2_id: null,
                 },
               }),
-            }).then(() => (location.href = '/#/location'));
+            }).then(() => location.reload());
           }
         });
 
@@ -92,7 +92,7 @@ export default class Location extends Component {
                 location2_id: null,
               },
             }),
-          }).then(() => (location.href = '/#/location'));
+          }).then(() => location.reload());
         });
       });
   }

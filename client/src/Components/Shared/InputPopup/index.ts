@@ -3,7 +3,6 @@ import Component from '../../../core/Component';
 import TextInput from '../TextInput/index';
 import LocationInput from '../LocationInput';
 import { token } from '../../../lib/util';
-import { $router } from '../../../lib/router';
 
 export default class InputPopup extends Component {
   setup() {
@@ -100,9 +99,7 @@ export default class InputPopup extends Component {
                 location2_id: locId,
               },
             }),
-          }).then(() => {
-            location.href = '/#/location';
-          });
+          }).then(() => location.reload());
         }
       });
     }
