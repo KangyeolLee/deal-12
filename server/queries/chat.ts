@@ -59,7 +59,7 @@ export const DELETE_CHATJOINED = ({
 `;
 
 // 다른 사용자가 채팅방을 나갔는지 확인하기 위함 (상대방에 대한 joined 새로 생성위함)
-export const FIND_CHATJOINED_BY_ROOM_ID = ({
+export const FIND_CHATJOINED_BY_ROOM_ID_USERID = ({
   room_id,
   user_id,
 }: {

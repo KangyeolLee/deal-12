@@ -20,7 +20,7 @@ export default class ChatDetail extends Component {
       chats: [],
       me: {},
       post: {},
-      otherName: '',
+      other: {},
     };
 
     // 내 정보
@@ -45,7 +45,6 @@ export default class ChatDetail extends Component {
     })
       .then((res) => res.json())
       .then(({ result }) => {
-        console.log(result);
         this.setState({ chats: result.data, post: result.post });
 
         // 다른 유저의 닉네임 가져오기
@@ -55,27 +54,8 @@ export default class ChatDetail extends Component {
         fetch(`/api/user/${buyer_id === my_id ? seller_id : buyer_id}`)
           .then((r) => r.json())
           .then(({ user }) => {
-            console.log(buyer_id, seller_id, my_id, user);
-            this.setState({ otherName: user.nickname });
+            this.setState({ other: user });
           });
-
-        const $chatBubbles = this.$target.querySelector(
-          '.chat-bubbles'
-        ) as Element;
-
-        this.$state.chats.forEach((chat: ChatBubbleType) => {
-          const $chatItem = document.createElement('div');
-          $chatBubbles?.append($chatItem);
-          new ChatBubble($chatItem as HTMLElement, {
-            myId: this.$state.me.id,
-            user_id: chat.user_id,
-            text: chat.text,
-          });
-        });
-
-        // 스크롤 하단으로
-        (this.$target.querySelector('input') as HTMLInputElement).value = '';
-        $chatBubbles.scrollTop = ($chatBubbles?.scrollHeight as number) + 40;
       });
   }
 
@@ -99,7 +79,7 @@ export default class ChatDetail extends Component {
     new Header($header as HTMLElement, {
       headerType: 'menu-white',
       extraIconName: 'logout',
-      title: this.$state.otherName,
+      title: this.$state.other.nickname,
     });
 
     new ChatBar($chatbar as HTMLElement);
@@ -113,6 +93,21 @@ export default class ChatDetail extends Component {
     });
 
     const $chatBubbles = this.$target.querySelector('.chat-bubbles') as Element;
+
+    this.$state.chats.forEach((chat: ChatBubbleType) => {
+      const $chatItem = document.createElement('div');
+      $chatBubbles?.append($chatItem);
+      new ChatBubble($chatItem as HTMLElement, {
+        myId: this.$state.me.id,
+        user_id: chat.user_id,
+        text: chat.text,
+      });
+    });
+
+    // 스크롤 하단으로
+    (this.$target.querySelector('input') as HTMLInputElement).value = '';
+    $chatBubbles.scrollTop = $chatBubbles?.scrollHeight as number;
+
     const chatroomId = location.href.split('chatroom/')[1];
     socket.on(`server-${chatroomId}`, (id, message) => {
       const $chatItem = document.createElement('div');
@@ -125,7 +120,7 @@ export default class ChatDetail extends Component {
 
       // 스크롤 하단으로
       (this.$target.querySelector('input') as HTMLInputElement).value = '';
-      $chatBubbles.scrollTop = ($chatBubbles?.scrollHeight as number) + 40;
+      $chatBubbles.scrollTop = $chatBubbles?.scrollHeight as number;
     });
 
     const $backBtn = $header?.querySelector('#left');
@@ -143,6 +138,7 @@ export default class ChatDetail extends Component {
         socket.emit(
           'client',
           this.$state.me.id,
+          this.$state.other.id,
           this.$target.querySelector('input')?.value,
           chatroomId
         );

@@ -11,7 +11,7 @@ export const FIND_BY_USER_NICKNAME = ({ nickname }: { nickname: string }) => `
 `;
 
 export const FIND_BY_USER_ID = ({ id }: { id: number }) => `
-  SELECT nickname FROM user
+  SELECT id, nickname FROM user
   WHERE id = ${id};
 `;
 

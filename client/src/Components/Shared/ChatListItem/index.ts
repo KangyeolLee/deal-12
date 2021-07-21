@@ -17,14 +17,13 @@ interface ParamsType {
 export default class ChatListItem extends Component {
   setup() {
     this.$state = {
-      otherName: '',
+      other: {},
     };
     const { buyer_id, seller_id, my_id }: ParamsType = this.$props;
     fetch(`/api/user/${buyer_id === my_id ? seller_id : buyer_id}`)
       .then((r) => r.json())
       .then(({ user }) => {
-        console.log(buyer_id, seller_id, my_id, user);
-        this.setState({ otherName: user.nickname });
+        this.setState({ other: user });
       });
   }
   template() {
@@ -34,7 +33,7 @@ export default class ChatListItem extends Component {
     <div class="chat-list__item ${'checked' ? 'checked' : ''}">
       <div class="user-section">
         <div class="user-section__detail">
-          <h6 class="username">${this.$state.otherName}</h6>
+          <h6 class="username">${this.$state.other.nickname}</h6>
           <p class="content">${last_text || ''}</p>
         </div>
         <span class="timestamp">${getTimestamp(timestamp)}</span>

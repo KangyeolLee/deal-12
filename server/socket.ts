@@ -11,13 +11,14 @@ export const initSocket = (httpServer: any) => {
   });
 
   io.on('connection', (socket) => {
-    socket.on('client', (id, message, chatroomId) => {
+    socket.on('client', (fromId, toId, message, chatroomId) => {
       ChatService.createChat({
         room_id: chatroomId,
         text: message,
-        user_id: id,
+        user_id: fromId,
+        other_id: toId,
       });
-      io.emit(`server-${chatroomId}`, id, message);
+      io.emit(`server-${chatroomId}`, fromId, message);
     });
   });
 };

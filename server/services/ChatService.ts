@@ -9,6 +9,7 @@ import {
   UPDATE_LAST_TEXT,
   FIND_CHATROOM_POST,
   FIND_CHATROOMS_BY_USERID,
+  FIND_CHATJOINED_BY_ROOM_ID_USERID,
 } from '../queries/chat';
 
 export const ChatService = {
@@ -87,18 +88,20 @@ export const ChatService = {
     room_id,
     text,
     user_id,
+    other_id,
   }: {
     room_id: number;
     text: string;
     user_id: number;
+    other_id: number;
   }) => {
-    // const data = await execQuery(
-    //   FIND_CHATJOINED_BY_ROOM_ID({ room_id, user_id: seller_id })
-    // );
-    // if (!data) {
-    //   // 상대방에 대한 joined 생성
-    //   await execQuery(CREATE_CHATJOINED({ room_id, user_id: seller_id }));
-    // }
+    const data = await execQuery(
+      FIND_CHATJOINED_BY_ROOM_ID_USERID({ room_id, user_id: other_id })
+    );
+    if (!data) {
+      // 상대방에 대한 joined 생성
+      await execQuery(CREATE_CHATJOINED({ room_id, user_id: other_id }));
+    }
     await execQuery(CREATE_CHAT({ room_id, text, user_id }));
     await execQuery(UPDATE_LAST_TEXT({ room_id, text }));
   },
