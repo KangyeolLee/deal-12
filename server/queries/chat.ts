@@ -97,7 +97,7 @@ export const GET_CHATROOMS_BY_CHATJOINED = ({
 }) => `
     SELECT post.thumbnail, seller_id, buyer_id chatRoom.last_text FROM chatJoined
     JOIN chatRoom ON chatRoom.id = ${room_id}
-    JOIN post ON post.post_id = chatRoom.id
+    JOIN post ON post.id = chatRoom.post_id
     WHERE chatJoined.room_id = ${room_id} chatJoined.user_id = ${user_id};
 `;
 
@@ -116,6 +116,6 @@ export const GET_CHATROOMS_BY_POST_ID = ({
   user_id: number;
 }) => `
     SELECT post.thumbnail, buyer_id last_text FROM chatRoom
-    JOIN post ON post.post_id = ${post_id}
+    JOIN post ON post.id = ${post_id}
     WHERE chatRoom.post_id = ${post_id} AND chatRoom.seller_id = ${user_id};
 `;

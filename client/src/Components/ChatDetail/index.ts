@@ -69,17 +69,17 @@ export default class ChatDetail extends Component {
     });
 
     const $chatBubbles = this.$target.querySelector('.chat-bubbles');
-    socket.on('server', (id, message) => {
-      console.log(id, message); // x8WIv7-mJelg7on_ALbx
-      const $chatItem = document.createElement('div');
-      $chatBubbles?.append($chatItem);
-      new ChatBubble($chatItem as HTMLElement, {
-        myId: this.$state.me.id,
-        fromId: id,
-        message,
-      });
-      (this.$target.querySelector('input') as HTMLInputElement).value = '';
-    });
+    // socket.on('server', (id, message) => {
+    //   console.log(id, message); // x8WIv7-mJelg7on_ALbx
+    //   const $chatItem = document.createElement('div');
+    //   $chatBubbles?.append($chatItem);
+    //   new ChatBubble($chatItem as HTMLElement, {
+    //     myId: this.$state.me.id,
+    //     fromId: id,
+    //     message,
+    //   });
+    //   (this.$target.querySelector('input') as HTMLInputElement).value = '';
+    // });
 
     // dummyChatBubblesData.forEach((chat: ChatBubbleType) => {
     //   const $chatItem = document.createElement('div');
@@ -97,13 +97,13 @@ export default class ChatDetail extends Component {
   }
 
   setEvent() {
-    this.addEvent('click', '.send-button', () => {
-      console.log('asdf');
-      socket.emit(
-        'client',
-        this.$state.me.id,
-        this.$target.querySelector('input')?.value
-      );
-    });
+    // this.addEvent('click', '.send-button', () => {
+    //   console.log('asdf');
+    //   socket.emit(
+    //     'client',
+    //     this.$state.me.id,
+    //     this.$target.querySelector('input')?.value
+    //   );
+    // });
   }
 }
