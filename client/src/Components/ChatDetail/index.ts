@@ -101,8 +101,8 @@ export default class ChatDetail extends Component {
       $chatBubbles?.append($chatItem);
       new ChatBubble($chatItem as HTMLElement, {
         myId: this.$state.me.id,
-        fromId: id,
-        message,
+        user_id: id,
+        text: message,
       });
       (this.$target.querySelector('input') as HTMLInputElement).value = '';
     });
