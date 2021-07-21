@@ -1,4 +1,5 @@
 import { execQuery } from '../../database/database';
+import { CREATE_IMAGES } from '../../queries/image';
 import {
   CREATE_POST,
   DELETE_POST,
@@ -18,12 +19,10 @@ export type PostType = {
   location_id: number;
   category_id: number;
   content: string;
-  view_count: number;
   price?: number;
   seller_id: number;
   state: string;
   thumbnail: string;
-  interest_count: number;
 };
 
 export type PostUpdateType = {
@@ -45,9 +44,7 @@ export const PostService = {
     title,
     location_id,
     category_id,
-    view_count,
     seller_id,
-    interest_count,
     content,
     price,
     state,
@@ -58,15 +55,18 @@ export const PostService = {
         title,
         location_id,
         category_id,
-        view_count,
         content,
         price,
         seller_id,
         state,
         thumbnail,
-        interest_count,
       })
     );
+    return data;
+  },
+
+  createPostImage: async (post_id: number, files: Express.Multer.File[]) => {
+    const data = await execQuery(CREATE_IMAGES(post_id, files));
     return data;
   },
 
@@ -135,9 +135,17 @@ export const PostService = {
     const data = await execQuery(DELETE_POST({ post_id }));
     return data;
   },
-  checkMyPost: async ({ post_id, user_id }: { post_id: number, user_id: number }) => {
-    const data = await execQuery(FIND_POST_WHETHER_BELONG_TO_ME({post_id, user_id}));
+  checkMyPost: async ({
+    post_id,
+    user_id,
+  }: {
+    post_id: number;
+    user_id: number;
+  }) => {
+    const data = await execQuery(
+      FIND_POST_WHETHER_BELONG_TO_ME({ post_id, user_id })
+    );
     if (data.length) return true;
     return false;
-  }
+  },
 };

@@ -1,6 +1,7 @@
 import express from 'express';
 import { PostController } from '../controllers/PostController';
 import { authenticateAccessToken } from '../middlewares/authenticate';
+import { upload } from '../middlewares/multerupload';
 
 const postsRouter = express.Router();
 
@@ -14,11 +15,21 @@ postsRouter.get(
 // 포스트번호에 해당하는 포스트 디테일 조회
 postsRouter.get('/:postId', PostController.getPostById);
 // 포스트번호에 해당하는 포스트가 내가 작성한 포스트인지 확인
-postsRouter.get('/:postId/check', authenticateAccessToken, PostController.checkPostBelongToMe)
+postsRouter.get(
+  '/:postId/check',
+  authenticateAccessToken,
+  PostController.checkPostBelongToMe
+);
 
 // @ POST 요청
 // 제출된 데이터에 맞는 포스트를 생성
-postsRouter.post('/', authenticateAccessToken, PostController.createPost);
+
+postsRouter.post(
+  '/',
+  upload.any(),
+  authenticateAccessToken,
+  PostController.createPost
+);
 
 // @ PUT 요청
 // 포스트번호에 맞는 포스트의 내용을 수정
