@@ -37,7 +37,7 @@ export default class ProductBar extends Component {
       buttonType: 'medium',
       title: isMine ? '채팅 목록 보기' : '문의하기',
       disabled: !isLogin,
-      handleClick: () => $router.push('/chat'),
+      handleClick: () => $router.push(`/chat/1`),
     });
   }
 

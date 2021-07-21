@@ -31,11 +31,10 @@ export default class Home extends Component {
       })
         .then((res) => res.json())
         .then(({ result }) => {
-          console.log(result);
           this.setState({
-            locationId: result[0].id,
+            locationId: result[0].location1_id,
             locationName: result[0].name,
-            locations: result[0],
+            locations: result,
           });
         })
         .then(() => {
@@ -44,7 +43,7 @@ export default class Home extends Component {
           })
             .then((res) => res.json())
             .then(({ result }) => {
-              this.setState({ items: result, isLogin:true });
+              this.setState({ items: result, isLogin: true });
             });
         });
     } else {
@@ -81,7 +80,10 @@ export default class Home extends Component {
     this.$state.items.forEach((item: CategoryListItemProps) => {
       const $item = document.createElement('div');
       $itemList?.append($item);
-      new CategoryListItem($item as Element, {...item, isLogin: this.$state.isLogin });
+      new CategoryListItem($item as Element, {
+        ...item,
+        isLogin: this.$state.isLogin,
+      });
     });
 
     // post new btn
@@ -129,31 +131,47 @@ export default class Home extends Component {
     });
 
     const $locationBtn = this.$target.querySelector('.location');
-    new Dropdown($locationBtn as HTMLElement, {
-      lists:
-        this.$state.locations.length > 0
-          ? [
-              {
-                text: this.$state.locations.find(
-                  (loc: any) => loc.name !== this.$state.locationName
-                ),
-                isWarning: false,
-                // onclick: () => console.log('역삼동 설정 완료!!'),
-              },
-              {
-                text: '내 동네 설정하기',
-                isWarning: false,
-                onclick: () => $router.push('/location'),
-              },
-            ]
-          : [
-              {
-                text: '내 동네 설정하기',
-                isWarning: false,
-                onclick: () => $router.push('/location'),
-              },
-            ],
-      offset: 'center',
-    });
+
+    if (this.$state.isLogin) {
+      new Dropdown($locationBtn as HTMLElement, {
+        lists:
+          this.$state.locations.length > 1
+            ? [
+                {
+                  text: this.$state.locations[1].name,
+                  isWarning: false,
+                  onclick: () => {
+                    // update하고 새로고침
+                    fetch('/api/me/locations', {
+                      method: 'PUT',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token(),
+                      },
+                      body: JSON.stringify({
+                        user: {
+                          location1_id: this.$state.locations[1],
+                          location2_id: this.$state.locations[0],
+                        },
+                      }),
+                    }).then((r) => console.log(r));
+                  },
+                },
+                {
+                  text: '내 동네 설정하기',
+                  isWarning: false,
+                  onclick: () => $router.push('/location'),
+                },
+              ]
+            : [
+                {
+                  text: '내 동네 설정하기',
+                  isWarning: false,
+                  onclick: () => $router.push('/location'),
+                },
+              ],
+        offset: 'center',
+      });
+    }
   }
 }

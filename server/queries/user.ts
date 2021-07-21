@@ -15,12 +15,14 @@ export const UPDATE_USER_LOCATION = ({
   location1_id,
   location2_id,
 }: UserType) => {
-  location2_id = location2_id ? location2_id : undefined;
+  // location2 추가되는 경우
+  // location1 location2 바뀌는 경우
+  // location1 삭제되는 경우 -> 프론트에서 location2로 보내줌
+  // location2 삭제되는 경우
+  location2_id = location2_id ? location2_id : null;
   return `
-    UPDATE user SET location1_id = (
-      CASE WHEN ${location1_id} IS NULL THEN location1_id ELSE ${location1_id} END
-    ), location2_id = (
-      CASE WHEN ${location2_id} IS NULL THEN location2_id ELSE ${location2_id} END
-    ) WHERE nickname='${nickname}'
+    UPDATE user SET location1_id = CASE WHEN ${location1_id} IS NULL THEN location1_id ELSE ${location1_id} END), 
+    location2_id = ${location2_id} 
+    WHERE nickname='${nickname}'
   `;
 };

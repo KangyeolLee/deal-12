@@ -1,3 +1,5 @@
+import { UserType } from '../services/UserService';
+
 export const GET_LOCATIONS = `
   SELECT id, name FROM location;
 `;

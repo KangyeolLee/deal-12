@@ -6,6 +6,9 @@ import Chatlist from './Components/ChatList/index';
 import ChatDetail from './Components/ChatDetail';
 import NewPost from './Components/NewPost';
 import Location from './Components/Location';
+import { io } from 'socket.io-client';
+
+export const socket = io('http://localhost:3000');
 
 const $app = document.querySelector('#app');
 const routes = [

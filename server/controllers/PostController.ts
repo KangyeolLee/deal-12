@@ -18,8 +18,8 @@ const createPost = async (req: Request, res: Response, next: NextFunction) => {
   };
 
   try {
-    const result = await PostService.cratePost(post);
-    res.status(200).json({
+    await PostService.cratePost(post);
+    return res.status(200).json({
       message: 'success create post!',
     });
   } catch (error) {
@@ -35,7 +35,7 @@ const getPosts = async (req: Request, res: Response, next: NextFunction) => {
       location_id: +locationId,
       category_id: +categoryId,
     });
-    res.status(200).json({
+    return res.status(200).json({
       result,
     });
   } catch (err) {
@@ -49,12 +49,11 @@ const getPostBySellerNickname = async (
   next: NextFunction
 ) => {
   try {
-    // 로그인 된 유저 정보 필요
     const { user } = req;
     const result = await PostService.findPostBySellerNickname({
       nickname: user.nickname,
     });
-    res.status(200).json({ result });
+    return res.status(200).json({ result });
   } catch (error) {
     next(error);
   }
@@ -67,12 +66,11 @@ const getPostInterestsByUserNickname = async (
   next: NextFunction
 ) => {
   try {
-    // 로그인 된 유저 정보 필요
     const { user } = req;
     const result = await PostInterestService.findPostInterestsByUserId({
       user_id: user.id,
     });
-    res.status(200).json({ result });
+    return res.status(200).json({ result });
   } catch (error) {
     next(error);
   }
@@ -80,11 +78,10 @@ const getPostInterestsByUserNickname = async (
 
 const deletePost = async (req: Request, res: Response, next: NextFunction) => {
   try {
-
     const { postId } = req.params;
     const result = await PostService.deletePost(+postId);
 
-    res.status(200).json({
+    return res.status(200).json({
       result,
     });
   } catch (error) {
@@ -92,18 +89,25 @@ const deletePost = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const checkPostBelongToMe = async (req: any, res: Response, next: NextFunction) => {
+const checkPostBelongToMe = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { postId } = req.params;
     const { user } = req;
-    const isMine = await PostService.checkMyPost({ post_id: +postId, user_id: user.id });
-    res.status(200).json({
+    const isMine = await PostService.checkMyPost({
+      post_id: +postId,
+      user_id: user.id,
+    });
+    return res.status(200).json({
       isMine,
     });
   } catch (error) {
     next(error);
   }
-}
+};
 
 const getPostById = async (req: any, res: Response, next: NextFunction) => {
   try {
@@ -111,7 +115,7 @@ const getPostById = async (req: any, res: Response, next: NextFunction) => {
     const result = await PostService.findPostById(+postId);
     await PostService.updatePostViewCount(+postId);
 
-    res.status(200).json({
+    return res.status(200).json({
       result,
     });
   } catch (error) {
@@ -136,7 +140,7 @@ const updatePost = async (req: any, res: Response, next: NextFunction) => {
       post_id: +postId,
       ...updates,
     });
-    res.status(200).json({
+    return res.status(200).json({
       result,
     });
   } catch (error) {
@@ -152,7 +156,7 @@ const updatePostState = async (req: any, res: Response, next: NextFunction) => {
       post_id: +postId,
       state,
     });
-    res.status(200).json({
+    return res.status(200).json({
       result,
     });
   } catch (error) {
@@ -177,14 +181,14 @@ const checkPostInterestByUserId = async (
       });
 
     if (!user.length) {
-      res.status(200).json({
+      return res.status(200).json({
         result: false,
       });
-    } else {
-      res.status(200).json({
-        result: true,
-      });
     }
+
+    return res.status(200).json({
+      result: true,
+    });
   } catch (error) {
     next(error);
   }
@@ -204,7 +208,8 @@ const creatPostInterest = async (
       user_id,
     });
     await PostInterestService.updatePostInterestCount({ post_id: +postId });
-    res.status(200).json({
+
+    return res.status(200).json({
       message: 'success create like',
     });
   } catch (error) {
@@ -225,7 +230,8 @@ const deletePostInterest = async (
       post_id: +postId,
       user_id,
     });
-    res.status(200).json({
+
+    return res.status(200).json({
       message: 'success delete like',
     });
   } catch (error) {
@@ -245,5 +251,5 @@ export const PostController = {
   creatPostInterest,
   deletePostInterest,
   getPostInterestsByUserNickname,
-  checkPostBelongToMe
+  checkPostBelongToMe,
 };

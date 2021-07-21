@@ -1,0 +1,28 @@
+@import '../../../scss/theme';
+
+.autocomplete {
+  position: absolute;
+  width: 100%;
+  border: 0.1rem solid $grey3;
+  background-color: $white;
+  border-radius: 0.8rem;
+  top: 1rem;
+  left: 0;
+  .loc-list {
+    cursor: pointer;
+    padding: 1.6rem 1rem;
+    &:not(:last-child) {
+      border: 0 solid $off-white;
+      border-bottom-width: 0.1rem;
+    }
+  }
+}
+
+.error {
+  @include text-x-small;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0.5rem;
+  color: red;
+}

@@ -14,7 +14,11 @@ postsRouter.get(
 // 포스트번호에 해당하는 포스트 디테일 조회
 postsRouter.get('/:postId', PostController.getPostById);
 // 포스트번호에 해당하는 포스트가 내가 작성한 포스트인지 확인
-postsRouter.get('/:postId/check', authenticateAccessToken, PostController.checkPostBelongToMe)
+postsRouter.get(
+  '/:postId/check',
+  authenticateAccessToken,
+  PostController.checkPostBelongToMe
+);
 
 // @ POST 요청
 // 제출된 데이터에 맞는 포스트를 생성
