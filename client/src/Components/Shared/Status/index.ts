@@ -15,7 +15,7 @@ export default class Status extends Component {
   setup() {
     this.$state = {
       text: this.$props.text,
-    }
+    };
   }
 
   template() {
@@ -77,15 +77,17 @@ export default class Status extends Component {
               headers,
               body: JSON.stringify({
                 state: '예약중',
-              })
+              }),
             })
-              .then(res => res.json())
-              .then(data => {
-                const { result : { affectedRows } } = data;
+              .then((res) => res.json())
+              .then((data) => {
+                const {
+                  result: { affectedRows },
+                } = data;
                 if (affectedRows) {
-                  this.setState({ text: '예약중' })
+                  this.setState({ text: '예약중' });
                 }
-              })
+              });
           },
         },
         {
@@ -98,15 +100,17 @@ export default class Status extends Component {
               headers,
               body: JSON.stringify({
                 state: '판매완료',
-              })
+              }),
             })
-              .then(res => res.json())
-              .then(data => {
-                const { result : { affectedRows } } = data;
+              .then((res) => res.json())
+              .then((data) => {
+                const {
+                  result: { affectedRows },
+                } = data;
                 if (affectedRows) {
-                  this.setState({ text: '판매완료' })
+                  this.setState({ text: '판매완료' });
                 }
-              })
+              });
           },
         },
       ],

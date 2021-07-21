@@ -28,18 +28,19 @@ class LikeBtn extends Component {
       isLiked: false,
     };
 
-    const headers = new Headers();
-    headers.append('Authorization', token());
+    if (token()) {
+      const headers = new Headers();
+      headers.append('Authorization', token());
 
-    fetch(`/api/posts/${this.$props.postId}/interest/check`, {
-      method: 'GET',
-      headers,
-    })
-      .then((res) => res.json())
-      .then(({ result }) => {
-        console.log(result);
-        if (result) this.setState({ isLiked: true });
-      });
+      fetch(`/api/posts/${this.$props.postId}/interest/check`, {
+        method: 'GET',
+        headers,
+      })
+        .then((res) => res.json())
+        .then(({ result }) => {
+          if (result) this.setState({ isLiked: true });
+        });
+    }
   }
   template() {
     return `<div></div>`;

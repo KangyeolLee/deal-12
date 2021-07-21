@@ -4,8 +4,12 @@ import path from 'path';
 import 'dotenv/config';
 import { initDatabase } from './database/database';
 import router from './routes';
+import { createServer } from 'http';
+import { initSocket } from './socket';
 
 const app = express();
+const httpServer = createServer(app);
+initSocket(httpServer);
 
 (async function () {
   await initDatabase();
@@ -34,6 +38,6 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-app.listen(app.get('port'), '0.0.0.0', () => {
+httpServer.listen(app.get('port'), '0.0.0.0', () => {
   console.log(app.get('port'), '번 포트에서 대기중');
 });

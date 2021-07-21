@@ -16,9 +16,8 @@ export default class Home extends Component {
   setup() {
     this.$state = {
       items: [],
-      locations: [],
-      locationId: 0,
-      locationName: '',
+      location1: {},
+      location2: {},
       isLogin: false,
     };
     if (token()) {
@@ -31,20 +30,18 @@ export default class Home extends Component {
       })
         .then((res) => res.json())
         .then(({ result }) => {
-          console.log(result);
           this.setState({
-            locationId: result[0].id,
-            locationName: result[0].name,
-            locations: result[0],
+            location1: result.loc1[0],
+            location2: result.loc2[0],
           });
         })
         .then(() => {
-          fetch(`/api/posts/location/${this.$state.locationId}/category/0`, {
+          fetch(`/api/posts/location/${this.$state.location1.id}/category/0`, {
             method: 'GET',
           })
             .then((res) => res.json())
             .then(({ result }) => {
-              this.setState({ items: result, isLogin:true });
+              this.setState({ items: result, isLogin: true });
             });
         });
     } else {
@@ -72,7 +69,7 @@ export default class Home extends Component {
     const isLogin = token();
     const $header = this.$target.querySelector('header');
     new Header($header as Element, {
-      title: isLogin ? this.$state.locationName : '로그인해주세요',
+      title: isLogin ? this.$state.location1.name : '로그인해주세요',
       headerType: 'main',
       isLogin,
     });
@@ -81,7 +78,10 @@ export default class Home extends Component {
     this.$state.items.forEach((item: CategoryListItemProps) => {
       const $item = document.createElement('div');
       $itemList?.append($item);
-      new CategoryListItem($item as Element, {...item, isLogin: this.$state.isLogin });
+      new CategoryListItem($item as Element, {
+        ...item,
+        isLogin: this.$state.isLogin,
+      });
     });
 
     // post new btn
@@ -111,7 +111,7 @@ export default class Home extends Component {
     const $categoryBtn = this.$target.querySelector('#category');
     $categoryBtn?.addEventListener('click', () => {
       new Category($categoryModal as Element, {
-        locationId: this.$state.locationId,
+        locationId: this.$state.location1.id,
       });
       $categoryModal.className = 'modal-open';
     });
@@ -129,16 +129,30 @@ export default class Home extends Component {
     });
 
     const $locationBtn = this.$target.querySelector('.location');
-    new Dropdown($locationBtn as HTMLElement, {
-      lists:
-        this.$state.locations.length > 0
+
+    if (this.$state.isLogin) {
+      new Dropdown($locationBtn as HTMLElement, {
+        lists: this.$state.location2?.id
           ? [
               {
-                text: this.$state.locations.find(
-                  (loc: any) => loc.name !== this.$state.locationName
-                ),
+                text: this.$state.location2.name,
                 isWarning: false,
-                // onclick: () => console.log('역삼동 설정 완료!!'),
+                // 동네 변경
+                onclick: () => {
+                  fetch('/api/me/locations', {
+                    method: 'PUT',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': token(),
+                    },
+                    body: JSON.stringify({
+                      user: {
+                        location1_id: this.$state.location2.id,
+                        location2_id: this.$state.location1.id,
+                      },
+                    }),
+                  }).then(() => $router.push('/'));
+                },
               },
               {
                 text: '내 동네 설정하기',
@@ -153,7 +167,8 @@ export default class Home extends Component {
                 onclick: () => $router.push('/location'),
               },
             ],
-      offset: 'center',
-    });
+        offset: 'center',
+      });
+    }
   }
 }

@@ -26,6 +26,12 @@
     align-items: center;
     justify-content: center;
   }
+  .not-clickable {
+    cursor: default;
+    .icon-btn {
+      cursor: default;
+    }
+  }
 }
 .main {
   @include link-medium;

@@ -8,7 +8,7 @@ import { $router } from '../../lib/router';
 import Dropdown from '../Shared/Dropdown';
 import ImgNavigation from './../Shared/ImgNavigation/index';
 import { getTimestamp, token, translatePriceToTrimmed } from '../../lib/util';
-import InputPopup from '../Shared/InputPopup/indext';
+import InputPopup from '../Shared/InputPopup/index';
 
 export default class SalesProductDetail extends Component {
   setup() {
@@ -80,7 +80,8 @@ export default class SalesProductDetail extends Component {
   }
 
   mounted() {
-    const { id, isMine, isLogin, price, state, nickname, name } = this.$state;
+    const { id, isMine, isLogin, price, state, nickname, name, seller_id } =
+      this.$state;
     const $productDetail = this.$target.querySelector('.product-bar');
     const $header = this.$target.querySelector('header');
     const $userSpecification = this.$target.querySelector(
@@ -98,7 +99,9 @@ export default class SalesProductDetail extends Component {
     new ProductBar($productDetail as Element, {
       price: translatePriceToTrimmed(price),
       isMine,
+      seller_id,
       isLogin,
+      post_id: location.href.split('post/')[1],
     });
 
     new ImgNavigation($imageWrapper as HTMLElement, {

@@ -14,11 +14,14 @@ export const UserService = {
     return result;
   },
 
-  updateUser: async ({ nickname, location1_id, location2_id }: UserType) => {
-    const result = await execQuery(
+  updateUserLocation: async ({
+    nickname,
+    location1_id,
+    location2_id,
+  }: UserType) => {
+    await execQuery(
       UPDATE_USER_LOCATION({ nickname, location1_id, location2_id })
     );
-    return result;
   },
 
   findUserByNickname: async ({ nickname }: { nickname: string }) => {

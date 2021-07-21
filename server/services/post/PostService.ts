@@ -86,12 +86,12 @@ export const PostService = {
     return data;
   },
 
-  findPostById: async (post_id: number) => {
+  findPostById: async ({ post_id }: { post_id: number }) => {
     const data = await execQuery(FIND_POST_BY_POSTID({ post_id }));
     return data;
   },
 
-  updatePostViewCount: async (post_id: number) => {
+  updatePostViewCount: async ({ post_id }: { post_id: number }) => {
     const data = await execQuery(UPDATE_POST_VIEWCOUNT({ post_id }));
     return data;
   },
@@ -131,7 +131,7 @@ export const PostService = {
     );
     return data;
   },
-  deletePost: async (post_id: number) => {
+  deletePost: async ({ post_id }: { post_id: number }) => {
     const data = await execQuery(DELETE_POST({ post_id }));
     return data;
   },
