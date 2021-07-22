@@ -75,14 +75,19 @@ export default class Home extends Component {
     });
 
     const $itemList = this.$target.querySelector('.item-list');
-    this.$state.items.forEach((item: CategoryListItemProps) => {
-      const $item = document.createElement('div');
-      $itemList?.append($item);
-      new CategoryListItem($item as Element, {
-        ...item,
-        isLogin: this.$state.isLogin,
+    if (this.$state.items.length) {
+      this.$state.items.forEach((item: CategoryListItemProps) => {
+        const $item = document.createElement('div');
+        $itemList?.append($item);
+        new CategoryListItem($item as Element, {
+          ...item,
+          isLogin: this.$state.isLogin,
+        });
       });
-    });
+    } else {
+      $itemList!.innerHTML = '등록된 상품이 없습니다...';
+      $itemList?.classList.add('no-data');
+    }
 
     // post new btn
     const $postNewBtn = this.$target.querySelector('.post-new-btn');
