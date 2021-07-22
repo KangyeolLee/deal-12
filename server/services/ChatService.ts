@@ -10,6 +10,7 @@ import {
   FIND_CHATROOM_POST,
   FIND_CHATROOMS_BY_USERID,
   FIND_CHATJOINED_BY_ROOM_ID_USERID,
+  DELETE_CHATJOINED,
 } from '../queries/chat';
 
 export const ChatService = {
@@ -102,5 +103,16 @@ export const ChatService = {
     }
     await execQuery(CREATE_CHAT({ room_id, text, user_id }));
     await execQuery(UPDATE_LAST_TEXT({ room_id, text }));
+  },
+
+  // 채팅방 나가기
+  deleteChatJoined: async ({
+    user_id,
+    room_id,
+  }: {
+    user_id: number;
+    room_id: number;
+  }) => {
+    await execQuery(DELETE_CHATJOINED({ user_id, room_id }));
   },
 };

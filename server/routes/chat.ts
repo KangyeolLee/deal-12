@@ -25,4 +25,11 @@ chatRouter.get(
   ChatController.getChatsByChatRoomId
 );
 
+// 채팅방 나가기
+chatRouter.delete(
+  '/chatroom/:chatroomId',
+  authenticateAccessToken,
+  ChatController.deleteChatJoined
+);
+
 export default chatRouter;

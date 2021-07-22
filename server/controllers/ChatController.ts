@@ -77,9 +77,27 @@ const getChatsByChatRoomId = async (
   }
 };
 
+const deleteChatJoined = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id: user_id } = req.user;
+  const { chatroomId: room_id } = req.params;
+  try {
+    await ChatService.deleteChatJoined({ room_id, user_id });
+    return res.status(200).json({
+      message: 'delete success',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const ChatController = {
   getChatRoom,
   getChatRoomsByPostId,
   getChatsByChatRoomId,
   getChatRoomsByUserId,
+  deleteChatJoined,
 };
