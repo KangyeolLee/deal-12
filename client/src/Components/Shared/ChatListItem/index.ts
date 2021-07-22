@@ -41,14 +41,11 @@ export default class ChatListItem extends Component {
       );
 
       if (fromId !== this.$props.my_id) {
-        (
-          this.$target.querySelector('.unread') as HTMLParagraphElement
-        ).innerText = (
-          Number(
-            (this.$target.querySelector('.unread') as HTMLParagraphElement)
-              .innerText
-          ) + 1
-        ).toString();
+        const $unread = this.$target.querySelector(
+          '.unread'
+        ) as HTMLParagraphElement;
+        $unread.innerText = (Number($unread.innerText) + 1).toString();
+        $unread.style.backgroundColor = '#219a95';
       }
     });
   }
@@ -62,8 +59,12 @@ export default class ChatListItem extends Component {
           <h6 class="username">${this.$state.other.nickname}</h6>
           <p class="content">${last_text || ''}</p>
         </div>
-        <span class="unread">${unread_count}</span>
-        <span class="timestamp">${getTimestamp(timestamp)}</span>
+        <div class="numbers">
+          <span class="timestamp">${getTimestamp(timestamp)}</span>
+          <span class="unread" style="background: ${
+            unread_count > 0 ? '#219a95' : '#fff'
+          }">${unread_count}</span>
+        </div>
       </div>
       <div class="image-wrapper"></div>
     </div>

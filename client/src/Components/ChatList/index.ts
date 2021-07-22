@@ -48,8 +48,6 @@ export default class Chatlist extends Component {
 
             if (!isExist) {
               const $chatList = this.$target.querySelector('.chat-lists');
-
-              console.log('asdf');
               const $list = document.createElement('div');
               $chatList?.append($list);
               const newChatroom = {
