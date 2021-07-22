@@ -61,9 +61,7 @@ export const setIntersectionObserver = ({
   const io = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        const api = isLogin
-          ? `/api/posts/location/${location_id}/category/${category_id}/${pageOffset}`
-          : `/api/posts/location/${location_id}/category/$0/${pageOffset}`;
+        const api = `/api/posts/location/${location_id}/category/${category_id}/${pageOffset}`;
 
         fetch(api, {
           method: 'GET',
