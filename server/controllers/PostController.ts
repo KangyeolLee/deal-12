@@ -39,10 +39,11 @@ const createPost = async (req: any, res: Response, next: NextFunction) => {
 const getPosts = async (req: Request, res: Response, next: NextFunction) => {
   try {
     // 로그인 유저 정보 필요 X
-    const { locationId, categoryId } = req.params;
+    const { locationId, categoryId, offset } = req.params;
     const result = await PostService.findPosts({
       location_id: +locationId,
       category_id: +categoryId,
+      offset: +offset,
     });
     return res.status(200).json({
       result,

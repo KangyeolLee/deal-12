@@ -8,7 +8,7 @@ const postsRouter = express.Router();
 // @ GET 요청
 // 위치번호(0일 시 모든 위치)와 카테고리 번호(0일시 모든 카테고리)에 해당하는 모든 포스트 목록 조회
 postsRouter.get(
-  '/location/:locationId/category/:categoryId',
+  '/location/:locationId/category/:categoryId/:offset',
   PostController.getPosts
 );
 
