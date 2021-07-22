@@ -4,7 +4,7 @@ import './styles.scss';
 import ImgButton from '../Shared/ImgButton';
 import IconButton from '../Shared/IconButton';
 import Button from '../Shared/Button';
-import { token } from '../../lib/util';
+import { setLoading, token } from '../../lib/util';
 import { $router } from '../../lib/router';
 
 export default class NewPost extends Component {
@@ -12,6 +12,8 @@ export default class NewPost extends Component {
 
   setup() {
     this.$state = {};
+
+    setLoading(true);
 
     fetch('/api/me/locations', {
       method: 'GET',
@@ -23,7 +25,8 @@ export default class NewPost extends Component {
       .then((res) => res.json())
       .then((data) => {
         this.setState({ loc: data.result.loc1[0].name });
-      });
+      })
+      .finally(() => setLoading(false));
   }
 
   template() {
@@ -73,7 +76,7 @@ export default class NewPost extends Component {
     // 사진 선택
     const $imgListWrapper = this.$target.querySelector('.img-list-wrapper');
     new FileUploader($imgListWrapper as HTMLElement, {
-      setBlobs: (blob: Blob) => this.insertBlobs(blob),
+      setBlobs: (blobs: Blob[]) => this.insertBlobs(blobs),
     });
 
     const $categoriesWrapper = this.$target.querySelector(
@@ -148,8 +151,8 @@ export default class NewPost extends Component {
     });
   }
 
-  insertBlobs(blob: Blob) {
-    this.blobs.push(blob);
+  insertBlobs(blobs: Blob[]) {
+    this.blobs = blobs;
   }
 }
 
@@ -182,7 +185,7 @@ class FileUploader extends Component {
           imgs: [...this.$state.imgs, url],
         });
 
-        this.$props.setBlobs(targetFile);
+        this.$props.setBlobs(this.$state.files);
       };
 
       reader.readAsArrayBuffer(targetFile);
@@ -220,6 +223,8 @@ class FileUploader extends Component {
           (_: string, i: number) => Number(idx) !== i
         ),
       });
+
+      this.$props.setBlobs(this.$state.files);
     });
   }
 }

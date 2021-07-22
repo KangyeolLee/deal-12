@@ -20,6 +20,9 @@
       <div>이<span>강</span>열</div>
       <div>1<span>2</span>팀</div>
     </div>
+    <div id="loading-modal" class="iphone">
+      <div class="loader"></div>
+    </div>
     <div class="buttons">
       <div id="iphone" class="buttons__btn active">iPhoneX</div>
       <div id="galaxy" class="buttons__btn">Galaxy20</div>
@@ -27,17 +30,20 @@
   </body>
   <script>
     const $app = document.querySelector('#app');
+    const $loading = document.querySelector('#loading-modal');
 
     const $iphone = document.querySelector('#iphone');
     const $galaxy = document.querySelector('#galaxy');
 
     $iphone.addEventListener('click', () => {
       $app.className = 'iphone';
+      $loading.className = 'iphone';
       $iphone.className = 'buttons__btn active';
       $galaxy.className = 'buttons__btn';
     });
     $galaxy.addEventListener('click', () => {
       $app.className = 'galaxy';
+      $loading.className = 'galaxy';
       $iphone.className = 'buttons__btn';
       $galaxy.className = 'buttons__btn active';
     });

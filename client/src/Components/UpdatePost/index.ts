@@ -4,7 +4,7 @@ import '../NewPost/styles';
 import ImgButton from '../Shared/ImgButton';
 import IconButton from '../Shared/IconButton';
 import Button from '../Shared/Button';
-import { token } from '../../lib/util';
+import { setLoading, token } from '../../lib/util';
 import { $router } from '../../lib/router';
 
 export default class UpdatePost extends Component {
@@ -17,6 +17,8 @@ export default class UpdatePost extends Component {
 
     this.$state = {};
 
+    setLoading(true);
+
     fetch('/api/me/locations', {
       method: 'GET',
       headers: {
@@ -27,20 +29,22 @@ export default class UpdatePost extends Component {
       .then((res) => res.json())
       .then((data) => {
         this.setState({ loc: data.result.loc1[0].name });
-      });
-
-    fetch(`/api/posts/${postId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token(),
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        const { result } = data;
-        this.setState({ ...result[0] });
-      });
+      })
+      .then(() =>
+        fetch(`/api/posts/${postId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token(),
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            const { result } = data;
+            this.setState({ ...result[0] });
+          })
+      )
+      .finally(() => setLoading(false));
   }
 
   template() {
@@ -109,7 +113,7 @@ export default class UpdatePost extends Component {
     const $imgListWrapper = this.$target.querySelector('.img-list-wrapper');
     new FileUploader($imgListWrapper as HTMLElement, {
       images,
-      setBlobs: (blob: Blob) => this.insertBlobs(blob),
+      setBlobs: (blobs: Blob[]) => this.insertBlobs(blobs),
       setThumbs: (thumbs: string[]) => this.passThumbs(thumbs),
     });
 
@@ -146,14 +150,15 @@ export default class UpdatePost extends Component {
       const thumbnail = this.thumbs[0].includes('blob:http://')
         ? null
         : this.thumbs[0];
+      const filteredBlobs = this.blobs.filter(
+        (blob) => typeof blob !== 'string'
+      );
 
       const willBeDeleted = images.filter(
         (image: string) => this.thumbs.length && !this.thumbs.includes(image)
       );
-      console.log('willBeDeleted : ', willBeDeleted);
-      console.log('blobs : ', this.blobs);
 
-      this.blobs.forEach((blob) => {
+      filteredBlobs.forEach((blob) => {
         formData.append('blob', blob);
       });
       formData.append('title', title);
@@ -176,8 +181,7 @@ export default class UpdatePost extends Component {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
-          // $router.push(`/post/${id}`);
+          $router.push(`/post/${id}`);
         });
     });
   }
@@ -204,8 +208,8 @@ export default class UpdatePost extends Component {
     });
   }
 
-  insertBlobs(blob: Blob) {
-    this.blobs.push(blob);
+  insertBlobs(blobs: Blob[]) {
+    this.blobs = blobs;
   }
 
   passThumbs(thumbs: string[]) {
@@ -242,7 +246,7 @@ class FileUploader extends Component {
           imgs: [...this.$state.imgs, url],
         });
 
-        this.$props.setBlobs(targetFile);
+        this.$props.setBlobs(this.$state.files);
         this.$props.setThumbs(this.$state.imgs);
       };
 
@@ -282,6 +286,7 @@ class FileUploader extends Component {
         ),
       });
 
+      this.$props.setBlobs(this.$state.files);
       this.$props.setThumbs(this.$state.imgs);
     });
   }

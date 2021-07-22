@@ -7,7 +7,12 @@ import Status from './../Shared/Status/index';
 import { $router } from '../../lib/router';
 import Dropdown from '../Shared/Dropdown';
 import ImgNavigation from './../Shared/ImgNavigation/index';
-import { getTimestamp, token, translatePriceToTrimmed } from '../../lib/util';
+import {
+  getTimestamp,
+  setLoading,
+  token,
+  translatePriceToTrimmed,
+} from '../../lib/util';
 import InputPopup from '../Shared/InputPopup/index';
 
 export default class SalesProductDetail extends Component {
@@ -18,19 +23,24 @@ export default class SalesProductDetail extends Component {
     };
     const postId = location.href.split('post/')[1];
 
+    setLoading(true);
+
     fetch(`/api/posts/${postId}`)
       .then((res) => res.json())
       .then((data) => {
         const { result } = data;
         const postDetail = result[0];
         this.setState(postDetail);
-      });
+      })
+      .finally(() => setLoading(false));
 
     if (token()) {
       const headers = new Headers();
       headers.append('Authorization', token());
 
       const isLogin = { isLogin: true };
+
+      setLoading(true);
 
       fetch(`/api/posts/${postId}/check`, {
         method: 'GET',
@@ -39,7 +49,8 @@ export default class SalesProductDetail extends Component {
         .then((res) => res.json())
         .then((data) => {
           this.setState({ ...data, ...isLogin });
-        });
+        })
+        .finally(() => setLoading(false));
     }
   }
 

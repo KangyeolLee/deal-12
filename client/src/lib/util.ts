@@ -12,24 +12,20 @@ export const token = () => {
   return '';
 };
 
-const isToday = (date: Date) => {
-  const today = new Date();
-  return (
-    date.getDate() === today.getDate() &&
-    date.getMonth() === today.getMonth() &&
-    date.getFullYear() === today.getFullYear()
-  );
-};
-
-const checkToday = (createdAt: string): boolean => {
-  const date = new Date(createdAt);
-  return isToday(date);
-};
-
 export const getTimestamp = (date: string) => {
   return dayjs(date).fromNow();
 };
 
 export const translatePriceToTrimmed = (price: number) => {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
+
+export const setLoading = (state: boolean) => {
+  const $loading = document.querySelector('#loading-modal') as HTMLElement;
+
+  if (state) {
+    $loading.classList.add('loading-open');
+  } else {
+    $loading.classList.remove('loading-open');
+  }
 };

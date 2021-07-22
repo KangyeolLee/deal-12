@@ -10,7 +10,7 @@ import Menu from '../Menu';
 import Button from '../Shared/Button';
 import Auth from './../Auth/index';
 import Dropdown from './../Shared/Dropdown/index';
-import { token } from '../../lib/util';
+import { setLoading, token } from '../../lib/util';
 
 export default class Home extends Component {
   setup() {
@@ -23,6 +23,8 @@ export default class Home extends Component {
     if (token()) {
       const headers = new Headers();
       headers.append('Authorization', token());
+
+      setLoading(true);
 
       fetch('/api/me/locations', {
         method: 'GET',
@@ -43,16 +45,22 @@ export default class Home extends Component {
             .then(({ result }) => {
               this.setState({ items: result, isLogin: true });
             });
+        })
+        .finally(() => {
+          setTimeout(() => setLoading(false), 1500);
         });
     } else {
       // 전체 글
+      setLoading(true);
+
       fetch(`/api/posts/location/0/category/0`, {
         method: 'GET',
       })
         .then((res) => res.json())
         .then(({ result }) => {
           this.setState({ items: result });
-        });
+        })
+        .finally(() => setTimeout(() => setLoading(false), 1500));
     }
   }
   template() {
@@ -75,14 +83,19 @@ export default class Home extends Component {
     });
 
     const $itemList = this.$target.querySelector('.item-list');
-    this.$state.items.forEach((item: CategoryListItemProps) => {
-      const $item = document.createElement('div');
-      $itemList?.append($item);
-      new CategoryListItem($item as Element, {
-        ...item,
-        isLogin: this.$state.isLogin,
+    if (this.$state.items.length) {
+      this.$state.items.forEach((item: CategoryListItemProps) => {
+        const $item = document.createElement('div');
+        $itemList?.append($item);
+        new CategoryListItem($item as Element, {
+          ...item,
+          isLogin: this.$state.isLogin,
+        });
       });
-    });
+    } else {
+      $itemList!.innerHTML = '등록된 상품이 없습니다...';
+      $itemList?.classList.add('no-data');
+    }
 
     // post new btn
     const $postNewBtn = this.$target.querySelector('.post-new-btn');
