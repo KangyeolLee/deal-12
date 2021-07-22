@@ -33,7 +33,12 @@ postsRouter.post(
 
 // @ PUT 요청
 // 포스트번호에 맞는 포스트의 내용을 수정
-postsRouter.put('/:postId', authenticateAccessToken, PostController.updatePost);
+postsRouter.put(
+  '/:postId',
+  upload.any(),
+  authenticateAccessToken,
+  PostController.updatePost
+);
 
 // 포스트 번호에 해당하는 포스트 상태만 수정
 postsRouter.put(

@@ -1,16 +1,20 @@
 import Header from '../Shared/Header';
 import Component from '../../core/Component';
-import './styles.scss';
+import '../NewPost/styles';
 import ImgButton from '../Shared/ImgButton';
 import IconButton from '../Shared/IconButton';
 import Button from '../Shared/Button';
 import { token } from '../../lib/util';
 import { $router } from '../../lib/router';
 
-export default class NewPost extends Component {
+export default class UpdatePost extends Component {
   blobs: Blob[] = [];
+  thumbs: string[] = [];
 
   setup() {
+    const locArr = location.hash.split('/');
+    const postId = locArr[locArr.length - 1];
+
     this.$state = {};
 
     fetch('/api/me/locations', {
@@ -23,6 +27,19 @@ export default class NewPost extends Component {
       .then((res) => res.json())
       .then((data) => {
         this.setState({ loc: data.result.loc1[0].name });
+      });
+
+    fetch(`/api/posts/${postId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token(),
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const { result } = data;
+        this.setState({ ...result[0] });
       });
   }
 
@@ -55,12 +72,30 @@ export default class NewPost extends Component {
     `;
   }
   mounted() {
+    const { id, category_id, title, content, price, images } = this.$state;
+    this.passThumbs(images);
+
     const headers = new Headers();
     headers.append('Authorization', token());
 
+    const $inputTitle = this.$target.querySelector(
+      'input#title'
+    ) as HTMLInputElement;
+    $inputTitle.value = title;
+
+    const $inputPrice = this.$target.querySelector(
+      'input#price'
+    ) as HTMLInputElement;
+    $inputPrice.value = price;
+
+    const $textareaContent = this.$target.querySelector(
+      'textarea#content'
+    ) as HTMLTextAreaElement;
+    $textareaContent.value = content;
+
     const $header = this.$target.querySelector('header');
     new Header($header as Element, {
-      title: '글쓰기',
+      title: '수정하기',
       headerType: 'menu-white',
       extraIconName: 'check-disable',
     });
@@ -73,13 +108,17 @@ export default class NewPost extends Component {
     // 사진 선택
     const $imgListWrapper = this.$target.querySelector('.img-list-wrapper');
     new FileUploader($imgListWrapper as HTMLElement, {
+      images,
       setBlobs: (blob: Blob) => this.insertBlobs(blob),
+      setThumbs: (thumbs: string[]) => this.passThumbs(thumbs),
     });
 
     const $categoriesWrapper = this.$target.querySelector(
       '.categories-wrapper'
     );
-    new Categories($categoriesWrapper as Element);
+    new Categories($categoriesWrapper as Element, {
+      activeNumber: `category-${category_id}`,
+    });
 
     const $backBtn = $header?.querySelector('#left');
     $backBtn?.addEventListener('click', () => history.back());
@@ -96,14 +135,24 @@ export default class NewPost extends Component {
         this.$target.querySelector('#button.category.active')
       )).parentElement?.parentElement?.id;
       const category_id = cateogory_number?.split('-')[1]!;
-      const state = '판매중';
+      const $imgs = this.$target.querySelectorAll('.img-del');
 
-      if (!title || !content || !this.blobs.length) {
+      if (!title || !content || !$imgs.length) {
         alert('입력하지 않은 사항이 있습니다...!');
         return;
       }
 
       const formData = new FormData();
+      const thumbnail = this.thumbs[0].includes('blob:http://')
+        ? null
+        : this.thumbs[0];
+
+      const willBeDeleted = images.filter(
+        (image: string) => this.thumbs.length && !this.thumbs.includes(image)
+      );
+      console.log('willBeDeleted : ', willBeDeleted);
+      console.log('blobs : ', this.blobs);
+
       this.blobs.forEach((blob) => {
         formData.append('blob', blob);
       });
@@ -111,17 +160,24 @@ export default class NewPost extends Component {
       formData.append('content', content);
       formData.append('price', price);
       formData.append('category_id', category_id);
-      formData.append('state', state);
+      if (thumbnail) {
+        formData.append('thumbnail', thumbnail);
+      }
+      if (willBeDeleted.length) {
+        willBeDeleted.forEach((del: string) =>
+          formData.append('willBeDeleted', del)
+        );
+      }
 
-      fetch('/api/posts', {
-        method: 'POST',
+      fetch(`/api/posts/${id}`, {
+        method: 'PUT',
         headers,
         body: formData,
       })
         .then((res) => res.json())
         .then((data) => {
-          const { postId } = data;
-          $router.push(`/post/${postId}`);
+          console.log(data);
+          // $router.push(`/post/${id}`);
         });
     });
   }
@@ -151,13 +207,17 @@ export default class NewPost extends Component {
   insertBlobs(blob: Blob) {
     this.blobs.push(blob);
   }
+
+  passThumbs(thumbs: string[]) {
+    this.thumbs = thumbs;
+  }
 }
 
 class FileUploader extends Component {
   setup() {
     this.$state = {
-      files: [],
-      imgs: [],
+      files: this.$props.images,
+      imgs: this.$props.images,
     };
   }
 
@@ -183,6 +243,7 @@ class FileUploader extends Component {
         });
 
         this.$props.setBlobs(targetFile);
+        this.$props.setThumbs(this.$state.imgs);
       };
 
       reader.readAsArrayBuffer(targetFile);
@@ -190,11 +251,11 @@ class FileUploader extends Component {
 
     new ImgButton($imgList as Element, {
       btnType: 'add',
-      imgNum: this.$state.imgs.length,
+      imgNum: this.$state.imgs?.length,
       addImg: selectImg,
     });
 
-    this.$state.imgs.forEach((url: string, idx: number) => {
+    this.$state.imgs?.forEach((url: string, idx: number) => {
       const $img = document.createElement('div');
       $img.id = `img-del-${idx}`;
       $img.className = 'img-del';
@@ -220,6 +281,8 @@ class FileUploader extends Component {
           (_: string, i: number) => Number(idx) !== i
         ),
       });
+
+      this.$props.setThumbs(this.$state.imgs);
     });
   }
 }
@@ -244,12 +307,14 @@ class Categories extends Component {
     `;
   }
   mounted() {
+    const { activeNumber } = this.$props;
     const $buttons = this.$target.querySelector('.categories__buttons');
     this.$state.categories.forEach((category: any) => {
       const $btn = document.createElement('div');
       $btn.id = `category-${category.id}`;
       $btn.className = 'btn';
       new Category($btn as Element, {
+        active: activeNumber,
         title: category.name,
       });
       $buttons?.append($btn);
@@ -262,12 +327,12 @@ class Category extends Component {
     return '<div></div>';
   }
   mounted() {
-    const { title } = this.$props;
+    const { title, active } = this.$props;
     const $btn = this.$target.querySelector('div');
     new Button($btn as Element, {
       buttonType: 'category',
       title: title,
-      isClicked: this.$target.id === 'category-1',
+      isClicked: this.$target.id === active,
       handleClick: () => {
         const categories = this.$target.parentNode?.querySelectorAll(
           '.btn'

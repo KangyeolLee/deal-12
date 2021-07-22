@@ -1,10 +1,16 @@
-# deal-12
-2주차 3조 팀 12 - [이정민](https://github.com/danmin20) [이강열](https://github.com/KangyeolLee)
+# 2주차 3조 정강이(12)
+### 2주차 3조 팀 12 - [이정민](https://github.com/danmin20) + [이강열](https://github.com/KangyeolLee) = 정강이(?)
 
-## Tect Stack
-`Typescript` `Webpack` `Babel` `Node.js` `Express` `SCSS` `JWT` `MySQL` 
+# 정강이가 부러지도록 달려보겠습니다
 
-## Wiki
+<img src="https://i.ytimg.com/vi/GXSSZ_PytQ4/maxresdefault.jpg" />
+
+
+
+# Tect Stack
+`Typescript` `Webpack` `Babel` `Node.js` `Express` `SCSS` `JWT` `MySQL` `Socket.io` `EC2`
+
+# Wiki
 - [Convention](https://github.com/woowa-techcamp-2021/deal-12/wiki)
 - [API](https://github.com/woowa-techcamp-2021/deal-12/wiki/RESTful-API)
 - [Bundling](https://github.com/woowa-techcamp-2021/deal-12/wiki/Webpack-%EB%B0%8F-Babel-%EC%84%A4%EC%A0%95)

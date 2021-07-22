@@ -1,13 +1,18 @@
 import { Request, Response, NextFunction } from 'express';
 import { PostService, PostType } from '../services/post/PostService';
 import { PostInterestService } from '../services/post/PostInterestService';
+import { LocationService } from '../services/LocationService';
 
 const HOST = 'http://localhost:3000/';
 
 const createPost = async (req: any, res: Response, next: NextFunction) => {
   try {
     const { title, content, price, category_id, state } = req.body;
-    const { id: seller_id, location1_id: location_id } = req.user;
+    const { id: seller_id, nickname } = req.user;
+    const { loc1 } = await LocationService.findLocationsByUserNickname({
+      nickname,
+    });
+    const location_id = loc1[0].id;
     const files = req.files as any;
     const post = {
       title,
@@ -24,6 +29,7 @@ const createPost = async (req: any, res: Response, next: NextFunction) => {
     const images = await PostService.createPostImage(result.insertId, files);
     return res.status(200).json({
       message: 'success create post!',
+      postId: result.insertId,
     });
   } catch (error) {
     next(error);
@@ -129,22 +135,41 @@ const getPostById = async (req: any, res: Response, next: NextFunction) => {
 const updatePost = async (req: any, res: Response, next: NextFunction) => {
   try {
     const { postId } = req.params;
-    // 더미데이터 -> 실제 프론트에서 데이터 받아오는 구조로 수정 필요
+    const { title, content, price, category_id, thumbnail, willBeDeleted } =
+      req.body;
+    const { id: seller_id, nickname } = req.user;
+    const { loc1 } = await LocationService.findLocationsByUserNickname({
+      nickname,
+    });
+    const location_id = loc1[0].id;
+    const files = req.files as any;
     const updates = {
-      title: '수정된 제목입니다..',
-      price: 999999,
-      location_id: 1,
-      category_id: 1,
-      content: '수정된 내용입니다.',
-      state: '수정된 상태',
-      thumbnail: 'updated.url',
+      title,
+      content,
+      seller_id,
+      location_id,
+      price: +price,
+      category_id: +category_id,
+      thumbnail: thumbnail ? thumbnail : HOST + files[0].path,
+      willBeDeleted,
     };
+
+    console.log(postId, files, willBeDeleted);
+
+    const deleted = await PostService.deletePostImages({
+      post_id: +postId,
+      urls: willBeDeleted,
+    });
     const result = await PostService.updatePost({
       post_id: +postId,
       ...updates,
     });
+    if (files.length) await PostService.createPostImage(+postId, files);
+
     return res.status(200).json({
+      message: 'ok',
       result,
+      deleted,
     });
   } catch (error) {
     next(error);
