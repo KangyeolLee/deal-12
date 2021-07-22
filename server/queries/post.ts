@@ -7,16 +7,19 @@ import { PostType, PostUpdateType } from '../services/post/PostService';
 export const FIND_ALL_POSTS = ({
   location_id,
   category_id,
+  offset,
 }: {
   location_id: number;
   category_id?: number;
+  offset: number;
 }) => {
   if (!location_id) {
     return `
       SELECT post.id AS id, title, location_id, category_id, post.createdAt, post.updatedAt, content, view_count, price, seller_id, state,
       thumbnail, interest_count, name FROM post
       JOIN location ON location.id = post.location_id
-      WHERE state = '판매중'        
+      WHERE state = '판매중'   
+      LIMIT 10 OFFSET ${offset}     
     `;
   }
 
@@ -26,6 +29,7 @@ export const FIND_ALL_POSTS = ({
       thumbnail, interest_count, name FROM post
       JOIN location ON location.id = ${location_id}
       WHERE location_id = ${location_id} AND state = '판매중'
+      LIMIT 10 OFFSET ${offset}       
     `;
   }
 
@@ -34,6 +38,7 @@ export const FIND_ALL_POSTS = ({
     thumbnail, interest_count, name FROM post
     JOIN location ON location.id = post.location_id
     WHERE location_id = ${location_id} AND category_id = ${category_id} AND state = '판매중'
+    LIMIT 10 OFFSET ${offset}       
   `;
 };
 

@@ -72,11 +72,15 @@ export const PostService = {
   findPosts: async ({
     location_id,
     category_id,
+    offset,
   }: {
     location_id: number;
     category_id?: number;
+    offset: number;
   }) => {
-    const data = await execQuery(FIND_ALL_POSTS({ location_id, category_id }));
+    const data = await execQuery(
+      FIND_ALL_POSTS({ location_id, category_id, offset })
+    );
     return data;
   },
 
