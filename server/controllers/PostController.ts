@@ -234,7 +234,7 @@ const creatPostInterest = async (
       post_id: +postId,
       user_id,
     });
-    await PostInterestService.updatePostInterestCount({ post_id: +postId });
+    await PostInterestService.updatePostInterestCountPlus({ post_id: +postId });
 
     return res.status(200).json({
       message: 'success create like',
@@ -256,6 +256,9 @@ const deletePostInterest = async (
     await PostInterestService.deletePostInterest({
       post_id: +postId,
       user_id,
+    });
+    await PostInterestService.updatePostInterestCountMinus({
+      post_id: +postId,
     });
 
     return res.status(200).json({

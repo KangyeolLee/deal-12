@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { ClassElement } from 'typescript';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/ko';
 import CategoryListItem, {
@@ -7,6 +8,10 @@ import CategoryListItem, {
 
 dayjs.locale('ko');
 dayjs.extend(relativeTime);
+
+export function isClass(value: ClassElement) {
+  return Boolean(value && value.toString().startsWith('class '));
+}
 
 export const token = () => {
   if (localStorage.getItem('token')) {

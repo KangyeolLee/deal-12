@@ -31,19 +31,14 @@ export default class ChatBar extends Component {
   }
 
   setEvent() {
-    this.addEvent('input', 'input', () => {
+    this.addEvent('keydown', 'input', (e: KeyboardEvent) => {
       const $sendBtn = this.$target.querySelector('.send-button');
       const $input = this.$target.querySelector('input');
-
-      if ($input?.value) {
-        new IconButton($sendBtn as HTMLElement, {
-          name: 'end-on',
-        });
-        return;
-      }
+      const name = $input?.value ? 'end-on' : 'end-off';
+      const enter = e.key === 'Enter';
 
       new IconButton($sendBtn as HTMLElement, {
-        name: 'end-off',
+        name: enter ? 'end-off' : name,
       });
     });
   }

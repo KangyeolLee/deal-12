@@ -1,4 +1,4 @@
-import { isClass, isFunction, isPromise } from '../utils';
+import { isClass } from './util';
 
 type RouterType = {
   $app: any;
