@@ -29,7 +29,7 @@ export default class Menu extends Component {
       sells: [],
       chats: [],
       interests: [],
-      myId: '',
+      myId: -1,
     };
 
     const headers = new Headers();
@@ -120,6 +120,7 @@ export default class Menu extends Component {
   }
   mounted() {
     const { menu } = this.$state;
+    const isLogin = token();
 
     const $header = this.$target.querySelector('header');
     new Header($header as Element, {
@@ -151,7 +152,11 @@ export default class Menu extends Component {
           this.$state.sells.forEach((item: CategoryListItemProps) => {
             const $item = document.createElement('div');
             $wrapper?.append($item);
-            new CategoryListItem($item as Element, item);
+            new CategoryListItem($item as Element, {
+              ...item,
+              isLogin,
+              myId: this.$state.myId,
+            });
           });
         } else {
           $wrapper.innerHTML = noData[0];
@@ -177,7 +182,10 @@ export default class Menu extends Component {
           this.$state.interests.forEach((item: CategoryListItemProps) => {
             const $item = document.createElement('div');
             $wrapper?.append($item);
-            new CategoryListItem($item as Element, item);
+            new CategoryListItem($item as Element, {
+              ...item,
+              isLogin,
+            });
           });
         } else {
           $wrapper.innerHTML = noData[2];
