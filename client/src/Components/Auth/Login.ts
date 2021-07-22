@@ -5,10 +5,19 @@ import Register from './Register';
 import { $router } from '../../lib/router';
 
 export default class Login extends Component {
+  setup() {
+    this.$state = {
+      error: '',
+    };
+  }
+
   template() {
+    const { error } = this.$state;
+
     return `
       <form id="login-form">
         <div class="user-email"></div>
+        <div class="error-message">${error}</div>
         <div class="login-btn"></div>
         <span class="link-to-register">회원가입</span>
       </form>
@@ -41,7 +50,13 @@ export default class Login extends Component {
         }),
       })
         .then((res) => res.json())
-        .then(({ accessToken }) => {
+        .then(({ error, accessToken }) => {
+          if (error) {
+            this.setState({ error });
+            return;
+          }
+
+          (this.$target.parentNode as Element).className = 'modal-close';
           localStorage.setItem('token', accessToken);
           $router.push('/#');
         });
@@ -52,7 +67,6 @@ export default class Login extends Component {
       title: '로그인',
       handleClick: () => {
         handleLogin();
-        (this.$target.parentNode as Element).className = 'modal-close';
       },
     });
 
