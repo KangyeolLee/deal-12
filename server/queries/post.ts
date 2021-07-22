@@ -122,12 +122,6 @@ export const UPDATE_POST_STATE_BY_POSTID = ({
   WHERE post.id = ${post_id}
 `;
 
-// 포스트넘버에 해당하는 포스트의 좋아요 수를 +1 만큼 증가하는 쿼리
-export const UPDATE_POST_INTERESTCOUNT = ({ post_id }: { post_id: number }) => `
-  UPDATE post SET interest_count = interest_count+1
-  WHERE id = ${post_id}
-`;
-
 // 유저 닉네임으로 유저가 작성한 글들을 가져오는 쿼리
 export const FIND_POST_BY_USER_NICKNAME = ({
   nickname,

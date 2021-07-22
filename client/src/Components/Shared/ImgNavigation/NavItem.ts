@@ -5,7 +5,7 @@ export default class NavItem extends Component {
     const images = this.$props;
 
     return images
-      .map((_: any, index: number) => {
+      ?.map((_: any, index: number) => {
         return `
         <div class="nav-item image-target-${index} ${
           index === 0 ? 'on' : ''
