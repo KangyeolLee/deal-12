@@ -40,6 +40,32 @@ $shadows-big: multiple-box-shadow(100);
   }
 }
 
+@keyframes baemin {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(1rem);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes baemin2 {
+  from {
+    transform: translate(-35rem, -35rem);
+    opacity: 1;
+  }
+
+  to {
+    transform: translate(35rem, 35rem);
+    opacity: 1;
+  }
+}
+
 @keyframes slide {
   0% {
     margin-left: 0;

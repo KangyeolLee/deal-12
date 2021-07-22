@@ -16,12 +16,6 @@ const tapList = [
   { id: 'like-list', title: '관심목록' },
 ];
 
-const noData = [
-  '등록한 상품이 없습니다.',
-  '채팅 기록이 없습니다.',
-  '관심을 표시한 상품이 없습니다.',
-];
-
 export default class Menu extends Component {
   setup() {
     this.$state = {
@@ -159,7 +153,6 @@ export default class Menu extends Component {
             });
           });
         } else {
-          $wrapper.innerHTML = noData[0];
           $wrapper.className = 'no-data';
         }
         break;
@@ -172,7 +165,6 @@ export default class Menu extends Component {
             new ChatListItem($item as Element, item);
           });
         } else {
-          $wrapper.innerHTML = noData[1];
           $wrapper.className = 'no-data';
         }
         break;
@@ -188,7 +180,6 @@ export default class Menu extends Component {
             });
           });
         } else {
-          $wrapper.innerHTML = noData[2];
           $wrapper.className = 'no-data';
         }
         break;
