@@ -108,6 +108,13 @@ export default class Register extends Component {
     // 필수입력 검증
     this.$target.addEventListener('input', () => {
       const $inputs = this.$target.querySelectorAll('input');
+
+      const regex = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"\s]/gi;
+      if (regex.test($inputs[0].value)) {
+        const output = $inputs[0].value.replace(regex, '');
+        $inputs[0].value = output;
+      }
+
       const isActivated = [...$inputs].every((input) => input.value);
       const $locError = this.$target.querySelector(
         '#loc-error'
