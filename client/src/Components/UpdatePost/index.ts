@@ -4,7 +4,7 @@ import '../NewPost/styles';
 import ImgButton from '../Shared/ImgButton';
 import IconButton from '../Shared/IconButton';
 import Button from '../Shared/Button';
-import { token } from '../../lib/util';
+import { setLoading, token } from '../../lib/util';
 import { $router } from '../../lib/router';
 
 export default class UpdatePost extends Component {
@@ -17,6 +17,8 @@ export default class UpdatePost extends Component {
 
     this.$state = {};
 
+    setLoading(true);
+
     fetch('/api/me/locations', {
       method: 'GET',
       headers: {
@@ -27,20 +29,22 @@ export default class UpdatePost extends Component {
       .then((res) => res.json())
       .then((data) => {
         this.setState({ loc: data.result.loc1[0].name });
-      });
-
-    fetch(`/api/posts/${postId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token(),
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        const { result } = data;
-        this.setState({ ...result[0] });
-      });
+      })
+      .then(() =>
+        fetch(`/api/posts/${postId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token(),
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            const { result } = data;
+            this.setState({ ...result[0] });
+          })
+      )
+      .finally(() => setLoading(false));
   }
 
   template() {

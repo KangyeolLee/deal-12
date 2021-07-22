@@ -10,7 +10,7 @@ import Menu from '../Menu';
 import Button from '../Shared/Button';
 import Auth from './../Auth/index';
 import Dropdown from './../Shared/Dropdown/index';
-import { token } from '../../lib/util';
+import { setLoading, token } from '../../lib/util';
 
 export default class Home extends Component {
   setup() {
@@ -23,6 +23,12 @@ export default class Home extends Component {
     if (token()) {
       const headers = new Headers();
       headers.append('Authorization', token());
+
+      console.log('prev : ', document.getElementById('loading-modal'));
+
+      setLoading(true);
+
+      console.log('next : ', document.getElementById('loading-modal'));
 
       fetch('/api/me/locations', {
         method: 'GET',
@@ -43,16 +49,23 @@ export default class Home extends Component {
             .then(({ result }) => {
               this.setState({ items: result, isLogin: true });
             });
+        })
+        .finally(() => {
+          setLoading(false);
+          console.log('fin : ', document.getElementById('loading-modal'));
         });
     } else {
       // 전체 글
+      setLoading(true);
+
       fetch(`/api/posts/location/0/category/0`, {
         method: 'GET',
       })
         .then((res) => res.json())
         .then(({ result }) => {
           this.setState({ items: result });
-        });
+        })
+        .finally(() => setLoading(false));
     }
   }
   template() {
