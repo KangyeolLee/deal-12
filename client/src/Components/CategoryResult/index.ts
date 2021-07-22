@@ -4,7 +4,7 @@ import CategoryListItem, {
 } from '../Shared/CategoryListItem';
 import Header from '../Shared/Header';
 import Loader from '../Shared/Loader';
-import { setIntersectionObserver } from '../../lib/util';
+import { setIntersectionObserver, token } from '../../lib/util';
 
 export default class CategoryResult extends Component {
   setup() {
@@ -43,7 +43,10 @@ export default class CategoryResult extends Component {
       this.$state.items.forEach((item: CategoryListItemProps) => {
         const $item = document.createElement('div');
         $itemList?.append($item);
-        new CategoryListItem($item, item);
+        new CategoryListItem($item, {
+          ...item,
+          isLogin: token() ? true : false,
+        });
       });
     } else {
       $itemList.className = 'no-data';

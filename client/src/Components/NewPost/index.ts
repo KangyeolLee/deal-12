@@ -127,6 +127,13 @@ export default class NewPost extends Component {
           $router.push(`/post/${postId}`);
         });
     });
+
+    // 콤마 추가
+    const price = this.$target.querySelector('#price') as HTMLInputElement;
+    price.addEventListener('change', () => {
+      const input = price.value.split('원')[0].replace(/,/g, '');
+      price.value = input.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원';
+    });
   }
 
   setEvent() {
@@ -136,6 +143,14 @@ export default class NewPost extends Component {
       const $content = (
         this.$target.querySelector('#content') as HTMLInputElement
       ).value;
+      const price = this.$target.querySelector('#price') as HTMLInputElement;
+
+      // 숫자만 입력
+      const regex = /[^0-9]/g;
+      if (regex.test(price.value)) {
+        const output = price.value.replace(regex, '');
+        price.value = output;
+      }
 
       // check icon
       const $checkIcon = this.$target.querySelector('.header__right-icon');
