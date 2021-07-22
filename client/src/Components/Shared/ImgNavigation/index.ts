@@ -33,9 +33,9 @@ export default class ImgNavigation extends Component {
     ) as HTMLElement;
     const $imageNav = this.$target.querySelector('.image-nav');
 
-    $navigation.style.width = 100 * (images.length + 2) + '%';
+    $navigation.style.width = 100 * (images?.length + 2) + '%';
 
-    images.forEach((image: string, index: number) => {
+    images?.forEach((image: string, index: number) => {
       const $div = document.createElement('div');
       $div.classList.add('navigation-item', `image-target-${index}`);
       new ImgBox($div as HTMLDivElement, {
@@ -57,8 +57,8 @@ export default class ImgNavigation extends Component {
     const itemSize = (<HTMLElement>$navigation.parentElement).offsetWidth;
     const firstItem = navigationItems[0];
     const lastItem = navigationItems[this.itemsLength - 1];
-    const cloneFirstItem = firstItem.cloneNode(true);
-    const cloneLastItem = lastItem.cloneNode(true);
+    const cloneFirstItem = firstItem?.cloneNode(true);
+    const cloneLastItem = lastItem?.cloneNode(true);
     const $ImgNav = this.$target.querySelectorAll('.image-nav .nav-item');
     const $ImgNavigator = this.$target.querySelector('.image-nav');
 

@@ -109,7 +109,7 @@ export default class SalesProductDetail extends Component {
     });
 
     new ProductBar($productDetail as Element, {
-      price: translatePriceToTrimmed(price),
+      price: translatePriceToTrimmed(+price),
       isMine,
       seller_id,
       isLogin,

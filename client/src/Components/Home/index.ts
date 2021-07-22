@@ -19,6 +19,7 @@ export default class Home extends Component {
       items: [],
       location1: {},
       location2: {},
+      isLogin: token(),
     };
     if (token()) {
       const headers = new Headers();
