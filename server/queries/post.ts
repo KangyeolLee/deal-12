@@ -14,7 +14,7 @@ export const FIND_ALL_POSTS = ({
   if (!location_id) {
     return `
       SELECT post.id AS id, title, location_id, category_id, post.createdAt, post.updatedAt, content, view_count, price, seller_id, state,
-      thumbnail, interest_count, name FROM post
+      thumbnail, interest_count, chatroom_count, name FROM post
       JOIN location ON location.id = post.location_id
       WHERE state = '판매중'        
     `;
@@ -23,7 +23,7 @@ export const FIND_ALL_POSTS = ({
   if (!category_id) {
     return `
       SELECT post.id AS id, title, location_id, category_id, post.createdAt, post.updatedAt, content, view_count, price, seller_id, state,
-      thumbnail, interest_count, name FROM post
+      thumbnail, interest_count, chatroom_count, name FROM post
       JOIN location ON location.id = ${location_id}
       WHERE location_id = ${location_id} AND state = '판매중'
     `;
@@ -31,7 +31,7 @@ export const FIND_ALL_POSTS = ({
 
   return `
     SELECT post.id AS id, title, location_id, category_id, post.createdAt, post.updatedAt, content, view_count, price, seller_id, state,
-    thumbnail, interest_count, name FROM post
+    thumbnail, interest_count, chatroom_count, name FROM post
     JOIN location ON location.id = post.location_id
     WHERE location_id = ${location_id} AND category_id = ${category_id} AND state = '판매중'
   `;
@@ -40,7 +40,7 @@ export const FIND_ALL_POSTS = ({
 // 포스트넘버에 해당하는 하나의 포스트 디테일 가지고 오는 쿼리
 export const FIND_POST_BY_POSTID = ({ post_id }: { post_id: number }) => `
   SELECT post.id AS id, i.images, title, location1_id, location2_id, category_id, post.createdAt, post.updatedAt, content, view_count, price, seller_id, state, 
-  interest_count, location.name as name, category.name as category, user.nickname, category.name as category FROM post
+  interest_count, chatroom_count, location.name as name, category.name as category, user.nickname, category.name as category FROM post
   INNER JOIN (
     SELECT post_id, JSON_ARRAYAGG(url) AS images
     FROM image
@@ -130,7 +130,7 @@ export const FIND_POST_BY_USER_NICKNAME = ({
   nickname: string;
 }) => `
     SELECT post.id AS id, title, location_id, category_id, post.createdAt, post.updatedAt, content, view_count, price, seller_id, state,
-    thumbnail, interest_count, name FROM post
+    thumbnail, interest_count, chatroom_count, name FROM post
       JOIN user ON user.nickname = '${nickname}'
       JOIN location ON location.id = post.location_id
     WHERE seller_id=user.id

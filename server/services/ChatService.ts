@@ -14,6 +14,7 @@ import {
   UPDATE_UNREAD_COUNT,
   RESET_UNREAD_COUNT,
 } from '../queries/chat';
+import { UPDATE_POST_CHATROOMCOUNT } from '../queries/postInterest';
 
 export const ChatService = {
   // api 필요
@@ -40,6 +41,7 @@ export const ChatService = {
     } else {
       // 새로 만들고
       await execQuery(CREATE_CHATROOM({ post_id, buyer_id, seller_id }));
+      await execQuery(UPDATE_POST_CHATROOMCOUNT({ post_id }));
       // 새로 만든 채팅방 id 가져와서
       const chatroom = await execQuery(
         FIND_CHATROOM_BY_BUYER_ID_SELLER_ID_POST_ID({

@@ -17,7 +17,7 @@ export interface CategoryListItemProps {
   price: number;
   name: string;
   createdAt: string;
-  chat_count: number;
+  chatroom_count: number;
   interest_count: number;
   pageName: string;
 }
@@ -91,7 +91,7 @@ export default class CategoryListItem extends Component {
       price,
       name,
       createdAt,
-      chat_count = 3,
+      chatroom_count,
       interest_count,
     }: CategoryListItemProps = this.$props;
 
@@ -110,9 +110,11 @@ export default class CategoryListItem extends Component {
                 )}원</div>
             </div>
             <div class="info__counts">
-              <div class="info__counts--count ${chat_count ? '' : 'hidden'}">
+              <div class="info__counts--count ${
+                chatroom_count ? '' : 'hidden'
+              }">
                   <div id="chat-icon"></div>
-                  <div>${chat_count}</div>
+                  <div>${chatroom_count}</div>
               </div>
               <div class="info__counts--count ${
                 interest_count ? '' : 'hidden'
@@ -128,13 +130,7 @@ export default class CategoryListItem extends Component {
   }
 
   mounted() {
-    const {
-      pageName,
-      blob,
-      thumbnail,
-      chat_count = 3,
-      interest_count,
-    } = this.$props;
+    const { pageName, thumbnail, chatroom_count, interest_count } = this.$props;
 
     const $img = this.$target.querySelector('#img-box');
     new ImgBox($img as Element, {
@@ -155,7 +151,7 @@ export default class CategoryListItem extends Component {
     }
 
     // small icons
-    if (chat_count > 0) {
+    if (chatroom_count > 0) {
       const $chatIcon = this.$target.querySelector('#chat-icon') as HTMLElement;
       new IconButton($chatIcon as Element, {
         name: 'chat-small',
