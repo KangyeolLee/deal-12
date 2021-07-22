@@ -7,9 +7,21 @@ import { token } from '../../../lib/util';
 
 export default class ProductBar extends Component {
   setup() {
-    this.$state = {
-      isLiked: false, // getLikes 해서 현재 postId와 비교
-    };
+    this.$state = {};
+
+    if (token()) {
+      const headers = new Headers();
+      headers.append('Authorization', token());
+
+      fetch(`/api/posts/${this.$props.post_id}/interest/check`, {
+        method: 'GET',
+        headers,
+      })
+        .then((res) => res.json())
+        .then(({ result }) => {
+          if (result) this.setState({ isLiked: true });
+        });
+    }
   }
 
   template() {
@@ -68,7 +80,22 @@ export default class ProductBar extends Component {
       '.icon-btn',
       ({ target }: { target: HTMLElement }) => {
         if (target.className === 'icon-btn') {
-          this.setState({ isLiked: !this.$state.isLiked });
+          const headers = new Headers();
+          headers.append('Authorization', token());
+
+          if (!this.$state.isLiked) {
+            console.log('좋아요 요청');
+            fetch(`/api/posts/${this.$props.post_id}/interest`, {
+              method: 'POST',
+              headers,
+            }).then(() => this.setState({ isLiked: true }));
+          } else {
+            console.log('싫어요 요청');
+            fetch(`/api/posts/${this.$props.post_id}/interest`, {
+              method: 'DELETE',
+              headers,
+            }).then(() => this.setState({ isLiked: false }));
+          }
         }
       }
     );
