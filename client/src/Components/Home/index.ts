@@ -19,7 +19,6 @@ export default class Home extends Component {
       items: [],
       location1: {},
       location2: {},
-      isLogin: false,
     };
     if (token()) {
       const headers = new Headers();
@@ -47,7 +46,7 @@ export default class Home extends Component {
           )
             .then((res) => res.json())
             .then(({ result }) => {
-              this.setState({ items: result, isLogin: true });
+              this.setState({ items: result });
             });
         })
         .finally(() => {
@@ -93,7 +92,7 @@ export default class Home extends Component {
         $itemList?.append($item);
         new CategoryListItem($item as Element, {
           ...item,
-          isLogin: this.$state.isLogin,
+          isLogin,
         });
       });
     } else {
@@ -158,7 +157,7 @@ export default class Home extends Component {
 
     const $locationBtn = this.$target.querySelector('.location');
 
-    if (this.$state.isLogin) {
+    if (isLogin) {
       new Dropdown($locationBtn as HTMLElement, {
         lists: this.$state.location2?.id
           ? [

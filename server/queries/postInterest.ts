@@ -4,6 +4,12 @@ export const UPDATE_POST_INTERESTCOUNT = ({ post_id }: { post_id: number }) => `
   WHERE id = ${post_id}
 `;
 
+// 포스트에 대한 채팅룸 수를 증감시키는 쿼리
+export const UPDATE_POST_CHATROOMCOUNT = ({ post_id }: { post_id: number }) => `
+  UPDATE post SET chatroom_count = chatroom_count+1
+  WHERE id = ${post_id}
+`;
+
 // 포스트넘버에 좋아요를 누른 유저 정보로 관심항목 테이블에 추가하는 쿼리
 export const CREATE_INTEREST_FOR_POST_BY_ID_AND_USERID = ({
   post_id,

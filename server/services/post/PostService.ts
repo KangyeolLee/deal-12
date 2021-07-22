@@ -36,6 +36,7 @@ export type PostUpdateType = {
   state?: string;
   thumbnail?: string;
   interest_count?: number;
+  chatroom_count?: number;
 };
 
 export const PostService = {

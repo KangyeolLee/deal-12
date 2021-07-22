@@ -62,6 +62,7 @@ export default class SalesProductDetail extends Component {
       category,
       updatedAt,
       interest_count,
+      chatroom_count,
       view_count,
     } = this.$state;
 
@@ -78,7 +79,7 @@ export default class SalesProductDetail extends Component {
       updatedAt
     )}</p>
               <p class="desc">${content}</p>
-              <p class="more-info"> 채팅 0 · 관심 ${interest_count} · 조회 ${view_count} </p>
+              <p class="more-info"> 채팅 ${chatroom_count} · 관심 ${interest_count} · 조회 ${view_count} </p>
             </div>
             <div class="user-specification"></div>
           </div>

@@ -17,9 +17,10 @@ export interface CategoryListItemProps {
   price: number;
   name: string;
   createdAt: string;
-  chat_count: number;
+  chatroom_count: number;
   interest_count: number;
   pageName: string;
+  seller_id: number;
 }
 
 class LikeBtn extends Component {
@@ -61,7 +62,12 @@ class LikeBtn extends Component {
       '#icon-btn'
     ) as HTMLButtonElement;
 
+    const $itemBox = this.$target.parentNode?.parentNode as HTMLDivElement;
+
     const handleBtnClick = () => {
+      const $num = $itemBox.querySelector('#count') as HTMLDivElement;
+      const $icon = $itemBox.querySelector('#heart-icon') as HTMLElement;
+
       if (!this.$state.isLiked) {
         // create postinterest
         fetch(`/api/posts/${this.$props.postId}/interest`, {
@@ -69,6 +75,14 @@ class LikeBtn extends Component {
           headers,
         }).then(() => {
           this.setState({ isLiked: true });
+          if ($num.innerText === '0') {
+            $num.style.color = '#000';
+            new IconButton($icon as Element, {
+              name: 'heart-small',
+              small: true,
+            });
+          }
+          $num.innerText = (Number($num.innerText) + 1).toString();
         });
       } else {
         // delete postinterest
@@ -77,6 +91,11 @@ class LikeBtn extends Component {
           headers,
         }).then(() => {
           this.setState({ isLiked: false });
+          $num.innerText = (Number($num.innerText) - 1).toString();
+          if ($num.innerText === '0') {
+            $num.style.color = '#fff';
+            $icon.innerHTML = '';
+          }
         });
       }
     };
@@ -91,7 +110,7 @@ export default class CategoryListItem extends Component {
       price,
       name,
       createdAt,
-      chat_count = 3,
+      chatroom_count,
       interest_count,
     }: CategoryListItemProps = this.$props;
 
@@ -110,15 +129,15 @@ export default class CategoryListItem extends Component {
                 )}원</div>
             </div>
             <div class="info__counts">
-              <div class="info__counts--count ${chat_count ? '' : 'hidden'}">
-                  <div id="chat-icon"></div>
-                  <div>${chat_count}</div>
-              </div>
               <div class="info__counts--count ${
-                interest_count ? '' : 'hidden'
+                chatroom_count ? '' : 'hidden'
               }">
+                  <div id="chat-icon"></div>
+                  <div>${chatroom_count}</div>
+              </div>
+              <div id="icon" class="info__counts--count">
                   <div id="heart-icon"></div>
-                  <div>${interest_count}</div>
+                  <div id="count">${interest_count}</div>
               </div>              
             </div>
         </div>
@@ -129,11 +148,12 @@ export default class CategoryListItem extends Component {
 
   mounted() {
     const {
+      myId,
       pageName,
-      blob,
       thumbnail,
-      chat_count = 3,
+      chatroom_count,
       interest_count,
+      seller_id,
     } = this.$props;
 
     const $img = this.$target.querySelector('#img-box');
@@ -148,14 +168,16 @@ export default class CategoryListItem extends Component {
         pageName,
       });
     } else {
-      new LikeBtn($iconBtn as Element, {
-        postId: this.$props.id,
-        isLogin: this.$props.isLogin,
-      });
+      if (seller_id !== myId) {
+        new LikeBtn($iconBtn as Element, {
+          postId: this.$props.id,
+          isLogin: this.$props.isLogin,
+        });
+      }
     }
 
     // small icons
-    if (chat_count > 0) {
+    if (chatroom_count > 0) {
       const $chatIcon = this.$target.querySelector('#chat-icon') as HTMLElement;
       new IconButton($chatIcon as Element, {
         name: 'chat-small',
@@ -168,6 +190,9 @@ export default class CategoryListItem extends Component {
         name: 'heart-small',
         small: true,
       });
+    } else {
+      (this.$target.querySelector('#count') as HTMLDivElement).style.color =
+        '#fff';
     }
   }
 

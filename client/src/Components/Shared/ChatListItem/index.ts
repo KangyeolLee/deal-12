@@ -53,7 +53,7 @@ export default class ChatListItem extends Component {
     const { last_text, timestamp, unread_count }: ParamsType = this.$props;
 
     return `
-    <div class="chat-list__item ${'checked' ? 'checked' : ''}">
+    <div class="chat-list__item ${unread_count > 0 ? '' : 'checked'}">
       <div class="user-section">
         <div class="user-section__detail">
           <h6 class="username">${this.$state.other.nickname}</h6>

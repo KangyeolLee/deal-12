@@ -10,7 +10,7 @@ export default class Chatlist extends Component {
   setup() {
     this.$state = {
       chats: [],
-      myId: '',
+      myId: -1,
     };
     const postId = location.href.split('post/')[1];
 
