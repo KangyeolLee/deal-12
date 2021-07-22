@@ -3,6 +3,7 @@
 .chat-bubbles {
   position: relative;
   flex: 1;
+  overflow-y: scroll;
   display: flex;
   flex-direction: column;
   padding: 1.6rem;
@@ -17,7 +18,7 @@
 
       .content {
         border-radius: 0 0.8rem 0.8rem 0.8rem;
-        border: 1px solid $primary;
+        border: 0.1rem solid $primary;
       }
     }
 

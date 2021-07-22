@@ -1,6 +1,6 @@
 import { execQuery } from '../database/database';
 import { CREATE_USER, FIND_BY_USER_NICKNAME } from '../queries/user';
-import { UPDATE_USER_LOCATION } from './../queries/user';
+import { UPDATE_USER_LOCATION, FIND_BY_USER_ID } from './../queries/user';
 
 export type UserType = {
   nickname: string;
@@ -26,6 +26,11 @@ export const UserService = {
 
   findUserByNickname: async ({ nickname }: { nickname: string }) => {
     const result = await execQuery(FIND_BY_USER_NICKNAME({ nickname }));
+    return result;
+  },
+
+  findUserById: async ({ id }: { id: number }) => {
+    const result = await execQuery(FIND_BY_USER_ID({ id }));
     return result;
   },
 };

@@ -58,6 +58,19 @@ const getUserByNickname = async (
   }
 };
 
+const getUserById = async (req: any, res: Response, next: NextFunction) => {
+  const { userId: id } = req.params;
+
+  try {
+    const result = await UserService.findUserById({ id });
+    const user = result[0];
+
+    return res.status(200).json({ user });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const login = async (req: any, res: Response, next: NextFunction) => {
   const { nickname } = req.body;
 
@@ -94,4 +107,5 @@ export const UserController = {
   updateUser,
   login,
   getUserByNickname,
+  getUserById,
 };

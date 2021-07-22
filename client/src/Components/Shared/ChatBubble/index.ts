@@ -3,13 +3,13 @@ import Component from '../../../core/Component';
 
 export default class ChatBubble extends Component {
   template() {
-    const { myId, fromId, message } = this.$props;
+    const { myId, user_id, text } = this.$props;
 
     return `
       <div class="chat-bubbles__message ${
-        fromId === myId ? 'by-me' : 'by-partner'
+        user_id === myId ? 'by-me' : 'by-partner'
       }">
-        <p class="content">${message}</p>
+        <p class="content">${text}</p>
       </div>
     `;
   }

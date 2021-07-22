@@ -7,6 +7,8 @@ import CategoryListItem, {
 } from '../Shared/CategoryListItem';
 import ChatListItem from '../Shared/ChatListItem';
 import { token } from '../../lib/util';
+import { socket } from '../../main';
+import dayjs from 'dayjs';
 
 const tapList = [
   { id: 'sell-list', title: '판매목록' },
@@ -20,28 +22,31 @@ const noData = [
   '관심을 표시한 상품이 없습니다.',
 ];
 
-const chatList = [
-  {
-    username: 'UserE',
-    timestamp: '1분 전',
-    content: '실제로 신어볼 수 있는 건가요?',
-    img: 'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
-    checked: true,
-  },
-  {
-    username: 'UserD',
-    timestamp: '1시간 전',
-    content: '감사합니다 :)',
-    img: 'https://flexible.img.hani.co.kr/flexible/normal/700/1040/imgdb/original/2021/0428/20210428504000.jpg',
-    checked: false,
-  },
-];
 export default class Menu extends Component {
   setup() {
-    this.$state = { menu: 'sell-list', sells: [], interests: [] };
+    this.$state = {
+      menu: 'sell-list',
+      sells: [],
+      chats: [],
+      interests: [],
+      myId: '',
+    };
 
     const headers = new Headers();
     headers.append('Authorization', token());
+
+    fetch('/api/me/', {
+      method: 'GET',
+      headers: {
+        Authorization: token(),
+      },
+    })
+      .then((res) => res.json())
+      .then(({ user }) => {
+        this.setState({
+          myId: user.id,
+        });
+      });
 
     // 판매목록
     fetch('/api/me/posts', {
@@ -51,6 +56,16 @@ export default class Menu extends Component {
       .then((res) => res.json())
       .then(({ result }) => {
         this.setState({ sells: result });
+      });
+
+    // 채팅목록
+    fetch('/api/me/chatrooms', {
+      method: 'GET',
+      headers,
+    })
+      .then((res) => res.json())
+      .then(({ result }) => {
+        this.setState({ chats: result });
       });
 
     // 관심목록
@@ -113,8 +128,37 @@ export default class Menu extends Component {
         break;
 
       case 'chat-list':
-        if (chatList.length > 0) {
-          chatList.forEach((item) => {
+        // 새로운 채팅방 생성 감지
+        socket.on(
+          `user-${this.$state.myId}`,
+          (fromId: number, chatroomId: number, message: string, post: any) => {
+            const isExist = this.$state.chats.find(
+              (chat: any) => chat.id === chatroomId
+            );
+
+            if (!isExist) {
+              const $list = document.createElement('div');
+              $wrapper?.append($list);
+              const newChatroom = {
+                id: chatroomId,
+                buyer_id: fromId,
+                seller_id: this.$state.myId,
+                my_id: this.$state.myId,
+                thumbnail: post.thumbnail,
+                last_text: message,
+                timestamp: dayjs(new Date()),
+              };
+              new ChatListItem($list as Element, newChatroom);
+
+              this.setState({
+                chats: [...this.$state.chats, newChatroom],
+              });
+            }
+          }
+        );
+
+        if (this.$state.chats.length > 0) {
+          this.$state.chats.forEach((item: any) => {
             const $item = document.createElement('div');
             $wrapper?.append($item);
             new ChatListItem($item as Element, item);

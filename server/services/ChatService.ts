@@ -4,12 +4,12 @@ import {
   CREATE_CHATJOINED,
   CREATE_CHATROOM,
   FIND_CHATROOM_BY_BUYER_ID_SELLER_ID_POST_ID,
-  FIND_CHATJOINED_BY_ROOM_ID,
-  FIND_CHATROOMS_BY_CHATJOINED,
   FIND_CHATROOMS_BY_POST_ID,
   FIND_CHATS_BY_CHATROOM_ID,
   UPDATE_LAST_TEXT,
   FIND_CHATROOM_POST,
+  FIND_CHATROOMS_BY_USERID,
+  FIND_CHATJOINED_BY_ROOM_ID_USERID,
 } from '../queries/chat';
 
 export const ChatService = {
@@ -45,10 +45,6 @@ export const ChatService = {
           post_id,
         })
       );
-      // 연결 생성
-      await execQuery(
-        CREATE_CHATJOINED({ room_id: chatroom[0].id, user_id: buyer_id })
-      );
       return chatroom[0];
     }
   },
@@ -76,42 +72,35 @@ export const ChatService = {
     return data;
   },
 
+  // 내가 참여한 채팅목록
+  findChatRoomsByUserId: async ({ user_id }: { user_id: number }) => {
+    const data = await execQuery(FIND_CHATROOMS_BY_USERID({ user_id }));
+    return data;
+  },
+
   // 서버에서만 사용 (컨트롤러 필요없음)
   // 채팅 생성
   createChat: async ({
     room_id,
-    seller_id,
     text,
     user_id,
+    other_id,
   }: {
     room_id: number;
-    seller_id: number;
     text: string;
     user_id: number;
+    other_id: number;
   }) => {
     const data = await execQuery(
-      FIND_CHATJOINED_BY_ROOM_ID({ room_id, user_id: seller_id })
+      FIND_CHATJOINED_BY_ROOM_ID_USERID({ room_id, user_id: other_id })
     );
-    if (!data) {
+    if (!data.length) {
       // 상대방에 대한 joined 생성
-      await execQuery(CREATE_CHATJOINED({ room_id, user_id: seller_id }));
+      // 연결 생성
+      await execQuery(CREATE_CHATJOINED({ room_id, user_id }));
+      await execQuery(CREATE_CHATJOINED({ room_id, user_id: other_id }));
     }
     await execQuery(CREATE_CHAT({ room_id, text, user_id }));
     await execQuery(UPDATE_LAST_TEXT({ room_id, text }));
-  },
-
-  // api 필요
-  // 내가 참여한 채팅목록
-  findChatsByChatjoined: async ({
-    room_id,
-    user_id,
-  }: {
-    room_id: number;
-    user_id: number;
-  }) => {
-    const data = await execQuery(
-      FIND_CHATROOMS_BY_CHATJOINED({ room_id, user_id })
-    );
-    return data;
   },
 };
