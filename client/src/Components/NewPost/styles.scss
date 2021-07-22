@@ -4,7 +4,7 @@
   width: 100%;
   height: 100%;
   overflow-y: scroll;
-  box-shadow: inset 0px 1px 0px $grey3;
+  box-shadow: inset 0 0.1rem 0 $grey3;
   .img-list {
     width: 100%;
     overflow-x: scroll;
@@ -44,7 +44,7 @@
   position: absolute;
   left: 0;
   bottom: 0;
-  box-shadow: inset 0px 1px 0px $grey3;
+  box-shadow: inset 0 0.1rem 0 $grey3;
 }
 
 .categories {

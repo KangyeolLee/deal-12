@@ -20,7 +20,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   align-content: space-around;
-  box-shadow: inset 0px 1px 0px $grey3;
+  box-shadow: inset 0 0.1rem 0 $grey3;
   .category-btn {
     cursor: pointer;
     display: flex;
@@ -30,7 +30,7 @@
     .box {
       width: 4rem;
       height: 4rem;
-      border: 1px solid $grey3;
+      border: 0.1rem solid $grey3;
       background: $off-white;
       border-radius: 0.6rem;
     }

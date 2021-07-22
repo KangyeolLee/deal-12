@@ -49,7 +49,7 @@ const getChatRoomsByUserId = async (
 ) => {
   const { id: user_id } = req.user;
   try {
-    const result = await ChatService.findChatfoomsByUserId({ user_id });
+    const result = await ChatService.findChatRoomsByUserId({ user_id });
     return res.status(200).json({
       result,
     });

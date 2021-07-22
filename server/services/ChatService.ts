@@ -73,7 +73,7 @@ export const ChatService = {
   },
 
   // 내가 참여한 채팅목록
-  findChatfoomsByUserId: async ({ user_id }: { user_id: number }) => {
+  findChatRoomsByUserId: async ({ user_id }: { user_id: number }) => {
     const data = await execQuery(FIND_CHATROOMS_BY_USERID({ user_id }));
     return data;
   },
