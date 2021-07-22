@@ -77,7 +77,9 @@ export default class Home extends Component {
     `;
   }
   mounted() {
-    const { isLogin, location1 } = this.$state;
+    const { location1 } = this.$state;
+    const isLogin = token() ? true : false;
+
     const $header = this.$target.querySelector('header');
     new Header($header as Element, {
       title: isLogin ? this.$state.location1.name : '로그인해주세요',

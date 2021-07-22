@@ -51,7 +51,7 @@ export default class Chatlist extends Component {
               const $list = document.createElement('div');
               $chatList?.append($list);
               const newChatroom = {
-                id: chatroomId,
+                id: Number(chatroomId),
                 buyer_id: fromId,
                 seller_id: this.$state.myId,
                 my_id: this.$state.myId,

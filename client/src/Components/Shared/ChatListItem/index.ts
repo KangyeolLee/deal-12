@@ -53,7 +53,7 @@ export default class ChatListItem extends Component {
     const { last_text, timestamp, unread_count }: ParamsType = this.$props;
 
     return `
-    <div class="chat-list__item ${unread_count > 0 ? '' : 'checked'}">
+    <div class="chat-list__item ${unread_count > 0 ? 'checked' : ''}">
       <div class="user-section">
         <div class="user-section__detail">
           <h6 class="username">${this.$state.other.nickname}</h6>
@@ -62,7 +62,7 @@ export default class ChatListItem extends Component {
         <div class="numbers">
           <span class="timestamp">${getTimestamp(timestamp)}</span>
           <span class="unread" style="background: ${
-            unread_count > 0 ? '#219a95' : '#fff'
+            unread_count > 0 ? '#219a95' : '#f6f6f6'
           }">${unread_count}</span>
         </div>
       </div>
