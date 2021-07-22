@@ -5,6 +5,7 @@ import ImgBox from './../ImgBox/index';
 import { $router } from '../../../lib/router';
 import { getTimestamp } from '../../../lib/util';
 import { socket } from '../../../main';
+import dayjs from 'dayjs';
 
 interface ParamsType {
   buyer_id: number;
@@ -32,6 +33,12 @@ export default class ChatListItem extends Component {
       (
         this.$target.querySelector('.content') as HTMLParagraphElement
       ).innerText = message;
+
+      (
+        this.$target.querySelector('.timestamp') as HTMLParagraphElement
+      ).innerText = getTimestamp(
+        dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss')
+      );
 
       if (fromId !== this.$props.my_id) {
         (

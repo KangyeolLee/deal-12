@@ -63,6 +63,7 @@ export default class ChatDetail extends Component {
       const $chatBubbles = this.$target.querySelector(
         '.chat-bubbles'
       ) as Element;
+      const $input = this.$target.querySelector('input') as HTMLInputElement;
 
       const $chatItem = document.createElement('div');
       $chatBubbles?.append($chatItem);
@@ -73,8 +74,10 @@ export default class ChatDetail extends Component {
       });
 
       // 스크롤 하단으로
-      (this.$target.querySelector('input') as HTMLInputElement).value = '';
-      $chatBubbles.scrollTop = $chatBubbles?.scrollHeight as number;
+      if ($chatBubbles && $input) {
+        $chatBubbles.scrollTop = $chatBubbles?.scrollHeight as number;
+        $input.value = '';
+      }
     });
   }
 
@@ -120,6 +123,7 @@ export default class ChatDetail extends Component {
     });
 
     const $chatBubbles = this.$target.querySelector('.chat-bubbles') as Element;
+    const $input = this.$target.querySelector('input') as HTMLInputElement;
 
     this.$state.chats.forEach((chat: ChatBubbleType) => {
       const $chatItem = document.createElement('div');
@@ -132,11 +136,15 @@ export default class ChatDetail extends Component {
     });
 
     // 스크롤 하단으로
-    (this.$target.querySelector('input') as HTMLInputElement).value = '';
-    $chatBubbles.scrollTop = $chatBubbles?.scrollHeight as number;
+    if ($chatBubbles && $input) {
+      $chatBubbles.scrollTop = $chatBubbles?.scrollHeight as number;
+      $input.value = '';
+    }
 
     const $backBtn = $header?.querySelector('#left');
-    $backBtn?.addEventListener('click', () => history.back());
+    $backBtn?.addEventListener('click', () => {
+      history.back();
+    });
 
     const $rightBtn = this.$target.querySelector('#right');
     $rightBtn?.addEventListener('click', () => {
