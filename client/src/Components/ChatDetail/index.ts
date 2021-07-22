@@ -4,19 +4,15 @@ import Header from '../Shared/Header';
 import InfoProduct from '../Shared/InfoProduct';
 import ChatBubble from '../Shared/ChatBubble';
 import ChatBar from '../Shared/ChatBar/index';
-import { $router } from '../../lib/router';
 import InputPopup from '../Shared/InputPopup';
 import { socket } from '../../main';
 import { token } from '../../lib/util';
 
 interface ChatBubbleType {
-  userId: string;
-  message: string;
-  checked: boolean;
-  roomId: number;
+  myId: number;
+  user_id: number;
+  text: string;
 }
-
-// UI 확인용 임시 더미데이터
 
 export default class ChatDetail extends Component {
   setup() {
@@ -24,6 +20,7 @@ export default class ChatDetail extends Component {
       chats: [],
       me: {},
       post: {},
+      other: {},
     };
 
     // 내 정보
@@ -49,6 +46,16 @@ export default class ChatDetail extends Component {
       .then((res) => res.json())
       .then(({ result }) => {
         this.setState({ chats: result.data, post: result.post });
+
+        // 다른 유저의 닉네임 가져오기
+        const seller_id = this.$state.post.seller_id;
+        const buyer_id = this.$state.post.buyer_id;
+        const my_id = this.$state.me.id;
+        fetch(`/api/user/${buyer_id === my_id ? seller_id : buyer_id}`)
+          .then((r) => r.json())
+          .then(({ user }) => {
+            this.setState({ other: user });
+          });
       });
   }
 
@@ -72,7 +79,7 @@ export default class ChatDetail extends Component {
     new Header($header as HTMLElement, {
       headerType: 'menu-white',
       extraIconName: 'logout',
-      title: 'UserE',
+      title: this.$state.other.nickname,
     });
 
     new ChatBar($chatbar as HTMLElement);
@@ -85,42 +92,57 @@ export default class ChatDetail extends Component {
       inputType: 'alert',
     });
 
-    const $chatBubbles = this.$target.querySelector('.chat-bubbles');
-    // socket.on('server', (id, message) => {
-    //   console.log(id, message); // x8WIv7-mJelg7on_ALbx
-    //   const $chatItem = document.createElement('div');
-    //   $chatBubbles?.append($chatItem);
-    //   new ChatBubble($chatItem as HTMLElement, {
-    //     myId: this.$state.me.id,
-    //     fromId: id,
-    //     message,
-    //   });
-    //   (this.$target.querySelector('input') as HTMLInputElement).value = '';
-    // });
+    const $chatBubbles = this.$target.querySelector('.chat-bubbles') as Element;
 
-    // dummyChatBubblesData.forEach((chat: ChatBubbleType) => {
-    //   const $chatItem = document.createElement('div');
-    //   $chatBubbles?.append($chatItem);
-    //   new ChatBubble($chatItem as HTMLElement, chat);
-    // });
+    this.$state.chats.forEach((chat: ChatBubbleType) => {
+      const $chatItem = document.createElement('div');
+      $chatBubbles?.append($chatItem);
+      new ChatBubble($chatItem as HTMLElement, {
+        myId: this.$state.me.id,
+        user_id: chat.user_id,
+        text: chat.text,
+      });
+    });
+
+    // 스크롤 하단으로
+    (this.$target.querySelector('input') as HTMLInputElement).value = '';
+    $chatBubbles.scrollTop = $chatBubbles?.scrollHeight as number;
+
+    const chatroomId = location.href.split('chatroom/')[1];
+    socket.on(`server-${chatroomId}`, (id, message) => {
+      const $chatItem = document.createElement('div');
+      $chatBubbles?.append($chatItem);
+      new ChatBubble($chatItem as HTMLElement, {
+        myId: this.$state.me.id,
+        user_id: id,
+        text: message,
+      });
+
+      // 스크롤 하단으로
+      (this.$target.querySelector('input') as HTMLInputElement).value = '';
+      $chatBubbles.scrollTop = $chatBubbles?.scrollHeight as number;
+    });
 
     const $backBtn = $header?.querySelector('#left');
-    $backBtn?.addEventListener('click', () => $router.push('/chat'));
+    $backBtn?.addEventListener('click', () => history.back());
 
     const $rightBtn = this.$target.querySelector('#right');
     $rightBtn?.addEventListener('click', () => {
       ($modal as HTMLElement).classList.add('modal-open');
     });
-  }
 
-  setEvent() {
-    // this.addEvent('click', '.send-button', () => {
-    //   console.log('asdf');
-    //   socket.emit(
-    //     'client',
-    //     this.$state.me.id,
-    //     this.$target.querySelector('input')?.value
-    //   );
-    // });
+    // 전송
+    this.$target
+      .querySelector('.send-button')
+      ?.addEventListener('click', () => {
+        socket.emit(
+          'client',
+          this.$state.me.id,
+          this.$state.other.id,
+          this.$target.querySelector('input')?.value,
+          chatroomId,
+          this.$state.post
+        );
+      });
   }
 }

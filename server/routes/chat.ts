@@ -15,7 +15,7 @@ chatRouter.post(
 chatRouter.get(
   '/post/:postId',
   authenticateAccessToken,
-  ChatController.getChatRoomByPostId
+  ChatController.getChatRoomsByPostId
 );
 
 // 채팅내용 가져오기

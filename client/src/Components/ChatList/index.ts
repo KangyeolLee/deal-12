@@ -2,23 +2,30 @@ import './styles';
 import Component from '../../core/Component';
 import ChatListItem from '../Shared/ChatListItem';
 import Header from '../Shared/Header';
-import { $router } from '../../lib/router';
 import { token } from '../../lib/util';
-
-interface ChatType {
-  username: string;
-  timestamp: string;
-  content: string;
-  img: string;
-  checked?: boolean;
-}
+import { socket } from '../../main';
+import dayjs from 'dayjs';
 
 export default class Chatlist extends Component {
   setup() {
     this.$state = {
       chats: [],
+      myId: '',
     };
     const postId = location.href.split('post/')[1];
+
+    fetch('/api/me/', {
+      method: 'GET',
+      headers: {
+        Authorization: token(),
+      },
+    })
+      .then((res) => res.json())
+      .then(({ user }) => {
+        this.setState({
+          myId: user.id,
+        });
+      });
 
     fetch(`/api/chat/post/${postId}`, {
       method: 'GET',
@@ -42,15 +49,43 @@ export default class Chatlist extends Component {
   mounted() {
     const $header = this.$target.querySelector('header');
     const $chatList = this.$target.querySelector('.chat-lists');
-    const chatData = this.$state;
 
     new Header($header as HTMLElement, {
       headerType: 'menu-off-white',
       title: '채팅하기',
     });
 
+    // 새로운 채팅방 생성 감지
+    socket.on(
+      `user-${this.$state.myId}`,
+      (fromId: number, chatroomId: number, message: string, post: any) => {
+        const isExist = this.$state.chats.find(
+          (chat: any) => chat.id === chatroomId
+        );
+
+        if (!isExist) {
+          const $list = document.createElement('div');
+          $chatList?.append($list);
+          const newChatroom = {
+            id: chatroomId,
+            buyer_id: fromId,
+            seller_id: this.$state.myId,
+            my_id: this.$state.myId,
+            thumbnail: post.thumbnail,
+            last_text: message,
+            timestamp: dayjs(new Date()),
+          };
+          new ChatListItem($list as Element, newChatroom);
+
+          this.setState({
+            chats: [...this.$state.chats, newChatroom],
+          });
+        }
+      }
+    );
+
     if (this.$state.chats.length > 0) {
-      this.$state.chats.forEach((chat: ChatType) => {
+      this.$state.chats.forEach((chat: any) => {
         const $list = document.createElement('div');
         $chatList?.append($list);
         new ChatListItem($list as Element, chat);
@@ -63,6 +98,6 @@ export default class Chatlist extends Component {
 
     const $backBtn = $header?.querySelector('#left');
     const postId = location.href.split('post/')[1];
-    $backBtn?.addEventListener('click', () => $router.push(`/post/${postId}`));
+    $backBtn?.addEventListener('click', () => history.back());
   }
 }

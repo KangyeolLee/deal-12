@@ -125,7 +125,6 @@ export default class NewPost extends Component {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           $router.push('/home');
         });
     });

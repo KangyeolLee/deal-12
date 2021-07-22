@@ -10,6 +10,11 @@ export const FIND_BY_USER_NICKNAME = ({ nickname }: { nickname: string }) => `
   WHERE nickname = '${nickname}';
 `;
 
+export const FIND_BY_USER_ID = ({ id }: { id: number }) => `
+  SELECT id, nickname FROM user
+  WHERE id = ${id};
+`;
+
 // 바꿀때는 1,2 둘다 들어옴
 // 2 삭제할 때는 1 안들어오고 2는 Null
 // 1 삭제할 때는 1 들어오고 2는 Null

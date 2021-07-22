@@ -6,7 +6,6 @@ import { PostService } from '../services/post/PostService';
 const getChatRoom = async (req: any, res: Response, next: NextFunction) => {
   const { id: buyer_id } = req.user;
   const { seller_id, post_id } = req.body;
-  console.log(req.user, req.body);
   try {
     const result = await ChatService.findChatRoom({
       buyer_id,
@@ -22,7 +21,7 @@ const getChatRoom = async (req: any, res: Response, next: NextFunction) => {
 };
 
 // 판매글의 채팅목록
-const getChatRoomByPostId = async (
+const getChatRoomsByPostId = async (
   req: any,
   res: Response,
   next: NextFunction
@@ -34,6 +33,23 @@ const getChatRoomByPostId = async (
       post_id,
       user_id,
     });
+    return res.status(200).json({
+      result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// 유저의 채팅목록
+const getChatRoomsByUserId = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id: user_id } = req.user;
+  try {
+    const result = await ChatService.findChatRoomsByUserId({ user_id });
     return res.status(200).json({
       result,
     });
@@ -63,6 +79,7 @@ const getChatsByChatRoomId = async (
 
 export const ChatController = {
   getChatRoom,
-  getChatRoomByPostId,
+  getChatRoomsByPostId,
   getChatsByChatRoomId,
+  getChatRoomsByUserId,
 };
