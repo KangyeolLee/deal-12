@@ -4,7 +4,7 @@ import { ChatService } from './services/ChatService';
 export const initSocket = (httpServer: any) => {
   const io = new Server(httpServer, {
     cors: {
-      origin: 'http://localhost:8080',
+      origin: '*',
       methods: ['GET', 'POST'],
       credentials: true,
     },

@@ -3,7 +3,7 @@ import { PostService, PostType } from '../services/post/PostService';
 import { PostInterestService } from '../services/post/PostInterestService';
 import { LocationService } from '../services/LocationService';
 
-const HOST = 'http://localhost:3000/';
+const HOST = process.env.HOST + '/';
 
 const createPost = async (req: any, res: Response, next: NextFunction) => {
   try {
