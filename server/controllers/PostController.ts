@@ -154,8 +154,6 @@ const updatePost = async (req: any, res: Response, next: NextFunction) => {
       willBeDeleted,
     };
 
-    console.log(postId, files, willBeDeleted);
-
     const deleted = await PostService.deletePostImages({
       post_id: +postId,
       urls: willBeDeleted,
