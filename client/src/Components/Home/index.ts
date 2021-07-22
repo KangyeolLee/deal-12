@@ -49,9 +49,7 @@ export default class Home extends Component {
               this.setState({ items: result });
             });
         })
-        .finally(() => {
-          setTimeout(() => setLoading(false), 1500);
-        });
+        .finally(() => setLoading(false));
     } else {
       // 전체 글
       setLoading(true);
@@ -63,7 +61,7 @@ export default class Home extends Component {
         .then(({ result }) => {
           this.setState({ items: result });
         })
-        .finally(() => setTimeout(() => setLoading(false), 1500));
+        .finally(() => setLoading(false));
     }
   }
   template() {
@@ -98,7 +96,6 @@ export default class Home extends Component {
         });
       });
     } else {
-      $itemList!.innerHTML = '등록된 상품이 없습니다...';
       $itemList.className = 'no-data';
     }
 

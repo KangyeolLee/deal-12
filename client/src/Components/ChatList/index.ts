@@ -94,8 +94,6 @@ export default class Chatlist extends Component {
         new ChatListItem($list as Element, chat);
       });
     } else {
-      ($chatList as HTMLDivElement).innerHTML =
-        '해당 글에 대한 채팅목록 이 없습니다.';
       ($chatList as HTMLDivElement).className = 'no-data';
     }
 

@@ -46,7 +46,6 @@ export default class CategoryResult extends Component {
         new CategoryListItem($item, item);
       });
     } else {
-      $itemList.innerHTML = '해당 카테고리에 대한 상품이 없습니다.';
       $itemList.className = 'no-data';
     }
 
