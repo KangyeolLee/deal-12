@@ -10,6 +10,9 @@ import {
   FIND_CHATROOM_POST,
   FIND_CHATROOMS_BY_USERID,
   FIND_CHATJOINED_BY_ROOM_ID_USERID,
+  DELETE_CHATJOINED,
+  UPDATE_UNREAD_COUNT,
+  RESET_UNREAD_COUNT,
 } from '../queries/chat';
 
 export const ChatService = {
@@ -51,7 +54,14 @@ export const ChatService = {
 
   // api 필요
   // 해당 룸에 대한 채팅들
-  findChatsByChatroomId: async ({ room_id }: { room_id: number }) => {
+  findChatsByChatroomId: async ({
+    room_id,
+    user_id,
+  }: {
+    room_id: number;
+    user_id: number;
+  }) => {
+    await execQuery(RESET_UNREAD_COUNT({ room_id, user_id }));
     const data = await execQuery(FIND_CHATS_BY_CHATROOM_ID({ room_id }));
     const post = await execQuery(FIND_CHATROOM_POST({ room_id }));
     return { data, post: post[0] };
@@ -59,16 +69,8 @@ export const ChatService = {
 
   // api 필요
   // 내가 쓴 포스트에 대한 채팅목록
-  findChatroomsByPostId: async ({
-    post_id,
-    user_id,
-  }: {
-    post_id: number;
-    user_id: number;
-  }) => {
-    const data = await execQuery(
-      FIND_CHATROOMS_BY_POST_ID({ post_id, user_id })
-    );
+  findChatroomsByPostId: async ({ user_id }: { user_id: number }) => {
+    const data = await execQuery(FIND_CHATROOMS_BY_POST_ID({ user_id }));
     return data;
   },
 
@@ -101,6 +103,18 @@ export const ChatService = {
       await execQuery(CREATE_CHATJOINED({ room_id, user_id: other_id }));
     }
     await execQuery(CREATE_CHAT({ room_id, text, user_id }));
+    await execQuery(UPDATE_UNREAD_COUNT({ room_id, user_id: other_id }));
     await execQuery(UPDATE_LAST_TEXT({ room_id, text }));
+  },
+
+  // 채팅방 나가기
+  deleteChatJoined: async ({
+    user_id,
+    room_id,
+  }: {
+    user_id: number;
+    room_id: number;
+  }) => {
+    await execQuery(DELETE_CHATJOINED({ user_id, room_id }));
   },
 };

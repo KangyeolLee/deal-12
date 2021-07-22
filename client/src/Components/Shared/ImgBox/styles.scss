@@ -1,6 +1,7 @@
 @import '../../../scss/theme';
 
 @mixin img-box {
+  background-position: center;
   border: 0.1rem solid $grey3;
   background-color: $off-white;
   display: flex;

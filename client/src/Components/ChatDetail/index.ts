@@ -7,6 +7,7 @@ import ChatBar from '../Shared/ChatBar/index';
 import InputPopup from '../Shared/InputPopup';
 import { socket } from '../../main';
 import { token } from '../../lib/util';
+import { $router } from '../../lib/router';
 
 interface ChatBubbleType {
   myId: number;
@@ -21,6 +22,7 @@ export default class ChatDetail extends Component {
       me: {},
       post: {},
       other: {},
+      chatroomId: location.href.split('chatroom/')[1],
     };
 
     // 내 정보
@@ -36,8 +38,7 @@ export default class ChatDetail extends Component {
       });
 
     // 채팅내역
-    const chatroomId = location.href.split('chatroom/')[1];
-    fetch(`/api/chat/chatroom/${chatroomId}`, {
+    fetch(`/api/chat/chatroom/${this.$state.chatroomId}`, {
       method: 'GET',
       headers: {
         Authorization: token(),
@@ -57,6 +58,27 @@ export default class ChatDetail extends Component {
             this.setState({ other: user });
           });
       });
+
+    socket.on(`server-${this.$state.chatroomId}`, (id, message) => {
+      const $chatBubbles = this.$target.querySelector(
+        '.chat-bubbles'
+      ) as Element;
+      const $input = this.$target.querySelector('input') as HTMLInputElement;
+
+      const $chatItem = document.createElement('div');
+      $chatBubbles?.append($chatItem);
+      new ChatBubble($chatItem as HTMLElement, {
+        myId: this.$state.me.id,
+        user_id: id,
+        text: message,
+      });
+
+      // 스크롤 하단으로
+      if ($chatBubbles && $input) {
+        $chatBubbles.scrollTop = $chatBubbles?.scrollHeight as number;
+        $input.value = '';
+      }
+    });
   }
 
   template() {
@@ -90,9 +112,18 @@ export default class ChatDetail extends Component {
       message: '정말로 이 채팅방을 나가시겠습니까?',
       btnText: '나기기',
       inputType: 'alert',
+      onclick: () => {
+        fetch(`/api/chat/chatroom/${this.$state.chatroomId}`, {
+          method: 'DELETE',
+          headers: {
+            Authorization: token(),
+          },
+        }).then(() => $router.push('/home'));
+      },
     });
 
     const $chatBubbles = this.$target.querySelector('.chat-bubbles') as Element;
+    const $input = this.$target.querySelector('input') as HTMLInputElement;
 
     this.$state.chats.forEach((chat: ChatBubbleType) => {
       const $chatItem = document.createElement('div');
@@ -105,26 +136,15 @@ export default class ChatDetail extends Component {
     });
 
     // 스크롤 하단으로
-    (this.$target.querySelector('input') as HTMLInputElement).value = '';
-    $chatBubbles.scrollTop = $chatBubbles?.scrollHeight as number;
-
-    const chatroomId = location.href.split('chatroom/')[1];
-    socket.on(`server-${chatroomId}`, (id, message) => {
-      const $chatItem = document.createElement('div');
-      $chatBubbles?.append($chatItem);
-      new ChatBubble($chatItem as HTMLElement, {
-        myId: this.$state.me.id,
-        user_id: id,
-        text: message,
-      });
-
-      // 스크롤 하단으로
-      (this.$target.querySelector('input') as HTMLInputElement).value = '';
+    if ($chatBubbles && $input) {
       $chatBubbles.scrollTop = $chatBubbles?.scrollHeight as number;
-    });
+      $input.value = '';
+    }
 
     const $backBtn = $header?.querySelector('#left');
-    $backBtn?.addEventListener('click', () => history.back());
+    $backBtn?.addEventListener('click', () => {
+      history.back();
+    });
 
     const $rightBtn = this.$target.querySelector('#right');
     $rightBtn?.addEventListener('click', () => {
@@ -140,7 +160,7 @@ export default class ChatDetail extends Component {
           this.$state.me.id,
           this.$state.other.id,
           this.$target.querySelector('input')?.value,
-          chatroomId,
+          this.$state.chatroomId,
           this.$state.post
         );
       });

@@ -5,6 +5,7 @@ import ImgBox from './../ImgBox/index';
 import { $router } from '../../../lib/router';
 import { getTimestamp } from '../../../lib/util';
 import { socket } from '../../../main';
+import dayjs from 'dayjs';
 
 interface ParamsType {
   buyer_id: number;
@@ -13,6 +14,7 @@ interface ParamsType {
   thumbnail: string;
   last_text: string;
   timestamp: string;
+  unread_count: number;
 }
 
 export default class ChatListItem extends Component {
@@ -26,9 +28,29 @@ export default class ChatListItem extends Component {
       .then(({ user }) => {
         this.setState({ other: user });
       });
+
+    socket.on(`server-${this.$props.id}`, (fromId: number, message: string) => {
+      (
+        this.$target.querySelector('.content') as HTMLParagraphElement
+      ).innerText = message;
+
+      (
+        this.$target.querySelector('.timestamp') as HTMLParagraphElement
+      ).innerText = getTimestamp(
+        dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss')
+      );
+
+      if (fromId !== this.$props.my_id) {
+        const $unread = this.$target.querySelector(
+          '.unread'
+        ) as HTMLParagraphElement;
+        $unread.innerText = (Number($unread.innerText) + 1).toString();
+        $unread.style.backgroundColor = '#219a95';
+      }
+    });
   }
   template() {
-    const { last_text, timestamp }: ParamsType = this.$props;
+    const { last_text, timestamp, unread_count }: ParamsType = this.$props;
 
     return `
     <div class="chat-list__item ${'checked' ? 'checked' : ''}">
@@ -37,7 +59,12 @@ export default class ChatListItem extends Component {
           <h6 class="username">${this.$state.other.nickname}</h6>
           <p class="content">${last_text || ''}</p>
         </div>
-        <span class="timestamp">${getTimestamp(timestamp)}</span>
+        <div class="numbers">
+          <span class="timestamp">${getTimestamp(timestamp)}</span>
+          <span class="unread" style="background: ${
+            unread_count > 0 ? '#219a95' : '#fff'
+          }">${unread_count}</span>
+        </div>
       </div>
       <div class="image-wrapper"></div>
     </div>
@@ -48,12 +75,6 @@ export default class ChatListItem extends Component {
     const { id } = this.$props;
     const $imageWrapper = this.$target.querySelector('.image-wrapper');
     const $list = this.$target.querySelector('.chat-list__item');
-
-    socket.on(`server-${id}`, (id: number, message: string) => {
-      (
-        this.$target.querySelector('.content') as HTMLParagraphElement
-      ).innerText = message;
-    });
 
     new ImgBox($imageWrapper as HTMLElement, {
       imgType: 'small',

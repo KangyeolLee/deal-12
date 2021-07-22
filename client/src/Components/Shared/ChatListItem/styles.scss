@@ -37,9 +37,34 @@
         color: $grey1;
       }
     }
-    .timestamp {
-      @include text-x-small;
-      color: $grey1;
+    .numbers {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: flex-end;
+      .timestamp {
+        @include text-x-small;
+        color: $grey1;
+      }
+      .unread {
+        width: 2rem;
+        height: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $primary3;
+        border-radius: 50%;
+        color: $white;
+      }
+      .none {
+        width: 2rem;
+        height: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        color: $white;
+      }
     }
   }
 }

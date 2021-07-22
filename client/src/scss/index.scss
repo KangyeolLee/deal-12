@@ -1,11 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&display=swap');
 @font-face {
-  font-family: 'twaysky';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_tway@1.0/twaysky.woff')
+  font-family: 'BMDOHYEON';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMDOHYEON.woff')
     format('woff');
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: 'BMYEONSUNG';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMYEONSUNG.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @import 'reset';
 @import 'theme';
 @import 'animation';
@@ -89,7 +97,7 @@ body {
     position: fixed;
     font-size: 18rem;
     color: $white;
-    font-family: 'twaysky';
+    font-family: 'BMDOHYEON';
     letter-spacing: 10rem;
     width: 100%;
     height: 100vh;
@@ -99,7 +107,7 @@ body {
       position: absolute;
       letter-spacing: -1rem;
       &:first-child {
-        top: 3rem;
+        top: 4rem;
         left: 3rem;
         &::after {
           content: '우아';
@@ -128,8 +136,26 @@ body {
       }
     }
   }
+  .names {
+    font-family: 'BMYEONSUNG';
+    color: white;
+    font-size: 3rem;
+    position: fixed;
+    top: 0;
+    right: 0;
+    margin: 3rem;
+    letter-spacing: 0.5rem;
+    div {
+      margin: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    span {
+      color: $primary;
+    }
+  }
   .buttons {
-    font-family: 'twaysky';
+    font-family: 'BMDOHYEON';
     margin: 5rem;
     position: fixed;
     font-size: 3rem;
