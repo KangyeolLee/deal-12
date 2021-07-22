@@ -53,7 +53,6 @@ export default class CategoryResult extends Component {
     // infinite scrolling
     new Loader(this.$target.querySelector('.item-list') as HTMLLIElement);
     const $loader = this.$target.querySelector('.component-loader') as Element;
-    console.log($loader);
     const io = setIntersectionObserver({
       root: $itemList,
       // isLogin,
