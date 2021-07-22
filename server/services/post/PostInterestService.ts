@@ -4,7 +4,8 @@ import {
   CREATE_INTEREST_FOR_POST_BY_ID_AND_USERID,
   DELETE_INTEREST_FOR_POST_BY_ID_AND_USERID,
   FIND_INTEREST_FOR_POST_BY_ID_AND_USERID,
-  UPDATE_POST_INTERESTCOUNT,
+  UPDATE_POST_INTERESTCOUNT_PLUS,
+  UPDATE_POST_INTERESTCOUNT_MINUS,
 } from '../../queries/postInterest';
 
 export const PostInterestService = {
@@ -52,8 +53,13 @@ export const PostInterestService = {
     return data;
   },
 
-  updatePostInterestCount: async ({ post_id }: { post_id: number }) => {
-    const data = await execQuery(UPDATE_POST_INTERESTCOUNT({ post_id }));
+  updatePostInterestCountPlus: async ({ post_id }: { post_id: number }) => {
+    const data = await execQuery(UPDATE_POST_INTERESTCOUNT_PLUS({ post_id }));
+    return data;
+  },
+
+  updatePostInterestCountMinus: async ({ post_id }: { post_id: number }) => {
+    const data = await execQuery(UPDATE_POST_INTERESTCOUNT_MINUS({ post_id }));
     return data;
   },
 };

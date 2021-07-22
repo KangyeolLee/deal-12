@@ -1,6 +1,20 @@
 // 포스트넘버에 해당하는 포스트의 좋아요 수를 +1 만큼 증가하는 쿼리
-export const UPDATE_POST_INTERESTCOUNT = ({ post_id }: { post_id: number }) => `
+export const UPDATE_POST_INTERESTCOUNT_PLUS = ({
+  post_id,
+}: {
+  post_id: number;
+}) => `
   UPDATE post SET interest_count = interest_count+1
+  WHERE id = ${post_id}
+`;
+
+// 포스트넘버에 해당하는 포스트의 좋아요 수를 -1 만큼 증가하는 쿼리
+export const UPDATE_POST_INTERESTCOUNT_MINUS = ({
+  post_id,
+}: {
+  post_id: number;
+}) => `
+  UPDATE post SET interest_count = interest_count-1
   WHERE id = ${post_id}
 `;
 
