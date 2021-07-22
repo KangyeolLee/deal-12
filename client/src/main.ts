@@ -9,7 +9,7 @@ import Location from './Components/Location';
 import { io } from 'socket.io-client';
 import UpdatePost from './Components/UpdatePost';
 
-export const socket = io(process.env.HOST as string);
+export const socket = io('http://3.34.200.100:3000');
 
 const $app = document.querySelector('#app');
 const routes = [
