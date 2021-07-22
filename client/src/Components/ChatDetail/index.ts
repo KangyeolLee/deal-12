@@ -152,17 +152,22 @@ export default class ChatDetail extends Component {
     });
 
     // 전송
-    this.$target
-      .querySelector('.send-button')
-      ?.addEventListener('click', () => {
-        socket.emit(
-          'client',
-          this.$state.me.id,
-          this.$state.other.id,
-          this.$target.querySelector('input')?.value,
-          this.$state.chatroomId,
-          this.$state.post
-        );
-      });
+    const sendMessage = () => {
+      socket.emit(
+        'client',
+        this.$state.me.id,
+        this.$state.other.id,
+        this.$target.querySelector('input')?.value,
+        this.$state.chatroomId,
+        this.$state.post
+      );
+    };
+    const $sendBtn = this.$target.querySelector('.send-button');
+    $sendBtn?.addEventListener('click', () => {
+      if ($input?.value) sendMessage();
+    });
+    $input.addEventListener('keypress', (e) => {
+      if ($input?.value && e.key === 'Enter') sendMessage();
+    });
   }
 }
