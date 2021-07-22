@@ -2,6 +2,9 @@
 
 .autocomplete {
   position: absolute;
+  max-height: 30rem;
+  overflow-y: scroll;
+  z-index: 5;
   width: 100%;
   border: 0.1rem solid $grey3;
   background-color: $white;
@@ -11,6 +14,9 @@
   .loc-list {
     cursor: pointer;
     padding: 1.6rem 1rem;
+    &:hover {
+      background-color: $off-white;
+    }
     &:not(:last-child) {
       border: 0 solid $off-white;
       border-bottom-width: 0.1rem;
@@ -22,7 +28,7 @@
   @include text-x-small;
   position: absolute;
   width: 100%;
-  top: 0;
+  top: 0.2rem;
   left: 0.5rem;
   color: red;
 }
