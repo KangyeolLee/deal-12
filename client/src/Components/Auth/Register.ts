@@ -36,6 +36,7 @@ export default class Register extends Component {
         </label>
 
         <div class="register-btn"></div>
+        <div class="baemin"></div>
       </form>
     `;
   }

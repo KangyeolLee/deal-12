@@ -27,14 +27,47 @@ html {
   display: none !important;
 }
 
+.baemin {
+  position: absolute;
+  bottom: 10rem;
+  width: 30rem;
+  height: 23rem;
+  background-size: cover;
+  background-image: url('https://www.sisajournal.com/news/photo/202004/198518_103753_4757.jpg');
+  animation: baemin 1s infinite;
+  &::after {
+    position: absolute;
+    content: '';
+    width: 30rem;
+    height: 1rem;
+    bottom: -0.5rem;
+    left: 0;
+  }
+}
+
 .no-data {
-  @include text-small;
-  color: $grey3;
+  font-family: 'BMDOHYEON';
+  color: $title-active;
   height: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  font-size: 5rem;
+  font-weight: 800;
+  &::before {
+    content: '노데이타';
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    background-image: url('https://www.baemin.com/img/img-bike@2x.png');
+    width: 30rem;
+    height: 30rem;
+    background-size: cover;
+    animation: baemin2 1.5s;
+    opacity: 0;
+  }
 }
 
 .iphone {
@@ -248,8 +281,8 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  background: #219a95;
-  z-index: 100;
+  background: $off-white;
+  z-index: 10;
   display: none;
   justify-content: center;
   align-items: center;
@@ -274,14 +307,14 @@ body {
   }
   .loader:before {
     animation: ball1 1s infinite;
-    background-color: #cb2025;
-    box-shadow: 3rem 0 0 #f8b334;
+    background-color: $grey3;
+    box-shadow: 3rem 0 0 $primary2;
     margin-bottom: 1rem;
   }
   .loader:after {
     animation: ball2 1s infinite;
-    background-color: #00a096;
-    box-shadow: 3rem 0 0 #97bf0d;
+    background-color: $primary;
+    box-shadow: 3rem 0 0 $primary3;
   }
 
   @keyframes rotate {
@@ -301,32 +334,32 @@ body {
 
   @keyframes ball1 {
     0% {
-      box-shadow: 3rem 0 0 #f8b334;
+      box-shadow: 3rem 0 0 $primary2;
     }
     50% {
-      box-shadow: 0 0 0 #f8b334;
+      box-shadow: 0 0 0 $primary2;
       margin-bottom: 0;
       -webkit-transform: translate(1.5rem, 1.5rem);
       -moz-transform: translate(1.5rem, 1.5rem);
     }
     100% {
-      box-shadow: 3rem 0 0 #f8b334;
+      box-shadow: 3rem 0 0 $primary2;
       margin-bottom: 1rem;
     }
   }
 
   @keyframes ball2 {
     0% {
-      box-shadow: 3rem 0 0 #97bf0d;
+      box-shadow: 3rem 0 0 $primary3;
     }
     50% {
-      box-shadow: 0 0 0 #97bf0d;
+      box-shadow: 0 0 0 $primary3;
       margin-top: -2rem;
       -webkit-transform: translate(1.5rem, 1.5rem);
       -moz-transform: translate(1.5rem, 1.5rem);
     }
     100% {
-      box-shadow: 3rem 0 0 #97bf0d;
+      box-shadow: 3rem 0 0 $primary3;
       margin-top: 0;
     }
   }
