@@ -24,11 +24,7 @@ export default class Home extends Component {
       const headers = new Headers();
       headers.append('Authorization', token());
 
-      console.log('prev : ', document.getElementById('loading-modal'));
-
       setLoading(true);
-
-      console.log('next : ', document.getElementById('loading-modal'));
 
       fetch('/api/me/locations', {
         method: 'GET',
@@ -51,8 +47,7 @@ export default class Home extends Component {
             });
         })
         .finally(() => {
-          setLoading(false);
-          console.log('fin : ', document.getElementById('loading-modal'));
+          setTimeout(() => setLoading(false), 1500);
         });
     } else {
       // 전체 글
@@ -65,7 +60,7 @@ export default class Home extends Component {
         .then(({ result }) => {
           this.setState({ items: result });
         })
-        .finally(() => setLoading(false));
+        .finally(() => setTimeout(() => setLoading(false), 1500));
     }
   }
   template() {
