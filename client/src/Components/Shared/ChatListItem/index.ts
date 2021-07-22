@@ -13,6 +13,7 @@ interface ParamsType {
   thumbnail: string;
   last_text: string;
   timestamp: string;
+  unread_count: number;
 }
 
 export default class ChatListItem extends Component {
@@ -26,9 +27,26 @@ export default class ChatListItem extends Component {
       .then(({ user }) => {
         this.setState({ other: user });
       });
+
+    socket.on(`server-${this.$props.id}`, (fromId: number, message: string) => {
+      (
+        this.$target.querySelector('.content') as HTMLParagraphElement
+      ).innerText = message;
+
+      if (fromId !== this.$props.my_id) {
+        (
+          this.$target.querySelector('.unread') as HTMLParagraphElement
+        ).innerText = (
+          Number(
+            (this.$target.querySelector('.unread') as HTMLParagraphElement)
+              .innerText
+          ) + 1
+        ).toString();
+      }
+    });
   }
   template() {
-    const { last_text, timestamp }: ParamsType = this.$props;
+    const { last_text, timestamp, unread_count }: ParamsType = this.$props;
 
     return `
     <div class="chat-list__item ${'checked' ? 'checked' : ''}">
@@ -37,6 +55,7 @@ export default class ChatListItem extends Component {
           <h6 class="username">${this.$state.other.nickname}</h6>
           <p class="content">${last_text || ''}</p>
         </div>
+        <span class="unread">${unread_count}</span>
         <span class="timestamp">${getTimestamp(timestamp)}</span>
       </div>
       <div class="image-wrapper"></div>
@@ -48,12 +67,6 @@ export default class ChatListItem extends Component {
     const { id } = this.$props;
     const $imageWrapper = this.$target.querySelector('.image-wrapper');
     const $list = this.$target.querySelector('.chat-list__item');
-
-    socket.on(`server-${id}`, (id: number, message: string) => {
-      (
-        this.$target.querySelector('.content') as HTMLParagraphElement
-      ).innerText = message;
-    });
 
     new ImgBox($imageWrapper as HTMLElement, {
       imgType: 'small',

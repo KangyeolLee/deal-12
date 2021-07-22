@@ -58,6 +58,24 @@ export default class ChatDetail extends Component {
             this.setState({ other: user });
           });
       });
+
+    socket.on(`server-${this.$state.chatroomId}`, (id, message) => {
+      const $chatBubbles = this.$target.querySelector(
+        '.chat-bubbles'
+      ) as Element;
+
+      const $chatItem = document.createElement('div');
+      $chatBubbles?.append($chatItem);
+      new ChatBubble($chatItem as HTMLElement, {
+        myId: this.$state.me.id,
+        user_id: id,
+        text: message,
+      });
+
+      // 스크롤 하단으로
+      (this.$target.querySelector('input') as HTMLInputElement).value = '';
+      $chatBubbles.scrollTop = $chatBubbles?.scrollHeight as number;
+    });
   }
 
   template() {
@@ -116,20 +134,6 @@ export default class ChatDetail extends Component {
     // 스크롤 하단으로
     (this.$target.querySelector('input') as HTMLInputElement).value = '';
     $chatBubbles.scrollTop = $chatBubbles?.scrollHeight as number;
-
-    socket.on(`server-${this.$state.chatroomId}`, (id, message) => {
-      const $chatItem = document.createElement('div');
-      $chatBubbles?.append($chatItem);
-      new ChatBubble($chatItem as HTMLElement, {
-        myId: this.$state.me.id,
-        user_id: id,
-        text: message,
-      });
-
-      // 스크롤 하단으로
-      (this.$target.querySelector('input') as HTMLInputElement).value = '';
-      $chatBubbles.scrollTop = $chatBubbles?.scrollHeight as number;
-    });
 
     const $backBtn = $header?.querySelector('#left');
     $backBtn?.addEventListener('click', () => history.back());

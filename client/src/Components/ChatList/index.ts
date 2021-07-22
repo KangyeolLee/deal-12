@@ -73,6 +73,7 @@ export default class Chatlist extends Component {
             my_id: this.$state.myId,
             thumbnail: post.thumbnail,
             last_text: message,
+            unread_count: 1,
             timestamp: dayjs(new Date()),
           };
           new ChatListItem($list as Element, newChatroom);

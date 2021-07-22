@@ -27,10 +27,8 @@ const getChatRoomsByPostId = async (
   next: NextFunction
 ) => {
   const { id: user_id } = req.user;
-  const { postId: post_id } = req.params;
   try {
     const result = await ChatService.findChatroomsByPostId({
-      post_id,
       user_id,
     });
     return res.status(200).json({
@@ -64,10 +62,12 @@ const getChatsByChatRoomId = async (
   res: Response,
   next: NextFunction
 ) => {
+  const { id: user_id } = req.user;
   const { chatroomId } = req.params;
   try {
     const result = await ChatService.findChatsByChatroomId({
       room_id: chatroomId,
+      user_id,
     });
     return res.status(200).json({
       result,
