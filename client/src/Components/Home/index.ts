@@ -10,7 +10,8 @@ import Menu from '../Menu';
 import Button from '../Shared/Button';
 import Auth from './../Auth/index';
 import Dropdown from './../Shared/Dropdown/index';
-import { setLoading, token } from '../../lib/util';
+import { setLoading, token, setIntersectionObserver } from '../../lib/util';
+import Loader from '../Shared/Loader';
 
 export default class Home extends Component {
   setup() {
@@ -38,9 +39,12 @@ export default class Home extends Component {
           });
         })
         .then(() => {
-          fetch(`/api/posts/location/${this.$state.location1.id}/category/0`, {
-            method: 'GET',
-          })
+          fetch(
+            `/api/posts/location/${this.$state.location1.id}/category/0/0`,
+            {
+              method: 'GET',
+            }
+          )
             .then((res) => res.json())
             .then(({ result }) => {
               this.setState({ items: result, isLogin: true });
@@ -53,7 +57,7 @@ export default class Home extends Component {
       // 전체 글
       setLoading(true);
 
-      fetch(`/api/posts/location/0/category/0`, {
+      fetch(`/api/posts/location/0/category/0/0`, {
         method: 'GET',
       })
         .then((res) => res.json())
@@ -74,7 +78,7 @@ export default class Home extends Component {
     `;
   }
   mounted() {
-    const isLogin = token();
+    const { isLogin, location1 } = this.$state;
     const $header = this.$target.querySelector('header');
     new Header($header as Element, {
       title: isLogin ? this.$state.location1.name : '로그인해주세요',
@@ -82,7 +86,7 @@ export default class Home extends Component {
       isLogin,
     });
 
-    const $itemList = this.$target.querySelector('.item-list');
+    const $itemList = this.$target.querySelector('.item-list') as HTMLLIElement;
     if (this.$state.items.length) {
       this.$state.items.forEach((item: CategoryListItemProps) => {
         const $item = document.createElement('div');
@@ -94,8 +98,19 @@ export default class Home extends Component {
       });
     } else {
       $itemList!.innerHTML = '등록된 상품이 없습니다...';
-      $itemList?.classList.add('no-data');
+      $itemList.className = 'no-data';
     }
+
+    // infinite scrolling
+    new Loader(this.$target.querySelector('.item-list') as HTMLLIElement);
+    const $loader = this.$target.querySelector('.component-loader') as Element;
+    const io = setIntersectionObserver({
+      root: $itemList,
+      isLogin,
+      location_id: location1.id,
+      category_id: 0,
+    });
+    io?.observe($loader);
 
     // post new btn
     const $postNewBtn = this.$target.querySelector('.post-new-btn');

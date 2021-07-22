@@ -3,6 +3,8 @@ import CategoryListItem, {
   CategoryListItemProps,
 } from '../Shared/CategoryListItem';
 import Header from '../Shared/Header';
+import Loader from '../Shared/Loader';
+import { setIntersectionObserver } from '../../lib/util';
 
 export default class CategoryResult extends Component {
   setup() {
@@ -10,7 +12,7 @@ export default class CategoryResult extends Component {
       items: [],
     };
     fetch(
-      `/api/posts/location/${this.$props.locationId}/category/${this.$props.category.id}`,
+      `/api/posts/location/${this.$props.locationId}/category/${this.$props.category.id}/0`,
       {
         method: 'GET',
       }
@@ -27,6 +29,7 @@ export default class CategoryResult extends Component {
     `;
   }
   mounted() {
+    const { locationId, category } = this.$props;
     const $header = this.$target.querySelector('header');
     new Header($header as Element, {
       title: this.$props.category.name,
@@ -35,7 +38,7 @@ export default class CategoryResult extends Component {
 
     const $itemList = this.$target.querySelector(
       '#result-item-list'
-    ) as Element;
+    ) as HTMLElement;
     if (this.$state.items.length > 0) {
       this.$state.items.forEach((item: CategoryListItemProps) => {
         const $item = document.createElement('div');
@@ -46,6 +49,18 @@ export default class CategoryResult extends Component {
       $itemList.innerHTML = '해당 카테고리에 대한 상품이 없습니다.';
       $itemList.className = 'no-data';
     }
+
+    // infinite scrolling
+    new Loader(this.$target.querySelector('.item-list') as HTMLLIElement);
+    const $loader = this.$target.querySelector('.component-loader') as Element;
+    console.log($loader);
+    const io = setIntersectionObserver({
+      root: $itemList,
+      // isLogin,
+      location_id: locationId,
+      category_id: category.id,
+    });
+    io?.observe($loader);
 
     const $backBtn = this.$target.querySelector('#left');
     $backBtn?.addEventListener('click', () => {
