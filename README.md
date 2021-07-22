@@ -1,7 +1,7 @@
 # 2주차 3조 정강이(12)
 ### 2주차 3조 팀 12 - [이정민](https://github.com/danmin20) + [이강열](https://github.com/KangyeolLee) = 정강이(?)
 
-# 정강이가 부러지도록 달려보겠습니다
+# 정강이가 부러지도록 달려보겠습니다 -> [달려보았습니다](http://3.34.200.100:3000/#/home)
 
 <img src="https://i.ytimg.com/vi/GXSSZ_PytQ4/maxresdefault.jpg" />
 
