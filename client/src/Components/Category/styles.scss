@@ -27,13 +27,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    .box {
-      width: 4rem;
-      height: 4rem;
-      border: 0.1rem solid $grey3;
-      background: $off-white;
-      border-radius: 0.6rem;
-    }
     .name {
       @include text-x-small;
       margin-top: 1.6rem;
