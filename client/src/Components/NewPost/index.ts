@@ -4,7 +4,7 @@ import './styles.scss';
 import ImgButton from '../Shared/ImgButton';
 import IconButton from '../Shared/IconButton';
 import Button from '../Shared/Button';
-import { token } from '../../lib/util';
+import { setLoading, token } from '../../lib/util';
 import { $router } from '../../lib/router';
 
 export default class NewPost extends Component {
@@ -12,6 +12,8 @@ export default class NewPost extends Component {
 
   setup() {
     this.$state = {};
+
+    setLoading(true);
 
     fetch('/api/me/locations', {
       method: 'GET',
@@ -23,7 +25,8 @@ export default class NewPost extends Component {
       .then((res) => res.json())
       .then((data) => {
         this.setState({ loc: data.result.loc1[0].name });
-      });
+      })
+      .finally(() => setLoading(false));
   }
 
   template() {

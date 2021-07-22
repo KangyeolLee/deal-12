@@ -4,7 +4,7 @@ import Header from './../Shared/Header/index';
 import { $router } from '../../lib/router';
 import LocationButton from './../Shared/LocationButton/index';
 import InputPopup from '../Shared/InputPopup';
-import { token } from '../../lib/util';
+import { setLoading, token } from '../../lib/util';
 
 export default class Location extends Component {
   setup() {
@@ -12,6 +12,9 @@ export default class Location extends Component {
       location1: {},
       location2: {},
     };
+
+    setLoading(true);
+
     fetch('/api/me/locations', {
       method: 'GET',
       headers: {
@@ -94,7 +97,8 @@ export default class Location extends Component {
             }),
           }).then(() => location.reload());
         });
-      });
+      })
+      .finally(() => setLoading(false));
   }
 
   template() {
