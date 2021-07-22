@@ -450,7 +450,7 @@ const locations = [
   '길동',
 ];
 
-const CREATE_LOCATIONS = () => {
+export const CREATE_LOCATIONS = () => {
   const queries = locations
     .map((location) => {
       return `

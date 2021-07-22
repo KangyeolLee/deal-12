@@ -62,6 +62,12 @@
       opacity: 0.75;
     }
   }
+  #login-form {
+    .error-message {
+      color: red;
+      @include text-small;
+    }
+  }
 
   #logout-form {
     div {

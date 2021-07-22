@@ -91,11 +91,10 @@ const login = async (req: any, res: Response, next: NextFunction) => {
       };
 
       const accessToken = generateAccessToken(nickname);
-
       return res.status(200).json({ accessToken });
     }
     return res.status(300).json({
-      message: 'not exist',
+      error: '존재하지 않는 유저입니다...',
     });
   } catch (err) {
     next(err);
