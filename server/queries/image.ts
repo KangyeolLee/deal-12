@@ -2,7 +2,7 @@ export const CREATE_IMAGES = (
   post_id: number,
   files: Express.Multer.File[]
 ) => {
-  const HOST = 'http://localhost:3000/';
+  const HOST = process.env.HOST;
   const queries = files
     .map((file) => {
       return `
