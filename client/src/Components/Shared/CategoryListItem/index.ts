@@ -171,7 +171,7 @@ export default class CategoryListItem extends Component {
       if (seller_id !== myId) {
         new LikeBtn($iconBtn as Element, {
           postId: this.$props.id,
-          isLogin: this.$props.isLogin,
+          isLogin: token(),
         });
       }
     }

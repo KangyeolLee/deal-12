@@ -82,6 +82,8 @@ export default class Category extends Component {
       headerType: 'menu-off-white',
     });
 
+    console.log('upper : ', this.$state, this.$props);
+
     const wrapper = this.$target.querySelector('.category-wrapper');
     this.$state.categories.forEach((category: any, idx: number) => {
       const $button = document.createElement('div');
