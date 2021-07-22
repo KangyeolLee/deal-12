@@ -4,6 +4,13 @@ import TextInput from '../TextInput/index';
 import LocationInput from '../LocationInput';
 import { token } from '../../../lib/util';
 
+interface PropsType {
+  message: string;
+  btnText: string;
+  inputType?: string;
+  onclick?: Function;
+}
+
 export default class InputPopup extends Component {
   setup() {
     this.$state = {
@@ -19,7 +26,7 @@ export default class InputPopup extends Component {
   }
 
   template() {
-    const { message, btnText, inputType } = this.$props;
+    const { message, btnText, inputType } = this.$props as PropsType;
     return `
       <div class="input-popup">
         <h6 class="sub-title">${message}</h6>
@@ -37,7 +44,10 @@ export default class InputPopup extends Component {
   }
 
   mounted() {
-    const { inputType } = this.$props;
+    const { inputType, onclick } = this.$props as PropsType;
+    const $submitBtn = this.$target.querySelector(
+      '.confirm-btn'
+    ) as HTMLElement;
 
     if (inputType === 'location') {
       const $wrapper = this.$target.querySelector('.input-wrapper');
@@ -50,6 +60,8 @@ export default class InputPopup extends Component {
         locations: this.$state.locations,
       });
     }
+
+    $submitBtn.addEventListener('click', () => onclick!());
   }
 
   setEvent() {
