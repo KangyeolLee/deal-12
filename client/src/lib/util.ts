@@ -53,13 +53,9 @@ export const setIntersectionObserver = ({
     threshold: 0,
   };
 
-  console.log(location_id, category_id);
-
   const io = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        console.log('데이터를 더 가져옵니다.');
-        console.log(location_id);
         const api = isLogin
           ? `/api/posts/location/${location_id}/category/${category_id}/${pageOffset}`
           : `/api/posts/location/${location_id}/category/$0/${pageOffset}`;
@@ -69,12 +65,10 @@ export const setIntersectionObserver = ({
         })
           .then((res) => res.json())
           .then(({ result }) => {
-            console.log(result);
             pageOffset += 10;
 
             if (!result.length) {
               observer.unobserve(entry.target);
-              console.log('observing terminated');
               return;
             }
 

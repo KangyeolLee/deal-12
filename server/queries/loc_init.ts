@@ -464,5 +464,3 @@ const CREATE_LOCATIONS = () => {
     VALUES ${queries}
   `;
 };
-
-console.log(CREATE_LOCATIONS());

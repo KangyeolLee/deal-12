@@ -7,6 +7,7 @@
   box-sizing: border-box;
 
   form {
+    margin-top: 3rem;
     width: 100%;
     display: inline-flex;
     flex-direction: column;
@@ -62,11 +63,20 @@
     }
   }
 
-  .user-nickname {
-    @include link-small;
-    color: $title-active;
-    text-align: center;
-    padding: 1rem;
+  #logout-form {
+    div {
+      @include link-small;
+    }
+    .user-nickname {
+      font-family: 'BMDOHYEON';
+      color: $title-active;
+      text-align: center;
+      padding: 1rem;
+      font-size: 3rem;
+    }
+    button {
+      margin-top: 2rem;
+    }
   }
 
   #register-modal {

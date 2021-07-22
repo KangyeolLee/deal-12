@@ -12,6 +12,7 @@ export default class Login extends Component {
         <div class="login-btn"></div>
         <span class="link-to-register">회원가입</span>
       </form>
+      <div class="baemin"></div>
       <div id="register-modal" class="modal-close"></div>
     `;
   }

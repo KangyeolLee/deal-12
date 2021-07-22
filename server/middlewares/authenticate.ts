@@ -15,7 +15,6 @@ export const authenticateAccessToken = async (
   let token = authHeader && authHeader.split(' ')[1];
 
   if (!token) {
-    console.log('wrong token format or token is not sended');
     next(Error);
   } else {
     jwt.verify(

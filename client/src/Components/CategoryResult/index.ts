@@ -46,14 +46,12 @@ export default class CategoryResult extends Component {
         new CategoryListItem($item, item);
       });
     } else {
-      $itemList.innerHTML = '해당 카테고리에 대한 상품이 없습니다.';
       $itemList.className = 'no-data';
     }
 
     // infinite scrolling
     new Loader(this.$target.querySelector('.item-list') as HTMLLIElement);
     const $loader = this.$target.querySelector('.component-loader') as Element;
-    console.log($loader);
     const io = setIntersectionObserver({
       root: $itemList,
       // isLogin,

@@ -25,8 +25,10 @@ export default class Logout extends Component {
   template() {
     return `
       <form id="logout-form">
-        <div class="user-nickname">${this.$state.username}</div>
+        <div>안녕하세요,</div>
+        <div><span class="user-nickname">${this.$state.username}</span>님!</div>
         <div class="logout-btn"></div>
+        <div class="baemin"></div>
       </form>
     `;
   }
