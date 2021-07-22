@@ -6,7 +6,7 @@ import ImgBox from './../ImgBox/index';
 interface PropsType {
   title: string;
   price: string;
-  image: string;
+  thumbnail: string;
 }
 
 export default class InfoProduct extends Component {
@@ -26,7 +26,7 @@ export default class InfoProduct extends Component {
   }
 
   mounted() {
-    const { image } = this.$props as PropsType;
+    const { thumbnail } = this.$props as PropsType;
     const $status = this.$target.querySelector('.status-button');
     const $imageWrapper = this.$target.querySelector('.image-wrapper');
 
@@ -37,7 +37,7 @@ export default class InfoProduct extends Component {
 
     new ImgBox($imageWrapper as HTMLElement, {
       imgType: 'small',
-      img: image,
+      img: thumbnail,
     });
   }
 }
