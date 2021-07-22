@@ -73,7 +73,7 @@ export default class NewPost extends Component {
     // 사진 선택
     const $imgListWrapper = this.$target.querySelector('.img-list-wrapper');
     new FileUploader($imgListWrapper as HTMLElement, {
-      setBlobs: (blob: Blob) => this.insertBlobs(blob),
+      setBlobs: (blobs: Blob[]) => this.insertBlobs(blobs),
     });
 
     const $categoriesWrapper = this.$target.querySelector(
@@ -148,8 +148,8 @@ export default class NewPost extends Component {
     });
   }
 
-  insertBlobs(blob: Blob) {
-    this.blobs.push(blob);
+  insertBlobs(blobs: Blob[]) {
+    this.blobs = blobs;
   }
 }
 
@@ -182,7 +182,7 @@ class FileUploader extends Component {
           imgs: [...this.$state.imgs, url],
         });
 
-        this.$props.setBlobs(targetFile);
+        this.$props.setBlobs(this.$state.files);
       };
 
       reader.readAsArrayBuffer(targetFile);
@@ -220,6 +220,8 @@ class FileUploader extends Component {
           (_: string, i: number) => Number(idx) !== i
         ),
       });
+
+      this.$props.setBlobs(this.$state.files);
     });
   }
 }
