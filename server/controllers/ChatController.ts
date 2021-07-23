@@ -49,7 +49,7 @@ const getChatRoomsByUserId = async (
   try {
     const result = await ChatService.findChatRoomsByUserId({ user_id });
     return res.status(200).json({
-      result,
+      chats: result,
     });
   } catch (error) {
     next(error);

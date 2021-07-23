@@ -56,14 +56,12 @@ export default class Chatlist extends Component {
     });
 
     if (this.$state.chats.length > 0) {
-      console.log(this.$state.chats);
       this.$state.chats.forEach((chat: any) => {
         const $list = document.createElement('div');
         $chatList?.append($list);
         new ChatListItem($list as Element, chat);
       });
     } else {
-      console.log(this.$state.chats, 'asdf');
       ($chatList as HTMLDivElement).className = 'no-data';
     }
 

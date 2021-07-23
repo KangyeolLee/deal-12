@@ -135,7 +135,9 @@ export default class CategoryListItem extends Component {
                   <div id="chat-icon"></div>
                   <div>${chatroom_count}</div>
               </div>
-              <div id="icon" class="info__counts--count">
+              <div id="icon" class="info__counts--count ${
+                interest_count ? '' : 'hidden'
+              }">
                   <div id="heart-icon"></div>
                   <div id="count">${interest_count}</div>
               </div>              
