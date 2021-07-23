@@ -69,6 +69,16 @@ export const ChatService = {
     return { data, post: post[0] };
   },
 
+  resetUnreadChatsCount: async ({
+    room_id,
+    user_id,
+  }: {
+    room_id: number;
+    user_id: number;
+  }) => {
+    await execQuery(RESET_UNREAD_COUNT({ room_id, user_id }));
+  },
+
   // api 필요
   // 내가 쓴 포스트에 대한 채팅목록
   findChatroomsByPostId: async ({ user_id }: { user_id: number }) => {
