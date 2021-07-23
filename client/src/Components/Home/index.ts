@@ -12,6 +12,7 @@ import Auth from './../Auth/index';
 import Dropdown from './../Shared/Dropdown/index';
 import { setLoading, token, setIntersectionObserver } from '../../lib/util';
 import Loader from '../Shared/Loader';
+import Location from './../Location/index';
 
 export default class Home extends Component {
   setup() {
@@ -106,7 +107,7 @@ export default class Home extends Component {
     const io = setIntersectionObserver({
       root: $itemList,
       isLogin,
-      location_id: location1.id,
+      location_id: location1.id ? location1.id : 0,
       category_id: 0,
     });
     io?.observe($loader);
@@ -138,7 +139,7 @@ export default class Home extends Component {
     const $categoryBtn = this.$target.querySelector('#category');
     $categoryBtn?.addEventListener('click', () => {
       new Category($categoryModal as Element, {
-        locationId: this.$state.location1.id,
+        locationId: location1.id ? location1.id : 0,
       });
       $categoryModal.className = 'modal-open';
     });

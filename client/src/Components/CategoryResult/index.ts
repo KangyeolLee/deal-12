@@ -19,6 +19,7 @@ export default class CategoryResult extends Component {
     )
       .then((res) => res.json())
       .then(({ result }) => {
+        console.log(result, this.$props);
         this.setState({ items: result });
       });
   }
@@ -52,12 +53,14 @@ export default class CategoryResult extends Component {
       $itemList.className = 'no-data';
     }
 
+    const isLogin = token() ? true : false;
+
     // infinite scrolling
     new Loader(this.$target.querySelector('.item-list') as HTMLLIElement);
     const $loader = this.$target.querySelector('.component-loader') as Element;
     const io = setIntersectionObserver({
       root: $itemList,
-      // isLogin,
+      isLogin,
       location_id: locationId,
       category_id: category.id,
     });

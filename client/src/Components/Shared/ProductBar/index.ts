@@ -84,13 +84,11 @@ export default class ProductBar extends Component {
           headers.append('Authorization', token());
 
           if (!this.$state.isLiked) {
-            console.log('좋아요 요청');
             fetch(`/api/posts/${this.$props.post_id}/interest`, {
               method: 'POST',
               headers,
             }).then(() => this.setState({ isLiked: true }));
           } else {
-            console.log('싫어요 요청');
             fetch(`/api/posts/${this.$props.post_id}/interest`, {
               method: 'DELETE',
               headers,

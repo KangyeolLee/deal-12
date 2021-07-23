@@ -13,7 +13,7 @@ export const FIND_ALL_POSTS = ({
   category_id?: number;
   offset: number;
 }) => {
-  if (!location_id) {
+  if (!location_id && !category_id) {
     return `
       SELECT post.id AS id, title, location_id, category_id, post.createdAt, post.updatedAt, content, view_count, price, seller_id, state,
       thumbnail, interest_count, chatroom_count, name FROM post
@@ -23,12 +23,12 @@ export const FIND_ALL_POSTS = ({
     `;
   }
 
-  if (!category_id) {
+  if (!location_id && category_id) {
     return `
       SELECT post.id AS id, title, location_id, category_id, post.createdAt, post.updatedAt, content, view_count, price, seller_id, state,
       thumbnail, interest_count, chatroom_count, name FROM post
-      JOIN location ON location.id = ${location_id}
-      WHERE location_id = ${location_id} AND state = '판매중'
+      JOIN location ON location.id = post.location_id
+      WHERE state = '판매중' AND category_id = ${category_id}
       LIMIT 10 OFFSET ${offset}       
     `;
   }
