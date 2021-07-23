@@ -5,12 +5,16 @@ import CategoryListItem, {
 import Header from '../Shared/Header';
 import Loader from '../Shared/Loader';
 import { setIntersectionObserver, token } from '../../lib/util';
+import { setLoading } from './../../lib/util';
 
 export default class CategoryResult extends Component {
   setup() {
     this.$state = {
       items: [],
     };
+
+    setLoading(true);
+
     fetch(
       `/api/posts/location/${this.$props.locationId}/category/${this.$props.category.id}/0`,
       {
@@ -20,7 +24,8 @@ export default class CategoryResult extends Component {
       .then((res) => res.json())
       .then(({ result }) => {
         this.setState({ items: result });
-      });
+      })
+      .finally(() => setLoading(false));
   }
   template() {
     return `
