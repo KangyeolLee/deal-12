@@ -106,13 +106,15 @@ export default class NewPost extends Component {
         return;
       }
 
+      const n_price = price.split(',').join('');
+      const r_price = n_price.substring(0, n_price.length - 1);
       const formData = new FormData();
       this.blobs.forEach((blob) => {
         formData.append('blob', blob);
       });
       formData.append('title', title);
       formData.append('content', content);
-      formData.append('price', price);
+      formData.append('price', r_price);
       formData.append('category_id', category_id);
       formData.append('state', state);
 
@@ -151,11 +153,11 @@ export default class NewPost extends Component {
       const $content = (
         this.$target.querySelector('#content') as HTMLInputElement
       ).value;
-      const price = this.$target.querySelector('#price') as HTMLInputElement;
+      const $imgs = this.$target.querySelectorAll('.img-del');
 
       // check icon
       const $checkIcon = this.$target.querySelector('.header__right-icon');
-      if ($title && $content) {
+      if ($title && $content && $imgs.length) {
         new IconButton($checkIcon as Element, {
           name: 'check-active',
         });

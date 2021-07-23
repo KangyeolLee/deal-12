@@ -4,7 +4,7 @@ import '../NewPost/styles';
 import ImgButton from '../Shared/ImgButton';
 import IconButton from '../Shared/IconButton';
 import Button from '../Shared/Button';
-import { setLoading, token } from '../../lib/util';
+import { setLoading, token, translatePriceToTrimmed } from '../../lib/util';
 import { $router } from '../../lib/router';
 
 export default class UpdatePost extends Component {
@@ -90,7 +90,7 @@ export default class UpdatePost extends Component {
     const $inputPrice = this.$target.querySelector(
       'input#price'
     ) as HTMLInputElement;
-    $inputPrice.value = price;
+    $inputPrice.value = translatePriceToTrimmed(+price);
 
     const $textareaContent = this.$target.querySelector(
       'textarea#content'
@@ -157,13 +157,15 @@ export default class UpdatePost extends Component {
       const willBeDeleted = images.filter(
         (image: string) => this.thumbs.length && !this.thumbs.includes(image)
       );
+      const n_price = price.split(',').join('');
+      const r_price = n_price.substring(0, n_price.length - 1);
 
       filteredBlobs.forEach((blob) => {
         formData.append('blob', blob);
       });
       formData.append('title', title);
       formData.append('content', content);
-      formData.append('price', price);
+      formData.append('price', r_price);
       formData.append('category_id', category_id);
       if (thumbnail) {
         formData.append('thumbnail', thumbnail);
@@ -184,6 +186,21 @@ export default class UpdatePost extends Component {
           $router.push(`/post/${id}`);
         });
     });
+
+    // 콤마 추가
+    const $price = this.$target.querySelector('#price') as HTMLInputElement;
+    $price.addEventListener('change', () => {
+      const input = $price.value.split('원')[0].replace(/,/g, '');
+      $price.value = input.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원';
+    });
+    // 숫자만 입력
+    $price.addEventListener('input', () => {
+      const regex = /[^0-9]/g;
+      if (regex.test($price.value)) {
+        const output = $price.value.replace(regex, '');
+        $price.value = output;
+      }
+    });
   }
 
   setEvent() {
@@ -193,10 +210,11 @@ export default class UpdatePost extends Component {
       const $content = (
         this.$target.querySelector('#content') as HTMLInputElement
       ).value;
+      const $imgs = this.$target.querySelectorAll('.img-del');
 
       // check icon
       const $checkIcon = this.$target.querySelector('.header__right-icon');
-      if ($title && $content) {
+      if ($title && $content && $imgs.length) {
         new IconButton($checkIcon as Element, {
           name: 'check-active',
         });
