@@ -25,6 +25,13 @@ chatRouter.get(
   ChatController.getChatsByChatRoomId
 );
 
+// 채팅 읽음
+chatRouter.get(
+  '/chatroom/:chatroomId/reset',
+  authenticateAccessToken,
+  ChatController.resetUnreactChatsCount
+);
+
 // 채팅방 나가기
 chatRouter.delete(
   '/chatroom/:chatroomId',

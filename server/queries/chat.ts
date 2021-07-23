@@ -119,9 +119,9 @@ export const FIND_CHATROOMS_BY_POST_ID = ({ user_id }: { user_id: number }) => `
     SELECT unread_count, chatJoined.user_id as my_id, chatRoom.id AS id, thumbnail, 
     chatRoom.seller_id AS seller_id, chatRoom.updatedAt AS timestamp,
     buyer_id, last_text FROM chatJoined
-    JOIN chatRoom ON chatRoom.id = chatJoined.room_id
-    JOIN post ON post.seller_id = ${user_id} AND post.id = chatRoom.post_id
-    WHERE chatJoined.user_id = ${user_id};
+    JOIN chatRoom ON chatRoom.id = chatJoined.room_id AND chatRoom.seller_id = ${user_id}
+    JOIN post ON post.id = chatRoom.post_id
+    WHERE chatJoined.user_id = ${user_id}
 `;
 
 // 안 읽은 채팅 수
