@@ -61,7 +61,7 @@ client
     └── main.ts
     
 server
-├── controllers                     # 컨트롤러들
+├── controllers                     
 └── database                        # config, 초기화 코드
 ├── middlewares                     # 인증, 사진 업로드
 ├── queries           
