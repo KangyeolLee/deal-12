@@ -12,7 +12,7 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
 
     if (isAlreadyExist.length) {
       return res.status(300).json({
-        message: '이미 존재하는 아이디 입니다...',
+        message: '이미 존재하는 아이디 입니다.',
       });
     }
 

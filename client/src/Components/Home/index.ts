@@ -81,7 +81,7 @@ export default class Home extends Component {
 
     const $header = this.$target.querySelector('header');
     new Header($header as Element, {
-      title: isLogin ? this.$state.location1.name : '로그인해주세요',
+      title: isLogin ? this.$state.location1.name || '' : '로그인해주세요',
       headerType: 'main',
       isLogin,
     });
@@ -106,7 +106,7 @@ export default class Home extends Component {
     const io = setIntersectionObserver({
       root: $itemList,
       isLogin,
-      location_id: location1.id,
+      location_id: location1.id ? location1.id : 0,
       category_id: 0,
     });
     io?.observe($loader);
@@ -138,7 +138,7 @@ export default class Home extends Component {
     const $categoryBtn = this.$target.querySelector('#category');
     $categoryBtn?.addEventListener('click', () => {
       new Category($categoryModal as Element, {
-        locationId: this.$state.location1.id,
+        locationId: location1.id ? location1.id : 0,
       });
       $categoryModal.className = 'modal-open';
     });

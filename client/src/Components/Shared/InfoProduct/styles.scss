@@ -8,6 +8,10 @@
   border-top: 0.1rem solid $grey3;
   border-bottom: 0.1rem solid $grey3;
 
+  .status-button {
+    cursor: default;
+  }
+
   .product-intro {
     display: flex;
     gap: 1rem;

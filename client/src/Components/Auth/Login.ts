@@ -77,7 +77,13 @@ export default class Login extends Component {
       'input#userId'
     ) as HTMLInputElement;
 
-    $userIdInput.addEventListener('input', () => {
+    $userIdInput.addEventListener('input', ({ target }: { target: any }) => {
+      const regex = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"\s]/gi;
+      if (regex.test(target.value)) {
+        const output = target.value.replace(regex, '');
+        target.value = output;
+      }
+
       const isActivated = $userIdInput.value;
       $button.disabled = isActivated ? false : true;
     });

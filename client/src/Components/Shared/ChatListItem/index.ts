@@ -45,6 +45,9 @@ export default class ChatListItem extends Component {
           '.unread'
         ) as HTMLParagraphElement;
         $unread.innerText = (Number($unread.innerText) + 1).toString();
+        (
+          this.$target.querySelector('.chat-list__item') as HTMLDivElement
+        ).style.backgroundColor = '#fff';
         $unread.style.backgroundColor = '#219a95';
       }
     });

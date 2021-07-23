@@ -36,38 +36,6 @@ export default class Chatlist extends Component {
       .then((res) => res.json())
       .then(({ result }) => {
         this.setState({ chats: result });
-      })
-      .then(() => {
-        // 새로운 채팅방 생성 감지
-        socket.on(
-          `user-${this.$state.myId}`,
-          (fromId: number, chatroomId: number, message: string, post: any) => {
-            const isExist = this.$state.chats.find(
-              (chat: any) => chat.id === Number(chatroomId)
-            );
-
-            if (!isExist) {
-              const $chatList = this.$target.querySelector('.chat-lists');
-              const $list = document.createElement('div');
-              $chatList?.append($list);
-              const newChatroom = {
-                id: Number(chatroomId),
-                buyer_id: fromId,
-                seller_id: this.$state.myId,
-                my_id: this.$state.myId,
-                thumbnail: post.thumbnail,
-                last_text: message,
-                unread_count: 1,
-                timestamp: dayjs(new Date()),
-              };
-              new ChatListItem($list as Element, newChatroom);
-
-              this.setState({
-                chats: [...this.$state.chats, newChatroom],
-              });
-            }
-          }
-        );
       });
   }
 
@@ -98,7 +66,37 @@ export default class Chatlist extends Component {
     }
 
     const $backBtn = $header?.querySelector('#left');
-    const postId = location.href.split('post/')[1];
     $backBtn?.addEventListener('click', () => history.back());
+
+    // 새로운 채팅방 생성 감지
+    socket.on(
+      `user-${this.$state.myId}`,
+      (fromId: number, chatroomId: number, message: string, post: any) => {
+        const isExist = this.$state.chats.find(
+          (chat: any) => chat.id === Number(chatroomId)
+        );
+
+        if (!isExist) {
+          const $chatList = this.$target.querySelector('.chat-lists');
+          const $list = document.createElement('div');
+          $chatList?.append($list);
+          const newChatroom = {
+            id: Number(chatroomId),
+            buyer_id: fromId,
+            seller_id: this.$state.myId,
+            my_id: this.$state.myId,
+            thumbnail: post.thumbnail,
+            last_text: message,
+            unread_count: 1,
+            timestamp: dayjs(new Date()),
+          };
+          new ChatListItem($list as Element, newChatroom);
+
+          this.setState({
+            chats: [...this.$state.chats, newChatroom],
+          });
+        }
+      }
+    );
   }
 }

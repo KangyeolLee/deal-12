@@ -63,7 +63,7 @@ const getPostBySellerNickname = async (
     const result = await PostService.findPostBySellerNickname({
       nickname: user.nickname,
     });
-    return res.status(200).json({ result });
+    return res.status(200).json({ sells: result });
   } catch (error) {
     next(error);
   }
@@ -80,7 +80,7 @@ const getPostInterestsByUserNickname = async (
     const result = await PostInterestService.findPostInterestsByUserId({
       user_id: user.id,
     });
-    return res.status(200).json({ result });
+    return res.status(200).json({ interests: result });
   } catch (error) {
     next(error);
   }

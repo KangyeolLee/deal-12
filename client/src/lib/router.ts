@@ -138,7 +138,7 @@ function handleMutationObserver($app: HTMLElement) {
   const observer = new MutationObserver((mutationRecord) => {
     const $slider = $app.querySelector('.image-navigation') as HTMLElement;
 
-    if ($slider) {
+    if ($slider && $slider.childElementCount > 1) {
       const record = mutationRecord.filter((record) => {
         const isActive = (<HTMLElement>record.target).className.includes(
           'active'

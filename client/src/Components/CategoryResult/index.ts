@@ -4,13 +4,17 @@ import CategoryListItem, {
 } from '../Shared/CategoryListItem';
 import Header from '../Shared/Header';
 import Loader from '../Shared/Loader';
-import { setIntersectionObserver } from '../../lib/util';
+import { setIntersectionObserver, token } from '../../lib/util';
+import { setLoading } from './../../lib/util';
 
 export default class CategoryResult extends Component {
   setup() {
     this.$state = {
       items: [],
     };
+
+    setLoading(true);
+
     fetch(
       `/api/posts/location/${this.$props.locationId}/category/${this.$props.category.id}/0`,
       {
@@ -20,7 +24,8 @@ export default class CategoryResult extends Component {
       .then((res) => res.json())
       .then(({ result }) => {
         this.setState({ items: result });
-      });
+      })
+      .finally(() => setLoading(false));
   }
   template() {
     return `
@@ -43,18 +48,23 @@ export default class CategoryResult extends Component {
       this.$state.items.forEach((item: CategoryListItemProps) => {
         const $item = document.createElement('div');
         $itemList?.append($item);
-        new CategoryListItem($item, item);
+        new CategoryListItem($item, {
+          ...item,
+          isLogin: token() ? true : false,
+        });
       });
     } else {
       $itemList.className = 'no-data';
     }
+
+    const isLogin = token() ? true : false;
 
     // infinite scrolling
     new Loader(this.$target.querySelector('.item-list') as HTMLLIElement);
     const $loader = this.$target.querySelector('.component-loader') as Element;
     const io = setIntersectionObserver({
       root: $itemList,
-      // isLogin,
+      isLogin,
       location_id: locationId,
       category_id: category.id,
     });

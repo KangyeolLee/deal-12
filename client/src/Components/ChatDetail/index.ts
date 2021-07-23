@@ -73,8 +73,15 @@ export default class ChatDetail extends Component {
         text: message,
       });
 
+      fetch(`/api/chat/chatroom/${this.$state.chatroomId}/reset`, {
+        method: 'GET',
+        headers: {
+          Authorization: token(),
+        },
+      });
+
       // 스크롤 하단으로
-      if ($chatBubbles && $input) {
+      if ($chatBubbles && $input && id === this.$state.me.id) {
         $chatBubbles.scrollTop = $chatBubbles?.scrollHeight as number;
         $input.value = '';
       }

@@ -49,7 +49,7 @@ const getChatRoomsByUserId = async (
   try {
     const result = await ChatService.findChatRoomsByUserId({ user_id });
     return res.status(200).json({
-      result,
+      chats: result,
     });
   } catch (error) {
     next(error);
@@ -71,6 +71,27 @@ const getChatsByChatRoomId = async (
     });
     return res.status(200).json({
       result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// 채팅 읽음
+const resetUnreactChatsCount = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id: user_id } = req.user;
+  const { chatroomId } = req.params;
+  try {
+    await ChatService.resetUnreadChatsCount({
+      room_id: chatroomId,
+      user_id,
+    });
+    return res.status(200).json({
+      message: 'update success',
     });
   } catch (error) {
     next(error);
@@ -100,4 +121,5 @@ export const ChatController = {
   getChatsByChatRoomId,
   getChatRoomsByUserId,
   deleteChatJoined,
+  resetUnreactChatsCount,
 };
