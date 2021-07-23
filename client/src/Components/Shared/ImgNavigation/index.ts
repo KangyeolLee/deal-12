@@ -33,8 +33,6 @@ export default class ImgNavigation extends Component {
     ) as HTMLElement;
     const $imageNav = this.$target.querySelector('.image-nav');
 
-    $navigation.style.width = 100 * (images?.length + 2) + '%';
-
     images?.forEach((image: string, index: number) => {
       const $div = document.createElement('div');
       $div.classList.add('navigation-item', `image-target-${index}`);
@@ -47,7 +45,10 @@ export default class ImgNavigation extends Component {
 
     new NavItem($imageNav as HTMLElement, images);
 
-    this.initSlider({ $navigation });
+    if (images?.length > 1) {
+      $navigation.style.width = 100 * (images?.length + 2) + '%';
+      this.initSlider({ $navigation });
+    }
   }
 
   private initSlider({ $navigation }: SliderTypes) {

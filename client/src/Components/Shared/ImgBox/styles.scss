@@ -29,26 +29,10 @@
   height: 10.6rem;
 }
 .imgbox-gradient {
-  position: relative;
   width: 100%;
   height: 35rem;
   display: flex;
-  background-size: cover;
+  background-size: 100% 100%;
   align-items: center;
   justify-content: center;
-  &::after {
-    width: 100%;
-    height: 35rem;
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.24) 0%,
-      rgba(0, 0, 0, 0) 16.52%,
-      rgba(0, 0, 0, 0) 87.36%,
-      rgba(0, 0, 0, 0.24) 100%
-    );
-  }
 }
