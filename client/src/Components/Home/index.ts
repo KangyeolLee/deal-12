@@ -81,7 +81,7 @@ export default class Home extends Component {
 
     const $header = this.$target.querySelector('header');
     new Header($header as Element, {
-      title: isLogin ? this.$state.location1.name : '로그인해주세요',
+      title: isLogin ? this.$state.location1.name || '' : '로그인해주세요',
       headerType: 'main',
       isLogin,
     });
