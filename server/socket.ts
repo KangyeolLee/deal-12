@@ -12,7 +12,6 @@ export const initSocket = (httpServer: any) => {
 
   io.on('connection', (socket) => {
     socket.on('client', (fromId, toId, message, chatroomId, post) => {
-      console.log(fromId, toId, message, chatroomId);
       ChatService.createChat({
         room_id: chatroomId,
         text: message,

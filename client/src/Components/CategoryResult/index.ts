@@ -19,7 +19,6 @@ export default class CategoryResult extends Component {
     )
       .then((res) => res.json())
       .then(({ result }) => {
-        console.log(result, this.$props);
         this.setState({ items: result });
       });
   }

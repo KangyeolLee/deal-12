@@ -40,7 +40,6 @@ const getPosts = async (req: Request, res: Response, next: NextFunction) => {
   try {
     // 로그인 유저 정보 필요 X
     const { locationId, categoryId, offset } = req.params;
-    console.log(locationId, categoryId);
     const result = await PostService.findPosts({
       location_id: +locationId,
       category_id: +categoryId,
