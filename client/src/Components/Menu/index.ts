@@ -106,7 +106,7 @@ export default class Menu extends Component {
             });
           });
         } else {
-          setTimeout(() => ($wrapper.className = 'no-data'), 2000);
+          setTimeout(() => ($wrapper.className = 'no-data'), 500);
         }
         break;
 
