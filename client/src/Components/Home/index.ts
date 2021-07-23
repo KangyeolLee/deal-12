@@ -12,7 +12,6 @@ import Auth from './../Auth/index';
 import Dropdown from './../Shared/Dropdown/index';
 import { setLoading, token, setIntersectionObserver } from '../../lib/util';
 import Loader from '../Shared/Loader';
-import Location from './../Location/index';
 
 export default class Home extends Component {
   setup() {
@@ -48,6 +47,7 @@ export default class Home extends Component {
           )
             .then((res) => res.json())
             .then(({ result }) => {
+              console.log(result);
               this.setState({ items: result });
             });
         })
