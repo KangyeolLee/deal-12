@@ -34,5 +34,5 @@ jobs:
           port: ${{ secrets.SERVER_PORT  }}
           script: |
             cd node_server && git pull origin dev
-            cd client && npm install && npm run build
-            cd ../server && npm install && pm2 restart npm
+            cd client && yarn && yarn build
+            cd ../server && yarn && yarn start
