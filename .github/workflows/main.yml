@@ -33,6 +33,6 @@ jobs:
           key: ${{ secrets.PEM }}
           port: ${{ secrets.SERVER_PORT  }}
           script: |
-            cd node_server && git pull origin master
+            cd node_server && git pull origin main
             cd client && npm install && npm run build
             cd ../server && npm install && pm2 restart npm
