@@ -1,9 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { PostService, PostType } from '../services/post/PostService';
+import { PostService } from '../services/post/PostService';
 import { PostInterestService } from '../services/post/PostInterestService';
 import { LocationService } from '../services/LocationService';
-
-const HOST = 'http://localhost:3000/';
 
 const createPost = async (req: any, res: Response, next: NextFunction) => {
   try {
@@ -22,7 +20,7 @@ const createPost = async (req: any, res: Response, next: NextFunction) => {
       price: +price,
       category_id: +category_id,
       state,
-      thumbnail: HOST + files[0].path,
+      thumbnail: process.env.DB_HOST + files[0].path,
     };
 
     const result = await PostService.cratePost(post);
@@ -151,7 +149,7 @@ const updatePost = async (req: any, res: Response, next: NextFunction) => {
       location_id,
       price: +price,
       category_id: +category_id,
-      thumbnail: thumbnail ? thumbnail : HOST + files[0].path,
+      thumbnail: thumbnail ? thumbnail : process.env.DB_HOST + files[0].path,
       willBeDeleted,
     };
 
