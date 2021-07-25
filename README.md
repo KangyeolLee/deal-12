@@ -7,6 +7,7 @@
 <br/>
 
 # 정강이가 부러지도록 달려보겠습니다 -> [달려보았습니다](http://52.78.150.173:3000/#/home)
+
 ### [데모영상](https://youtu.be/Yl5WAihCP6Y)
 
 <img src="https://i.ytimg.com/vi/GXSSZ_PytQ4/maxresdefault.jpg" />
@@ -31,14 +32,18 @@ DATABASE = 데이터베이스 이름
 
 ## `Scripts`
 
-### client
+### server
 
+- 빌드 후 실행
+  ```
+  "start": "tsc && cp database/init.sql build/database/init.sql && node build/app"
+  ```
 - 개발 모드로 실행
   ```
   "dev": "nodemon --watch \"**\" --ext \"ts\" --exec \"ts-node\" app"
   ```
 
-### server
+### client
 
 - 프로덕션 모드로 실행
   ```
@@ -94,6 +99,7 @@ server
 <br/>
 
 ## `Screenshots`
+
 ![image](https://user-images.githubusercontent.com/50590192/126892874-fe232947-5290-46d0-be3f-e1d201e3198e.png)
 ![image](https://user-images.githubusercontent.com/50590192/126892957-8ac97d76-1971-48ee-9250-234015a902c5.png)
 ![image](https://user-images.githubusercontent.com/50590192/126892886-42eee6da-f415-4dfa-b106-a262cd660e51.png)
@@ -101,3 +107,4 @@ server
 ![image](https://user-images.githubusercontent.com/50590192/126892896-fb0de254-0399-449e-bb3c-2d5505efb966.png)
 ![image](https://user-images.githubusercontent.com/50590192/126892906-b6d47398-dda7-4169-b734-faa77350bda6.png)
 ![image](https://user-images.githubusercontent.com/50590192/126892933-884ded9c-0488-4361-b05b-09659b4d8fd5.png)
+![image](https://user-images.githubusercontent.com/50590192/126893125-814d92fd-7e53-4634-99a1-2cb3d6247eb2.png)
