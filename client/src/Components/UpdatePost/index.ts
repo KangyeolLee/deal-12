@@ -91,7 +91,8 @@ export default class UpdatePost extends Component {
     const $inputPrice = this.$target.querySelector(
       'input#price'
     ) as HTMLInputElement;
-    $inputPrice.value = price;
+    $inputPrice.value =
+      price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원';
 
     const $textareaContent = this.$target.querySelector(
       'textarea#content'

@@ -10,6 +10,8 @@ const createPost = async (req: any, res: Response, next: NextFunction) => {
     const { loc1 } = await LocationService.findLocationsByUserNickname({
       nickname,
     });
+    const t_price = price.split(',').join('');
+    const r_price = t_price.substr(0, t_price.length - 1);
     const location_id = loc1[0].id;
     const files = req.files as any;
     const post = {
@@ -17,7 +19,7 @@ const createPost = async (req: any, res: Response, next: NextFunction) => {
       content,
       seller_id,
       location_id,
-      price: +price,
+      price: +r_price,
       category_id: +category_id,
       state,
       thumbnail: process.env.SERVER_HOST + files[0].path,
@@ -140,6 +142,8 @@ const updatePost = async (req: any, res: Response, next: NextFunction) => {
     const { loc1 } = await LocationService.findLocationsByUserNickname({
       nickname,
     });
+    const t_price = price.split(',').join('');
+    const r_price = t_price.substr(0, t_price.length - 1);
     const location_id = loc1[0].id;
     const files = req.files as any;
     const updates = {
@@ -147,7 +151,7 @@ const updatePost = async (req: any, res: Response, next: NextFunction) => {
       content,
       seller_id,
       location_id,
-      price: +price,
+      price: +r_price,
       category_id: +category_id,
       thumbnail: thumbnail
         ? thumbnail
