@@ -149,13 +149,9 @@ const updatePost = async (req: any, res: Response, next: NextFunction) => {
       location_id,
       price: +price,
       category_id: +category_id,
-<<<<<<< HEAD
-      thumbnail: thumbnail ? thumbnail : process.env.DB_HOST + files[0].path,
-=======
       thumbnail: thumbnail
         ? thumbnail
         : process.env.SERVER_HOST + files[0].path,
->>>>>>> f4fd9df315d2f93380acad16f9d627983dd1417f
       willBeDeleted,
     };
 
