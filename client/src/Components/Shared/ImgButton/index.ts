@@ -32,6 +32,7 @@ export default class ImgButton extends Component {
       const $fileInput = document.createElement('input');
       $fileInput.type = 'file';
       $fileInput.accept = 'image/*';
+      $fileInput.multiple = true;
       $fileInput.name = 'image';
       $fileInput.className = 'file-input';
       $fileInput.onchange = addImg as

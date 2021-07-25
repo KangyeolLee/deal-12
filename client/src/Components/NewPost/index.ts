@@ -188,23 +188,24 @@ class FileUploader extends Component {
     const $imgList = this.$target.querySelector('.img-list');
 
     const selectImg = (e: any) => {
-      const reader = new FileReader();
-      const targetFile = e.target.files[0];
-      reader.onloadend = () => {
-        const blob = new Blob([reader.result as ArrayBuffer], {
-          type: 'image/*',
-        });
-        const url = URL.createObjectURL(blob);
+      const targetFile = e.target.files;
+      [...targetFile].forEach((file: File) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const blob = new Blob([reader.result as ArrayBuffer], {
+            type: 'image/*',
+          });
+          const url = URL.createObjectURL(blob);
 
-        this.setState({
-          files: [...this.$state.files, blob],
-          imgs: [...this.$state.imgs, url],
-        });
+          this.setState({
+            files: [...this.$state.files, blob],
+            imgs: [...this.$state.imgs, url],
+          });
 
-        this.$props.setBlobs(this.$state.files);
-      };
-
-      reader.readAsArrayBuffer(targetFile);
+          this.$props.setBlobs(this.$state.files);
+        };
+        reader.readAsArrayBuffer(file);
+      });
     };
 
     new ImgButton($imgList as Element, {
