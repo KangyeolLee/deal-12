@@ -6,9 +6,9 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the dev branch
   push:
-    branches: [ dev ]
+    branches: [dev]
   pull_request:
-    branches: [ dev ]
+    branches: [dev]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -35,4 +35,4 @@ jobs:
           script: |
             cd node_server && git pull origin dev
             cd client && yarn && yarn build
-            cd ../server && yarn && yarn start
+            cd ../server && yarn && pm2 restart 2

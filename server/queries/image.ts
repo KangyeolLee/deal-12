@@ -5,7 +5,7 @@ export const CREATE_IMAGES = (
   const queries = files
     .map((file) => {
       return `
-      (${post_id}, '${process.env.DB_HOST + file.path}')
+      (${post_id}, '${process.env.SERVER_HOST + file.path}')
     `;
     })
     .join(',');
