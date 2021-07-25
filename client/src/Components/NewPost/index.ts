@@ -6,6 +6,7 @@ import IconButton from '../Shared/IconButton';
 import Button from '../Shared/Button';
 import { setLoading, token } from '../../lib/util';
 import { $router } from '../../lib/router';
+import { checkActive, checkDisable, pinmap } from '../../../assets';
 
 export default class NewPost extends Component {
   blobs: Blob[] = [];
@@ -65,12 +66,12 @@ export default class NewPost extends Component {
     new Header($header as Element, {
       title: '글쓰기',
       headerType: 'menu-white',
-      extraIconName: 'check-disable',
+      extraImg: checkDisable,
     });
 
     const $loc = this.$target.querySelector('#loc');
     new IconButton($loc as Element, {
-      name: 'pinmap',
+      img: pinmap,
     });
 
     // 사진 선택
@@ -155,15 +156,9 @@ export default class NewPost extends Component {
 
       // check icon
       const $checkIcon = this.$target.querySelector('.header__right-icon');
-      if ($title && $content) {
-        new IconButton($checkIcon as Element, {
-          name: 'check-active',
-        });
-      } else {
-        new IconButton($checkIcon as Element, {
-          name: 'check-disable',
-        });
-      }
+      new IconButton($checkIcon as Element, {
+        img: $title && $content ? checkActive : checkDisable,
+      });
     });
   }
 

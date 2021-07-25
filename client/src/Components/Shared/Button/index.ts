@@ -1,3 +1,4 @@
+import { addWhite } from '../../../../assets';
 import Component from '../../../core/Component';
 import IconButton from '../../Shared/IconButton';
 import './styles.scss';
@@ -33,7 +34,7 @@ export default class Button extends Component {
     if (!title) {
       const $addIcon = document.createElement('div');
       new IconButton($addIcon as Element, {
-        name: 'add-white',
+        img: addWhite,
       });
       this.$target.querySelector('#button')?.append($addIcon);
     }

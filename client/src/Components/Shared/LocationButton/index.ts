@@ -1,6 +1,7 @@
 import './styles';
 import Component from '../../../core/Component';
 import IconButton from './../IconButton/index';
+import { addMint, closeMint } from '../../../../assets';
 
 export interface LocationButtonProps {
   locId: number;
@@ -28,11 +29,11 @@ export default class LocationButton extends Component {
 
     if (type === 'add') {
       new IconButton($wrapper as HTMLElement, {
-        name: 'add-mint',
+        img: addMint,
       });
     } else {
       new IconButton($wrapper as HTMLElement, {
-        name: 'close-mint',
+        img: closeMint,
       });
     }
   }

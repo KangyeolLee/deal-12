@@ -1,3 +1,12 @@
+import {
+  category,
+  left,
+  leftWhite,
+  menu,
+  morewhite,
+  pinmapwhite,
+  user,
+} from '../../../../assets';
 import Component from '../../../core/Component';
 import IconButton from '../IconButton';
 import './styles.scss';
@@ -6,7 +15,7 @@ type HeaderType = 'main' | 'menu-white' | 'menu-off-white' | 'menu-invisible';
 interface HeaderProps {
   headerType: HeaderType;
   title?: string;
-  extraIconName?: string;
+  extraImg?: string;
   isLogin?: string;
   isMine?: boolean;
 }
@@ -64,53 +73,53 @@ export default class Header extends Component {
   }
 
   mounted() {
-    const { headerType, extraIconName, isMine }: HeaderProps = this.$props;
+    const { headerType, extraImg, isMine }: HeaderProps = this.$props;
 
     switch (headerType) {
       case 'main':
         const $category = this.$target.querySelector('#category');
         new IconButton($category as Element, {
-          name: 'category',
+          img: category,
         });
         const $user = this.$target.querySelector('#user');
         new IconButton($user as Element, {
-          name: 'user',
+          img: user,
         });
         const $menu = this.$target.querySelector('#menu');
         if ($menu) {
           new IconButton($menu as Element, {
-            name: 'menu',
+            img: menu,
           });
         }
         const $loc = this.$target.querySelector('#loc');
         new IconButton($loc as Element, {
-          name: 'pinmap-white',
+          img: pinmapwhite,
         });
         break;
 
       case 'menu-white':
         new IconButton(this.$target.querySelector('#left') as Element, {
-          name: 'left',
+          img: left,
         });
         new IconButton(this.$target.querySelector('#right') as Element, {
-          name: extraIconName,
+          img: extraImg,
         });
         break;
 
       case 'menu-off-white':
         const $left = this.$target.querySelector('#left');
         new IconButton($left as Element, {
-          name: 'left',
+          img: left,
         });
         break;
 
       case 'menu-invisible':
         new IconButton(this.$target.querySelector('#left') as Element, {
-          name: 'left-white',
+          img: leftWhite,
         });
 
         new IconButton(this.$target.querySelector('#right') as Element, {
-          name: 'more-white',
+          img: morewhite,
           hidden: !isMine,
         });
 

@@ -8,6 +8,7 @@ import InputPopup from '../Shared/InputPopup';
 import { socket } from '../../main';
 import { token } from '../../lib/util';
 import { $router } from '../../lib/router';
+import { logout } from '../../../assets';
 
 interface ChatBubbleType {
   myId: number;
@@ -107,7 +108,7 @@ export default class ChatDetail extends Component {
     const $modal = this.$target.querySelector('.chat-modal');
     new Header($header as HTMLElement, {
       headerType: 'menu-white',
-      extraIconName: 'logout',
+      extraImg: logout,
       title: this.$state.other.nickname,
     });
 
