@@ -14,28 +14,29 @@ export default class Chatlist extends Component {
     };
     const postId = location.href.split('post/')[1];
 
-    fetch('/api/me/', {
-      method: 'GET',
-      headers: {
-        Authorization: token(),
-      },
-    })
-      .then((res) => res.json())
-      .then(({ user }) => {
-        this.setState({
-          myId: user.id,
-        });
-      });
+    const headers = new Headers();
+    headers.append('Authorization', token());
 
-    fetch(`/api/chat/post/${postId}`, {
-      method: 'GET',
-      headers: {
-        Authorization: token(),
-      },
-    })
-      .then((res) => res.json())
-      .then(({ result }) => {
-        this.setState({ chats: result });
+    let urls = ['/api/me/', `/api/chat/post/${postId}`];
+    let requests = urls.map((url) =>
+      fetch(url, {
+        method: 'GET',
+        headers,
+      })
+    );
+
+    Promise.all(requests)
+      .then((responses) => responses)
+      .then((responses) => Promise.all(responses.map((res) => res.json())))
+      .then((datas) => {
+        const states = {};
+        datas.forEach((data) => {
+          Object.assign(states, data);
+        });
+        return states;
+      })
+      .then((states: any) => {
+        this.setState({ chats: states.result, myId: states.user.id });
       });
   }
 
