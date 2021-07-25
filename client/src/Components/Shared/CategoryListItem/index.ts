@@ -8,6 +8,7 @@ import {
   translatePriceToTrimmed,
   token,
 } from '../../../lib/util';
+import { chatSmall, heart, heartFill, heartSmall } from '../../../../assets';
 
 export interface CategoryListItemProps {
   id: number;
@@ -51,7 +52,7 @@ class LikeBtn extends Component {
     const $iconBtn = this.$target.querySelector('div');
 
     new IconButton($iconBtn as Element, {
-      name: isLiked ? 'heart-fill' : 'heart',
+      img: isLiked ? heartFill : heart,
       disabled: !this.$props.isLogin,
     });
 
@@ -78,7 +79,7 @@ class LikeBtn extends Component {
           if ($num.innerText === '0') {
             $num.style.color = '#000';
             new IconButton($icon as Element, {
-              name: 'heart-small',
+              img: heartSmall,
               small: true,
             });
           }
@@ -166,9 +167,9 @@ export default class CategoryListItem extends Component {
 
     const $iconBtn = this.$target.querySelector('#icon-btn');
     if (pageName === 'menu') {
-      new IconButton($iconBtn as Element, {
-        pageName,
-      });
+      // new IconButton($iconBtn as Element, {
+      //   pageName,
+      // });
     } else {
       if (seller_id !== myId) {
         new LikeBtn($iconBtn as Element, {
@@ -182,14 +183,14 @@ export default class CategoryListItem extends Component {
     if (chatroom_count > 0) {
       const $chatIcon = this.$target.querySelector('#chat-icon') as HTMLElement;
       new IconButton($chatIcon as Element, {
-        name: 'chat-small',
+        img: chatSmall,
         small: true,
       });
     }
     if (interest_count > 0) {
       const $heartIcon = this.$target.querySelector('#heart-icon');
       new IconButton($heartIcon as Element, {
-        name: 'heart-small',
+        img: heartSmall,
         small: true,
       });
     } else {

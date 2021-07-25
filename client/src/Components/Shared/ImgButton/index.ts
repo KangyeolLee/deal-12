@@ -1,3 +1,4 @@
+import { closeWhiteSmall, image } from '../../../../assets';
 import Component from '../../../core/Component';
 import IconButton from '../IconButton';
 import ImgBox from '../ImgBox';
@@ -32,6 +33,7 @@ export default class ImgButton extends Component {
       const $fileInput = document.createElement('input');
       $fileInput.type = 'file';
       $fileInput.accept = 'image/*';
+      $fileInput.multiple = true;
       $fileInput.name = 'image';
       $fileInput.className = 'file-input';
       $fileInput.onchange = addImg as
@@ -40,7 +42,7 @@ export default class ImgButton extends Component {
       $button?.append($fileInput);
 
       new IconButton($imgBox as Element, {
-        name: 'image',
+        img: image,
       });
       const cnt = document.createElement('div');
       cnt.innerHTML = `<div><span class=${imgNum !== 0 ? 'img-num' : ''}>${
@@ -51,7 +53,7 @@ export default class ImgButton extends Component {
       const $delBtn = document.createElement('div');
       $delBtn.className = 'del-btn';
       new IconButton($delBtn as Element, {
-        name: 'close-white-small',
+        img: closeWhiteSmall,
       });
       $button?.append($delBtn);
     }

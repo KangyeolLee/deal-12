@@ -2,6 +2,7 @@ import './styles';
 import Component from '../../../core/Component';
 import IconButton from '../IconButton/index';
 import TextInput from '../TextInput/index';
+import { endOff, endOn } from '../../../../assets';
 
 export default class ChatBar extends Component {
   setup() {}
@@ -26,7 +27,7 @@ export default class ChatBar extends Component {
     });
 
     new IconButton($sendBtn as HTMLElement, {
-      name: 'end-off',
+      img: endOff,
     });
   }
 
@@ -34,11 +35,11 @@ export default class ChatBar extends Component {
     this.addEvent('keydown', 'input', (e: KeyboardEvent) => {
       const $sendBtn = this.$target.querySelector('.send-button');
       const $input = this.$target.querySelector('input');
-      const name = $input?.value ? 'end-on' : 'end-off';
+      const name = $input?.value ? endOn : endOff;
       const enter = e.key === 'Enter';
 
       new IconButton($sendBtn as HTMLElement, {
-        name: enter ? 'end-off' : name,
+        img: enter ? endOff : name,
       });
     });
   }

@@ -21,11 +21,12 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use(express.static(path.join(__dirname, '../client/dist/src')));
+app.use(express.static(path.join(__dirname, '../../client/dist/src')));
 
 app.use('/api', router);
 app.get('/', (req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, '../client/dist/src', 'index.html'));
+  console.log('asdf');
+  res.sendFile(path.join(__dirname, '../../client/dist/src', 'index.html'));
 });
 
 app.use((req: Request, res: Response, next: NextFunction) => {

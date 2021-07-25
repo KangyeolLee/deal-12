@@ -4,6 +4,7 @@ import IconButton from './../IconButton';
 import Button from '../Button/index';
 import { $router } from '../../../lib/router';
 import { token } from '../../../lib/util';
+import { heart, heartFill } from '../../../../assets';
 
 export default class ProductBar extends Component {
   setup() {
@@ -42,7 +43,7 @@ export default class ProductBar extends Component {
     const $button = this.$target.querySelector('.button');
 
     new IconButton($imageWrapper as HTMLElement, {
-      name: isLiked ? 'heart-fill' : 'heart',
+      img: isLiked ? heartFill : heart,
       disabled: !isLogin,
     });
 

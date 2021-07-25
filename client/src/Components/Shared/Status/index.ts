@@ -3,6 +3,7 @@ import Component from '../../../core/Component';
 import IconButton from './../IconButton';
 import Dropdown from './../Dropdown/index';
 import { token } from './../../../lib/util';
+import { downXS } from '../../../../assets';
 
 interface PropsType {
   id: number;
@@ -42,7 +43,7 @@ export default class Status extends Component {
     }
 
     new IconButton($status as HTMLElement, {
-      name: 'down-xs',
+      img: downXS,
     });
 
     new Dropdown($dropdown as HTMLElement, {
@@ -57,15 +58,18 @@ export default class Status extends Component {
               headers,
               body: JSON.stringify({
                 state: '판매중',
-              })
-            }).then(res => res.json())
-              .then(data => {
-                const { result: { affectedRows } } = data;
+              }),
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                const {
+                  result: { affectedRows },
+                } = data;
                 if (affectedRows) {
-                  this.setState({ text: '판매중' })
+                  this.setState({ text: '판매중' });
                 }
-              })
-          }
+              });
+          },
         },
         {
           text: '예약중으로 변경',
